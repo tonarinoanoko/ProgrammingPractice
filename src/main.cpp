@@ -53,7 +53,7 @@ int main() {
     // DxLibの初期化
     ChangeWindowMode(TRUE);  // ウィンドウモード
     DxLib_Init();            // DxLibの初期化
-    SetWindowSize(1280, 720);  // 幅1280px, 高さ720px
+    //SetWindowSize(1280, 720);  // 幅1280px, 高さ720px
     SetDrawScreen(DX_SCREEN_BACK);  // 描画先をバック画面に設定
     
     // ゲームの初期化
