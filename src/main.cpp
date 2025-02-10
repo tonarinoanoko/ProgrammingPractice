@@ -5,6 +5,8 @@
 #include "System/InputManager.h"
 #include "Game/Scene/SceneManager.h"
 
+#include "Utility/Utility.h"
+
 
 bool gameRunning = true;  // ゲームが実行中かどうか
 
@@ -19,6 +21,8 @@ void InitGame() {
     Scene::SceneManager::GetInstance().ChangeScene(Scene::SceneManager::EScene::Main);
 
     Debug::DebugLog("ゲーム開始");
+
+    auto value = Utility::Math::Clamp(100, 0, 50);
 }
 
 // ゲームの終了処理
@@ -45,6 +49,7 @@ int main() {
     // DxLibの初期化
     ChangeWindowMode(TRUE);  // ウィンドウモード
     DxLib_Init();            // DxLibの初期化
+    SetWindowSize(1280, 720);  // 幅1280px, 高さ720px
     SetDrawScreen(DX_SCREEN_BACK);  // 描画先をバック画面に設定
     
     // ゲームの初期化
