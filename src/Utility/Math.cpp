@@ -6,12 +6,12 @@
 namespace Utility {
 namespace Math {
 
-int Random(int value)
+int random(int value)
 {
     return std::rand() % value;
 }
 
-int Clamp(int value, int min, int max)
+int clamp(int value, int min, int max)
 {
         return std::max(min, std::min(max, value));
 }

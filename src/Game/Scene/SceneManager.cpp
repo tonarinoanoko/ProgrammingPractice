@@ -7,26 +7,26 @@
 
 
 namespace Scene {
-void SceneManager::Update()
+void SceneManager::update()
 {
     if(_current_scene == nullptr) {
         return;
     }
 
-    _current_scene->Update();
-    _current_scene->Draw();
+    _current_scene->update();
+    _current_scene->draw();
 
-    auto const & input = System::InputManager::GetInstance();
-    if(input.IsKeyDown(KEY_INPUT_Z)) {
-        ChangeScene(EScene::Battle);
+    auto const & input = System::InputManager::getInstance();
+    if(input.isKeyDown(KEY_INPUT_Z)) {
+        changeScene(EScene::Battle);
     }
 
-    if(input.IsKeyDown(KEY_INPUT_X)) {
-        ChangeScene(EScene::Main);
+    if(input.isKeyDown(KEY_INPUT_X)) {
+        changeScene(EScene::Main);
     }
 }
 
-void SceneManager::ChangeScene(EScene scene)
+void SceneManager::changeScene(EScene scene)
 {
     std::shared_ptr<SceneBase> new_scene = nullptr;
     switch(scene)

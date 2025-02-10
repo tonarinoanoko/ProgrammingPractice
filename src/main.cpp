@@ -8,41 +8,41 @@
 #include "Game/Scene/SceneManager.h"
 
 
-bool gameRunning = true;  // ゲームが実行中かどうか
+bool sGameRunning = true;  // ゲームが実行中かどうか
 
 // ゲームの初期化処理
-void InitGame() {
+void initGame() {
     // ここにゲームの初期化処理を追加
     // 例: 画像やサウンドのロード、初期設定など
 
     SetUseCharCodeFormat( DX_CHARCODEFORMAT_UTF8 );
     ChangeFont( _T("MS 明朝" ));
 
-    Scene::SceneManager::GetInstance().ChangeScene(Scene::SceneManager::EScene::Main);
+    Scene::SceneManager::getInstance().changeScene(Scene::SceneManager::EScene::Main);
 
     std::srand(std::time(0));
 
-    Debug::DebugLog("ゲーム開始");
+    Debug::debugLog("ゲーム開始");
 }
 
 // ゲームの終了処理
-void EndGame() {
+void endGame() {
     // ここにゲーム終了時の処理を追加
     // 例: リソースの解放など
 }
 
 // ゲームの状態を更新する処理
-void UpdateGame() {
+void updateGame() {
     // キー入力の状態を更新
-    auto& input = System::InputManager::GetInstance();
-    input.Update();
+    auto& input = System::InputManager::getInstance();
+    input.update();
 
     // 入力処理（キーボード入力など）
-    if (input.IsKeyDown(KEY_INPUT_ESCAPE)) {
-        gameRunning = false;  // ESCキーで終了
+    if (input.isKeyDown(KEY_INPUT_ESCAPE)) {
+        sGameRunning = false;  // ESCキーで終了
     }
 
-    Scene::SceneManager::GetInstance().Update();
+    Scene::SceneManager::getInstance().update();
 }
 
 int main() {
@@ -53,25 +53,25 @@ int main() {
     SetDrawScreen(DX_SCREEN_BACK);  // 描画先をバック画面に設定
     
     // ゲームの初期化
-    InitGame();
+    initGame();
 
     // メインループ
-    while (gameRunning) {
+    while (sGameRunning) {
         // メッセージ処理（ウィンドウの閉じる処理等）
         if (ProcessMessage() != 0) {
-            gameRunning = false;  // ゲーム終了のフラグを立てる
+            sGameRunning = false;  // ゲーム終了のフラグを立てる
         }
 
         ClearDrawScreen();
 
         // ゲームの状態更新
-        UpdateGame();
+        updateGame();
 
         ScreenFlip();
     }
 
     // ゲームの終了処理
-    EndGame();
+    endGame();
     
     // DxLibの終了
     DxLib_End();

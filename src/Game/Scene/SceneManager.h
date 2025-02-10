@@ -18,14 +18,14 @@ public:
     };
 
 public:
-    static SceneManager& GetInstance() {
+    static SceneManager& getInstance() {
         static SceneManager _instance;
         return _instance;
     }
 
-    void Update();
+    void update();
 
-    void ChangeScene(EScene scene);
+    void changeScene(EScene scene);
 
 private:
     static SceneManager _instance;

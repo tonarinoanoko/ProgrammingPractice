@@ -9,19 +9,19 @@ private:
     InputManager() {}
 
 public:
-    static InputManager& GetInstance() {
+    static InputManager& getInstance() {
         static InputManager _instance;
         return _instance;
     }
 
-    void Update();
+    void update();
 
     // キーが押された瞬間
-    bool IsKeyDown(int key_code) const;
+    bool isKeyDown(int key_code) const;
     // キーが離された瞬間
-    bool IsKeyUp(int key_code) const;
+    bool isKeyUp(int key_code) const;
     // キーが押され続けている
-    bool IsKeyPressed(int key_code) const;
+    bool isKeyPressed(int key_code) const;
 
 private:
     static InputManager _instance;

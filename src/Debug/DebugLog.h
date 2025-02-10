@@ -4,7 +4,7 @@
 
 namespace Debug {
 
-inline void DebugLog(const char* message) {
+inline void debugLog(const char* message) {
     std::cout << message << std::endl;
 }
 
