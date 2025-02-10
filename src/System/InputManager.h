@@ -1,8 +1,8 @@
 #pragma once
 #include <array>
 
-namespace System {
 
+namespace System {
 class InputManager
 {
 private:
