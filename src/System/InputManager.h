@@ -9,7 +9,7 @@ private:
     InputManager() {}
 
 public:
-    static InputManager& getInstance() {
+    static InputManager& instance() {
         static InputManager _instance;
         return _instance;
     }

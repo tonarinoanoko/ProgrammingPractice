@@ -11,7 +11,7 @@ private:
     SceneManager() {}
 
 public:
-    static SceneManager& getInstance() {
+    static SceneManager& instance() {
         static SceneManager _instance;
         return _instance;
     }

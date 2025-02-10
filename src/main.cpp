@@ -20,7 +20,7 @@ void initGame() {
     SetUseCharCodeFormat( DX_CHARCODEFORMAT_UTF8 );
     ChangeFont( _T("MS 明朝" ));
 
-    Scene::SceneManager::getInstance().changeScene(EScene::Enum::Main);
+    Scene::SceneManager::instance().changeScene(EScene::Enum::Main);
 
     std::srand(std::time(0));
 
@@ -38,7 +38,7 @@ void endGame() {
 // ゲームの状態を更新する処理
 void updateGame() {
     // キー入力の状態を更新
-    auto& input = System::InputManager::getInstance();
+    auto& input = System::InputManager::instance();
     input.update();
 
     // 入力処理（キーボード入力など）
@@ -46,7 +46,7 @@ void updateGame() {
         sGameRunning = false;  // ESCキーで終了
     }
 
-    Scene::SceneManager::getInstance().update();
+    Scene::SceneManager::instance().update();
 }
 
 int main() {

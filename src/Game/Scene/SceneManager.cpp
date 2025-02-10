@@ -16,7 +16,7 @@ void SceneManager::update()
     _current_scene->update();
     _current_scene->draw();
 
-    auto const & input = System::InputManager::getInstance();
+    auto const & input = System::InputManager::instance();
     if(input.isKeyDown(KEY_INPUT_Z)) {
         changeScene(EScene::Enum::Battle);
     }
