@@ -1,13 +1,12 @@
 #include "Math.h"
+#include <cmath>
 
 
 namespace Utility {
 namespace Math {
 
 int Clamp(int value, int min, int max) {
-        if (value < min) return min;
-        if (value > max) return max;
-        return value;
+        return std::max(min, std::min(max, value));
     }
 
 }  // Math
