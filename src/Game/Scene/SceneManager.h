@@ -19,8 +19,8 @@ public:
 
 public:
     static SceneManager& GetInstance() {
-        static SceneManager instance;
-        return instance;
+        static SceneManager _instance;
+        return _instance;
     }
 
     void Update();
@@ -28,8 +28,8 @@ public:
     void ChangeScene(EScene scene);
 
 private:
-    static SceneManager instance;
-    std::shared_ptr<SceneBase> currentScene = nullptr;
+    static SceneManager _instance;
+    std::shared_ptr<SceneBase> _currentScene = nullptr;
 };
 
 }  // Scene

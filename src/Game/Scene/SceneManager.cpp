@@ -9,12 +9,12 @@
 namespace Scene {
 void SceneManager::Update()
 {
-    if(currentScene == nullptr) {
+    if(_currentScene == nullptr) {
         return;
     }
 
-    currentScene->Update();
-    currentScene->Draw();
+    _currentScene->Update();
+    _currentScene->Draw();
 
     auto const & input = System::InputManager::GetInstance();
     if(input.IsKeyDown(KEY_INPUT_Z)) {
@@ -40,7 +40,7 @@ void SceneManager::ChangeScene(EScene scene)
     }
 
     if(new_scene) {
-        currentScene = new_scene;
+        _currentScene = new_scene;
     }
 }
 
