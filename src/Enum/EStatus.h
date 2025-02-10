@@ -4,7 +4,7 @@ namespace EStatus {
 
 enum class Enum
 {
-    Hp = 0,
+    Hp,
     Atk,
     Def,
     Spd,

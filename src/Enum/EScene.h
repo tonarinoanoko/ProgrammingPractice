@@ -4,7 +4,7 @@ namespace EScene {
 
 enum class Enum
 {
-    None = 0,
+    None,
     Main,
     Battle,
 
