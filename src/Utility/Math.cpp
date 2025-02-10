@@ -16,5 +16,4 @@ int clamp(int value, int min, int max)
         return std::max(min, std::min(max, value));
 }
 
-}  // Math
-}  // Utility
+}}  // Utility::Math

@@ -10,5 +10,4 @@ int random(int value);
 /// valueをmin/maxで丸める
 int clamp(int value, int min, int max);
 
-}  // Math
-}  // Utility
+}}  // Utility::Math
