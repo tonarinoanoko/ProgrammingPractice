@@ -1,15 +1,17 @@
 #pragma once
+#include <ostream>
 #include "Utility/Utility.h"
 
 
 class Value
 {
 public:
-    Value();
-    Value(int value)
+    explicit Value(int value = 0)
     {
+        setMinMax(0, 9999);
         set(value);
     }
+
     Value(int value, int min, int max)
     {
         setMinMax(min, max);
@@ -21,25 +23,45 @@ public:
 
     void set(int value)
     {
-        if(_use_min_max) {
-            _value = Utility::Math::clamp(value, _min, _max);
-        }
-        else {
-            _value = value;
-        }
+        _value = Utility::Math::clamp(value, _min, _max);
     }
     void add(int value) { set(_value + value); }
 
     void setMinMax(int min, int max)
     {
-        _use_min_max = true;
         _min = min;
         _max = max;
     }
 
+public:
+    bool operator==(Value const& other) const
+    {
+        return _value == other.value();
+    }
+
+    bool operator!=(Value const& other) const
+    {
+        return _value != other.value();
+    }
+
+    bool operator<(Value const& other) const
+    {
+        return _value < other.value();
+    }
+
+    bool operator>(Value const& other) const
+    {
+        return _value > other.value();
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Value& v)
+    {
+        os << v._value;
+        return os;
+    }
+
 private:
     int _value = 0;
-    bool _use_min_max = false;
     int _min = 0;
     int _max = 0;
 };
