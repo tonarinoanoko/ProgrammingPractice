@@ -29,7 +29,7 @@ public:
 
 private:
     static SceneManager _instance;
-    std::shared_ptr<SceneBase> _currentScene = nullptr;
+    std::shared_ptr<SceneBase> _current_scene = nullptr;
 };
 
 }  // Scene
