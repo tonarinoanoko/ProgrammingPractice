@@ -5,6 +5,12 @@
 namespace Scene {
 class MainScene : public SceneBase {
 public:
+    MainScene()
+    {
+        setSceneId(EScene::Enum::Main);
+    }
+
+public:
     void start() override {
     }
 

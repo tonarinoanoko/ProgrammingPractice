@@ -11,13 +11,6 @@ private:
     SceneManager() {}
 
 public:
-    enum EScene
-    {
-        Main,
-        Battle
-    };
-
-public:
     static SceneManager& getInstance() {
         static SceneManager _instance;
         return _instance;
@@ -25,7 +18,7 @@ public:
 
     void update();
 
-    void changeScene(EScene scene);
+    void changeScene(EScene::Enum scene);
 
 private:
     static SceneManager _instance;

@@ -20,7 +20,7 @@ void initGame() {
     SetUseCharCodeFormat( DX_CHARCODEFORMAT_UTF8 );
     ChangeFont( _T("MS 明朝" ));
 
-    Scene::SceneManager::getInstance().changeScene(Scene::SceneManager::EScene::Main);
+    Scene::SceneManager::getInstance().changeScene(EScene::Enum::Main);
 
     std::srand(std::time(0));
 

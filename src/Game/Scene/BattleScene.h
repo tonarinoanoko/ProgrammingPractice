@@ -5,6 +5,12 @@
 namespace Scene {
 class BattleScene : public SceneBase {
 public:
+    BattleScene()
+    {
+        setSceneId(EScene::Enum::Battle);
+    }
+
+public:
     void start() override {
     }
 

@@ -18,23 +18,23 @@ void SceneManager::update()
 
     auto const & input = System::InputManager::getInstance();
     if(input.isKeyDown(KEY_INPUT_Z)) {
-        changeScene(EScene::Battle);
+        changeScene(EScene::Enum::Battle);
     }
 
     if(input.isKeyDown(KEY_INPUT_X)) {
-        changeScene(EScene::Main);
+        changeScene(EScene::Enum::Main);
     }
 }
 
-void SceneManager::changeScene(EScene scene)
+void SceneManager::changeScene(EScene::Enum scene)
 {
     std::shared_ptr<SceneBase> new_scene = nullptr;
     switch(scene)
     {
-        case EScene::Main:
+        case EScene::Enum::Main:
             new_scene = std::make_shared<MainScene>();
         break;
-        case EScene::Battle:
+        case EScene::Enum::Battle:
             new_scene = std::make_shared<BattleScene>();
         break;
     }
