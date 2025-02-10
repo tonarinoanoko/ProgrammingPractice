@@ -1,11 +1,11 @@
 #include "DxLib.h"
 #include <string>
+#include <cstdlib>
+#include <ctime>
 
 #include "Debug/DebugLog.h"
 #include "System/InputManager.h"
 #include "Game/Scene/SceneManager.h"
-
-#include "Utility/Utility.h"
 
 
 bool gameRunning = true;  // ゲームが実行中かどうか
@@ -20,9 +20,9 @@ void InitGame() {
 
     Scene::SceneManager::GetInstance().ChangeScene(Scene::SceneManager::EScene::Main);
 
-    Debug::DebugLog("ゲーム開始");
+    std::srand(std::time(0));
 
-    auto value = Utility::Math::Clamp(100, 0, 50);
+    Debug::DebugLog("ゲーム開始");
 }
 
 // ゲームの終了処理
