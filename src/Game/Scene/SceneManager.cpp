@@ -28,6 +28,9 @@ void SceneManager::update()
 
 void SceneManager::changeScene(EScene::Enum scene)
 {
+    if(_current_scene && _current_scene->sceneId() == scene) {
+        return;
+    }
     std::shared_ptr<SceneBase> new_scene = nullptr;
     switch(scene)
     {
