@@ -5,8 +5,8 @@
             "name": "Run DxLib Game",
             "type": "cppdbg",
             "request": "launch",
-            "program": "C:/Users/User/Desktop/work/vscode/test_game/bin/main.exe",
-            "cwd": "C:/Users/User/Desktop/work/vscode/test_game",
+            "program": "C:/Users/User/Desktop/work/vscode/ProgrammingPractice/bin/main.exe",
+            "cwd": "C:/Users/User/Desktop/work/vscode/ProgrammingPractice",
             "console": "integratedTerminal",
             "MIMode": "gdb",
             "setupCommands": [
