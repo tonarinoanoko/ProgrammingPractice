@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run DxLib Game",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "C:/Users/User/Desktop/work/vscode/test_game/bin/main.exe",
+            "cwd": "C:/Users/User/Desktop/work/vscode/test_game",
+            "console": "integratedTerminal",
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}
