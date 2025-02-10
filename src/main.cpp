@@ -7,6 +7,8 @@
 #include "System/InputManager.h"
 #include "Game/Scene/SceneManager.h"
 
+#include "Enum/EStatus.h"
+
 
 bool sGameRunning = true;  // ゲームが実行中かどうか
 
@@ -23,6 +25,8 @@ void initGame() {
     std::srand(std::time(0));
 
     Debug::debugLog("ゲーム開始");
+
+    Debug::debugLog("テスト " + std::to_string(EStatus::max()));
 }
 
 // ゲームの終了処理
