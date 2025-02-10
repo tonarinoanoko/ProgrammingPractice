@@ -18,4 +18,4 @@ $(OUT): $(SRC)
 
 # クリーンアップ
 clean:
-	rm -f $(OUT)
+	del /f /q bin\*.*
