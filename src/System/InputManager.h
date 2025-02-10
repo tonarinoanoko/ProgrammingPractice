@@ -10,8 +10,8 @@ private:
 
 public:
     static InputManager& GetInstance() {
-        static InputManager instance;
-        return instance;
+        static InputManager _instance;
+        return _instance;
     }
 
     void Update();
@@ -24,9 +24,9 @@ public:
     bool IsKeyPressed(int keyCode) const;
 
 private:
-    static InputManager instance;
-    std::array<char, 256> currentKeyState{};
-    std::array<char, 256> previousKeyState{};
+    static InputManager _instance;
+    std::array<char, 256> _currentKeyState{};
+    std::array<char, 256> _previousKeyState{};
 };
 
 }  // System
