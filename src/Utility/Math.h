@@ -4,7 +4,7 @@
 namespace Utility {
 namespace Math {
 
-inline int Clamp(int value, int min, int max);
+int Clamp(int value, int min, int max);
 
 }  // Math
 }  // Utility
