@@ -6,7 +6,7 @@
 namespace Character
 {
 
-class Character
+class CharacterData
 {
 public:
     Status const& status() const { return _status; }
