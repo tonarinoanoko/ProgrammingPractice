@@ -8,7 +8,7 @@ SRC = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp) $(wildcard src/**/**/*.cpp)
 OUT = bin/main.exe
 
 # インクルードとライブラリの設定
-CXXFLAGS = -I include -L lib -I src -DDX_GCC_COMPILE
+CXXFLAGS = -I include -L lib -I src -I src/Game -DDX_GCC_COMPILE
 LIBS = -lDxLib -lDxUseCLib -lDxDrawFunc -ljpeg -lpng -lzlib -ltiff -ltheora_static -lvorbis_static -lvorbisfile_static -logg_static -lbulletdynamics -lbulletcollision -lbulletmath -lopusfile -lopus -lsilk_common -lcelt -lws2_32 -lwinmm -lgdi32
 
 # ビルドルール
