@@ -21,4 +21,4 @@ private:
     UStatusMap _status = {};
 };
 
-}  // Status
+}  // Character

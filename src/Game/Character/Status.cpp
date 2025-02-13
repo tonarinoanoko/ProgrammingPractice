@@ -24,4 +24,4 @@ void Status::setStatus(UStatusMap status)
 }
 
 
-}  // Status
+}  // Character

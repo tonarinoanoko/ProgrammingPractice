@@ -3,8 +3,7 @@
 #include "Common/Value.h"
 
 
-namespace Character
-{
+namespace Character {
 
 class CharacterData
 {
