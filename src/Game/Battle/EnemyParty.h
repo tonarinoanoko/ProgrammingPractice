@@ -3,12 +3,14 @@
 #include "Character/Enemy.h"
 
 
-class EnemyParty : public BattlePartyBase {
+namespace Battle {
+class EnemyParty : public BattlePartyBase
+{
 public:
     void SomePlayerSpecificFunction() {
         for (auto& member : _members) {
             auto enemy = std::static_pointer_cast<Character::EnemyData>(member);
-            //playable->SomePlayableMethod();
         }
     }
 };
+}  // Battle

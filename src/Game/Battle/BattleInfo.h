@@ -4,20 +4,20 @@
 #include "EnemyParty.h"
 
 
+namespace Battle {
 class BattleInfo {
-private:
-    PlayableParty _playerParty;
-    EnemyParty _enemyParty;
-    int _turnCount = 0;  // バトルのターン数
-    std::vector<std::shared_ptr<Character::CharacterData>> _actionOrder; // 行動順リスト
-
 public:
-    BattleInfo(const PlayableParty& player, const EnemyParty& enemy);
+    BattleInfo() {};
 
-    void NextTurn();  // ターンを進める
-    bool IsBattleOver() const;  // 勝敗判定
-    const std::vector<std::shared_ptr<Character::CharacterData>>& GetActionOrder() const;
+    void nextTurn() {}  // ターンを進める
+    bool isBattleOver() const { return false; }  // 勝敗判定
     
-    PlayableParty& GetPlayerParty();
-    EnemyParty& GetEnemyParty();
+    PlayableParty& playerParty() { return _player_party; }
+    EnemyParty& enemyParty() { return _enemy_party; }
+
+private:
+    PlayableParty _player_party;
+    EnemyParty _enemy_party;
+    int _turn_count = 0;  // バトルのターン数
 };
+}  // Battle

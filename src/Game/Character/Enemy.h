@@ -2,7 +2,7 @@
 #include "Character.h"
 
 namespace Character {
-class EnemyData : CharacterData
+class EnemyData : public CharacterData
 {
 };
 }  // Character

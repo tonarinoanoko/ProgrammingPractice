@@ -3,7 +3,7 @@
 
 
 namespace Character {
-class PlayableData : CharacterData
+class PlayableData : public CharacterData
 {
 };
 
