@@ -3,7 +3,6 @@
 
 #include "MainScene.h"
 #include "BattleScene.h"
-#include "System/InputManager.h"
 
 
 namespace Scene {
@@ -16,13 +15,8 @@ void SceneManager::update()
     _current_scene->update();
     _current_scene->draw();
 
-    auto const & input = System::InputManager::instance();
-    if(input.isKeyDown(KEY_INPUT_Z)) {
-        changeScene(EScene::Enum::Battle);
-    }
-
-    if(input.isKeyDown(KEY_INPUT_X)) {
-        changeScene(EScene::Enum::Main);
+    if(_current_scene->isEnd()) {
+        changeScene(_current_scene->nextSceneId());
     }
 }
 
