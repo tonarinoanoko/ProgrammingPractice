@@ -16,6 +16,7 @@ void SceneManager::update()
     _current_scene->draw();
 
     if(_current_scene->isEnd()) {
+        _current_scene->end();
         changeScene(_current_scene->nextSceneId());
     }
 }
@@ -38,6 +39,7 @@ void SceneManager::changeScene(EScene::Enum scene)
 
     if(new_scene) {
         _current_scene = new_scene;
+        _current_scene->start();
     }
 }
 

@@ -2,7 +2,10 @@
 #include "DxLib.h"
 #include "SceneBase.h"
 #include "System/InputManager.h"
+#include "UI/MessageWindow.h"
 #include "Battle/BattleManager.h"
+
+#include "Debug/DebugLog.h"
 
 namespace Scene {
 class BattleScene : public SceneBase {
@@ -15,11 +18,13 @@ public:
 
 public:
     void start() override {
+        Debug::debugLog("Start Battle Scene");
         _battle_manager.startBattle();
     }
 
     void update() override {
         _battle_manager.updateOneTrun();
+        _message_window.Update();
 
         auto const & input = System::InputManager::instance();
         if(input.isKeyDown(KEY_INPUT_Z)) {
@@ -31,7 +36,7 @@ public:
     }
     
     void draw() override {
-        DrawString(100, 150, _T("Battle Scene"), GetColor(255, 255, 255));
+        _message_window.Draw();
     }
 
     bool isEnd() override {
@@ -40,6 +45,7 @@ public:
 
 private:
     Battle::BattleManager _battle_manager;
+    UI::MessageWindow _message_window;
     bool _is_end = false;
 };
 }  // Scene

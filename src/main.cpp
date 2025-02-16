@@ -23,10 +23,6 @@ void initGame() {
     Scene::SceneManager::instance().changeScene(EScene::Enum::Main);
 
     std::srand(std::time(0));
-
-    Debug::debugLog("ゲーム開始");
-
-    Debug::debugLog("テスト " + std::to_string(EStatus::max()));
 }
 
 // ゲームの終了処理
@@ -52,7 +48,11 @@ void updateGame() {
 int main() {
     // DxLibの初期化
     ChangeWindowMode(TRUE);  // ウィンドウモード
-    DxLib_Init();            // DxLibの初期化
+    // DxLibの初期化
+    if (DxLib_Init() == -1) {
+        printf("DxLib の初期化に失敗しました。\n");
+        return -1;
+    }
     //SetWindowSize(1280, 720);  // 幅1280px, 高さ720px
     SetDrawScreen(DX_SCREEN_BACK);  // 描画先をバック画面に設定
     

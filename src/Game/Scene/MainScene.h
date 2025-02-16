@@ -3,6 +3,8 @@
 #include "SceneBase.h"
 #include "System/InputManager.h"
 
+#include "Debug/DebugLog.h"
+
 namespace Scene {
 class MainScene : public SceneBase {
 public:
@@ -14,6 +16,7 @@ public:
 
 public:
     void start() override {
+        Debug::debugLog("Start Main Scene");
     }
 
     void update() override {
