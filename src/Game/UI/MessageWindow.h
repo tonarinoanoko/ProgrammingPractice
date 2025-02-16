@@ -10,6 +10,7 @@ namespace UI {
 
 class MessageWindow {
 public:
+    MessageWindow();
     MessageWindow(int x, int y, int width, int height);
     void SetMessage(const std::string& message);
     void Update();

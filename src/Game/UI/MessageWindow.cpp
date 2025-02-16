@@ -4,8 +4,16 @@
 
 namespace UI {
 
+MessageWindow::MessageWindow() 
+    : _x(10), _y(300), _width(620), _height(170)
+    {
+        SetMessage("");
+    }
 MessageWindow::MessageWindow(int x, int y, int width, int height)
-    : _x(x), _y(y), _width(width), _height(height) {}
+    : _x(x), _y(y), _width(width), _height(height)
+    {
+        SetMessage("");
+    }
 
 void MessageWindow::SetMessage(const std::string& message) {
     _messages.push_back(message);
@@ -15,7 +23,9 @@ void MessageWindow::SetMessage(const std::string& message) {
 }
 
 void MessageWindow::Update() {
-    if (_messages.empty()) return;
+    if (_messages.empty()) {
+        return;
+    }
 
     _frame_counter++;
     if (_frame_counter % _char_speed == 0 && _char_index < _messages.front().size()) {
@@ -29,8 +39,11 @@ void MessageWindow::Update() {
 
 void MessageWindow::Draw() const {
     DrawBox(_x, _y, _x + _width, _y + _height, GetColor(0, 0, 0), TRUE);
-    auto message = Utility::Conv::convertToTCHAR(_current_message);
-    DrawString(_x + 10, _y + 10, message.data(), GetColor(255, 255, 255));
+    DrawBox(_x, _y, _x + _width, _y + _height, GetColor(255, 255, 255), FALSE);
+    if(_current_message.empty() == false) {
+        auto message = Utility::Conv::convertToTCHAR(_current_message);
+        DrawString(_x + 10, _y + 10, message.data(), GetColor(255, 255, 255));
+    }
 }
 
 bool MessageWindow::IsFinished() const {
