@@ -5,11 +5,11 @@ namespace Common {
 
 void MessageManager::set(std::string const& message) 
 {
-    _current_message = message;
+    _message = message;
 }
 
 void MessageManager::clear()
 {
-    _current_message.clear();
+    _message.clear();
 }
 }  // UI
