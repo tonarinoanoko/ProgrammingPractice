@@ -16,10 +16,17 @@ std::vector<TCHAR> convertToTCHAR(const std::string& str)
 }
 
 std::basic_string<TCHAR> convertToStrTCHAR(const std::string& str) {
-    int size_needed = MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, NULL, 0);
-    std::basic_string<TCHAR> tstr(size_needed, 0);
-    MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, &tstr[0], size_needed);
-    return tstr;
+#ifdef UNICODE
+    int size_needed = MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, nullptr, 0);
+    if (size_needed <= 0) return std::basic_string<TCHAR>();
+
+    std::vector<wchar_t> buffer(size_needed);
+    MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, buffer.data(), size_needed);
+
+    return std::basic_string<TCHAR>(buffer.begin(), buffer.end() - 1); // -1 で末尾の `\0` を除外
+#else
+    return str;
+#endif
 }
 
 }}  // Utility::Conv
