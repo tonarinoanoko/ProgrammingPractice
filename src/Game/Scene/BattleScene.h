@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "SceneBase.h"
 #include "System/InputManager.h"
+#include "Common/MessageManager.h"
 #include "UI/MessageWindow.h"
 #include "UI/CommandWindow.h"
 #include "Battle/BattleManager.h"
@@ -28,6 +29,12 @@ public:
 
     void update() override {
         _battle_manager.updateOneTrun();
+
+        auto & message_manager = _battle_manager.messsageManager();
+        if(message_manager.has()) {
+            _message_window.SetMessage(message_manager.message());
+            message_manager.clear();
+        }
         _message_window.Update();
         _command_window.Update();
 
