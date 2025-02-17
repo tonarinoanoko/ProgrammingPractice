@@ -1,18 +1,22 @@
 #include "MessageWindow.h"
 #include "Utility/Utility.h"
 
+#include "Debug/DebugLog.h"
+
 
 namespace UI {
 
 MessageWindow::MessageWindow() 
     : _x(10), _y(300), _width(620), _height(170)
     {
-        SetMessage("");
+        _messages.clear();
+        _current_message.clear();
     }
 MessageWindow::MessageWindow(int x, int y, int width, int height)
     : _x(x), _y(y), _width(width), _height(height)
     {
-        SetMessage("");
+        _messages.clear();
+        _current_message.clear();
     }
 
 void MessageWindow::SetMessage(const std::string& message) {
@@ -20,6 +24,8 @@ void MessageWindow::SetMessage(const std::string& message) {
     _finished = false;
     _char_index = 0;
     _current_message.clear();
+
+    Debug::debugLog(_messages.front());
 }
 
 void MessageWindow::Update() {
@@ -37,12 +43,11 @@ void MessageWindow::Update() {
     }
 }
 
-void MessageWindow::Draw() const {
+void MessageWindow::Draw() {
     DrawBox(_x, _y, _x + _width, _y + _height, GetColor(0, 0, 0), TRUE);
     DrawBox(_x, _y, _x + _width, _y + _height, GetColor(255, 255, 255), FALSE);
     if(_current_message.empty() == false) {
-        auto message = Utility::Conv::convertToTCHAR(_current_message);
-        DrawString(_x + 10, _y + 10, message.data(), GetColor(255, 255, 255));
+        DrawString(_x + 10, _y + 10, _current_message.c_str(), GetColor(255, 255, 0));
     }
 }
 

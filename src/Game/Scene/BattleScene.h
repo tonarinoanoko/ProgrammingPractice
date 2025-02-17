@@ -20,6 +20,7 @@ public:
     void start() override {
         Debug::debugLog("Start Battle Scene");
         _battle_manager.startBattle();
+        _message_window.SetMessage("Battle Scene");
     }
 
     void update() override {

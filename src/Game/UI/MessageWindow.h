@@ -14,13 +14,13 @@ public:
     MessageWindow(int x, int y, int width, int height);
     void SetMessage(const std::string& message);
     void Update();
-    void Draw() const;
+    void Draw();
     bool IsFinished() const;
     
 private:
     int _x, _y, _width, _height;
     std::deque<std::string> _messages;
-    std::string _current_message;
+    std::basic_string<TCHAR> _current_message;
     size_t _char_index = 0;
     bool _finished = false;
     int _frame_counter = 0;
