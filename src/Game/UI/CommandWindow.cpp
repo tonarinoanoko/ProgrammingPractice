@@ -1,5 +1,6 @@
 #include "CommandWindow.h"
 #include "DxLib.h"
+#include "System/InputManager.h"
 #include "Utility/Utility.h"
 
 
@@ -18,10 +19,11 @@ void CommandWindow::SetCommands(const std::vector<std::string>& commands) {
 }
 
 void CommandWindow::Update() {
-    if (CheckHitKey(KEY_INPUT_UP)) {
+    auto const& input_manager = System::InputManager::instance();
+    if (input_manager.isKeyDown(KEY_INPUT_UP)) {
         _selected_index = (_selected_index - 1 + _commands.size()) % _commands.size();
     }
-    if (CheckHitKey(KEY_INPUT_DOWN)) {
+    if (input_manager.isKeyDown(KEY_INPUT_DOWN)) {
         _selected_index = (_selected_index + 1) % _commands.size();
     }
 }
