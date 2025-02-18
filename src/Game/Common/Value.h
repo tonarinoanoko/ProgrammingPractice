@@ -2,17 +2,13 @@
 #include <ostream>
 #include "Utility/Utility.h"
 
+#include "Debug/DebugLog.h"
+
 
 class Value
 {
 public:
-    explicit Value(int value = 0)
-    {
-        setMinMax(0, 9999);
-        set(value);
-    }
-
-    Value(int value, int min, int max)
+    explicit Value(int value = 0, int min = 0, int max = 9999)
     {
         setMinMax(min, max);
         set(value);
@@ -29,6 +25,7 @@ public:
 
     void setMinMax(int min, int max)
     {
+        Debug::assertLog(min <= max);
         _min = min;
         _max = max;
     }
