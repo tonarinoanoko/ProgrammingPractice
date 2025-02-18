@@ -11,9 +11,9 @@ void BattleScene::start()
 {
     Debug::debugLog("Start Battle Scene");
     _battle_manager.startBattle();
-    _message_window.SetMessage("Battle Scene");
+    _message_window.setMessage("Battle Scene");
 
-    _command_window.SetCommands({"攻撃", "防御", "逃げる"});
+    _command_window.setCommands({"攻撃", "防御", "逃げる"});
 }
 
 void BattleScene::update()
@@ -22,11 +22,11 @@ void BattleScene::update()
 
     auto & message_manager = _battle_manager.messsageManager();
     if(message_manager.has()) {
-        _message_window.SetMessage(message_manager.message());
+        _message_window.setMessage(message_manager.message());
         message_manager.clear();
     }
-    _message_window.Update();
-    _command_window.Update();
+    _message_window.update();
+    _command_window.update();
 
     auto const & input = System::InputManager::instance();
     if(input.isKeyDown(KEY_INPUT_Z)) {
@@ -40,8 +40,8 @@ void BattleScene::end()
 
 void BattleScene::draw()
 {
-    _message_window.Draw();
-    _command_window.Draw();
+    _message_window.draw();
+    _command_window.draw();
 }
 
 bool BattleScene::isEnd()

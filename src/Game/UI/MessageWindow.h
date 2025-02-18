@@ -12,11 +12,14 @@ class MessageWindow {
 public:
     MessageWindow();
     MessageWindow(int x, int y, int width, int height);
-    void SetMessage(const std::string& message);
-    void Update();
-    void Draw();
-    bool IsFinished() const;
+    void setMessage(const std::string& message);
+    void update();
+    void draw();
+    bool finished() const;
     
+private:
+    int const _char_speed = 2; // 文字が表示されるフレーム間隔
+
 private:
     int _x, _y, _width, _height;
     std::deque<std::string> _messages;
@@ -24,7 +27,6 @@ private:
     size_t _char_index = 0;
     bool _finished = false;
     int _frame_counter = 0;
-    const int _char_speed = 2; // 文字が表示されるフレーム間隔
 };
 
 }  // UI

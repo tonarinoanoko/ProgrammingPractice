@@ -19,7 +19,7 @@ MessageWindow::MessageWindow(int x, int y, int width, int height)
         _current_message.clear();
     }
 
-void MessageWindow::SetMessage(const std::string& message) {
+void MessageWindow::setMessage(const std::string& message) {
     _messages.push_back(message);
     _finished = false;
     _char_index = 0;
@@ -28,7 +28,7 @@ void MessageWindow::SetMessage(const std::string& message) {
     Debug::debugLog(_messages.front());
 }
 
-void MessageWindow::Update() {
+void MessageWindow::update() {
     if (_messages.empty()) {
         return;
     }
@@ -43,7 +43,7 @@ void MessageWindow::Update() {
     }
 }
 
-void MessageWindow::Draw() {
+void MessageWindow::draw() {
     DrawBox(_x, _y, _x + _width, _y + _height, GetColor(0, 0, 0), TRUE);
     DrawBox(_x, _y, _x + _width, _y + _height, GetColor(255, 255, 255), FALSE);
     if(_current_message.empty() == false) {
@@ -51,7 +51,7 @@ void MessageWindow::Draw() {
     }
 }
 
-bool MessageWindow::IsFinished() const {
+bool MessageWindow::finished() const {
     return _finished;
 }
 

@@ -11,10 +11,10 @@ public:
     CommandWindow();
     CommandWindow(int x, int y, int width, int height);
 
-    void SetCommands(const std::vector<std::string>& commands);
-    void Update();
-    void Draw() const;
-    int GetSelectedCommand() const;
+    void setCommands(const std::vector<std::string>& commands);
+    void update();
+    void draw() const;
+    int selectedCommand() const;
 
 private:
     int _x, _y, _width, _height;
