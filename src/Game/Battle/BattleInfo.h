@@ -3,11 +3,13 @@
 #include "PlayableParty.h"
 #include "EnemyParty.h"
 
+#include "Debug/DebugLog.h"
+
 
 namespace Battle {
 class BattleInfo {
 public:
-    BattleInfo() {};
+    BattleInfo() {Debug::debugLog("BattleInfo");};
 
     void nextTurn() {}  // ターンを進める
     bool isBattleOver() const { return false; }  // 勝敗判定

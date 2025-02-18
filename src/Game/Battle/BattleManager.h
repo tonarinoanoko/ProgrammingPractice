@@ -7,9 +7,9 @@
 namespace Battle {
 class BattleManager {
 public:
-    BattleManager() {};
+    BattleManager() {Debug::debugLog("BattleManager");};
 
-    void startBattle() {}  // バトル開始
+    void startBattle();  // バトル開始
     void updateOneTrun() {}  // 1ターンの処理
 
     Common::MessageManager& messsageManager() { return _message_manager; }

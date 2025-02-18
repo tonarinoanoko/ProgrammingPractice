@@ -11,8 +11,12 @@ public:
         _members.push_back(character);
     }
 
-    const std::vector<std::shared_ptr<Character::CharacterData>>& getMembers() const {
+    std::vector<std::shared_ptr<Character::CharacterData>> const& getMembers() const {
         return _members;
+    }
+
+    std::shared_ptr<Character::CharacterData> const& getMembers(int index) const {
+        return _members[index];
     }
 
 protected:
