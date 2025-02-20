@@ -18,7 +18,7 @@ void BattleScene::start()
 
 void BattleScene::update()
 {
-    _battle_manager.updateOneTrun();
+    _battle_manager.update();
 
     auto & message_manager = _battle_manager.messsageManager();
     if(message_manager.has()) {

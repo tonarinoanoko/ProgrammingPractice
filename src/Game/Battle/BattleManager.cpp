@@ -26,20 +26,34 @@ void BattleManager::startBattle()
     status.statusValue(EStatus::Enum::Hp).add(10);
     new_playable->setStatus(status);
     player_party.addMember(new_playable);
+
+    _state = EState::UpdateTimeLine;
 }
 
-void BattleManager::updateOneTrun()
+void BattleManager::update()
 {
-    if(_action_time_line.update() == false) {
-        return;
+    switch(_state) {
+        case EState::UpdateTimeLine:
+        if(_action_time_line.update()) {
+            _state = EState::UpdateCommand;
+        }
+        break;
+
+        case EState::UpdateCommand:
+        _state = EState::UpdateSkill;
+        break;
+
+        case EState::UpdateSkill:
+        _state = EState::EraseTimeLine;
+        break;
+
+        case EState::EraseTimeLine:
+        auto const& entry = _action_time_line.actionEntry();
+        _action_time_line.eraseAction(entry._character_id);
+        ActionTimeLine::ActionEntry new_entry;
+        _action_time_line.addAction(new_entry);  // 新規の行動を追加する。
+        _state = EState::UpdateTimeLine;
+        break;
     }
-
-    auto const& entry = _action_time_line.actionEntry();
-
-    // 行動の更新
-
-    _action_time_line.eraseAction(entry._character_id);
-    ActionTimeLine::ActionEntry new_entry;
-    _action_time_line.addAction(new_entry);  // 新規の行動を追加する。
 }
 }  // Battle
