@@ -8,14 +8,19 @@ class ActionTimeLine
 {
 public:
     struct ActionEntry {
-        int _character_id;
-        int _action_time;
+        int _character_id;  // 行動するキャラクターID
+        int _action_time;   // 現在の行動時間
+        int _cool_time;     // 行動時間のクールタイム
     };
 
 public:
     ActionTimeLine(){};
-    //void addAction(int characterId, int actionTime);
-    //void update();  // 時間経過で行動可能キャラを処理
+    void addAction(ActionEntry entry);
+    void eraseActionBegin();
+    void eraseAction(int character_id);
+    ActionEntry const& actionEntry() const;
+
+    bool update();  // 行動可能なキャラが見つかったらtrue
 
 private:
     std::vector<ActionEntry> _time_line;
