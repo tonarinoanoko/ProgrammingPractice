@@ -1,5 +1,8 @@
 #include "BattleScene.h"
 
+#include "System/InputManager.h"
+#include "Common/MessageManager.h"
+
 namespace Scene {
 BattleScene::BattleScene()
 {

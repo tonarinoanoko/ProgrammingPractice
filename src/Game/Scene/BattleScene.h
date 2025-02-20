@@ -1,8 +1,6 @@
 #pragma once
 #include "DxLib.h"
 #include "SceneBase.h"
-#include "System/InputManager.h"
-#include "Common/MessageManager.h"
 #include "UI/MessageWindow.h"
 #include "UI/CommandWindow.h"
 #include "Battle/BattleManager.h"

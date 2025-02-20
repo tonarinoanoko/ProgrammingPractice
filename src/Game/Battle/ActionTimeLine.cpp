@@ -39,6 +39,6 @@ bool ActionTimeLine::update()
         return std::tie(a._action_time, a._character_id) < std::tie(b._action_time, b._character_id);
     });
 
-    return actionEntry()._action_time == 0;
+    return actionEntry()._action_time <= 0;
 }
 }  // namespace Battle
