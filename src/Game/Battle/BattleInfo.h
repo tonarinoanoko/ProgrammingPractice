@@ -2,6 +2,8 @@
 #include "Character/Character.h"
 #include "PlayableParty.h"
 #include "EnemyParty.h"
+#include "BotParty.h"
+#include "ActionTimeLine.h"
 
 #include "Debug/DebugLog.h"
 
@@ -20,6 +22,7 @@ public:
 private:
     PlayableParty _player_party;
     EnemyParty _enemy_party;
-    int _turn_count = 0;  // バトルのターン数
+    BotParty _bot_party;
+    ActionTimeLine _action_time_line;
 };
 }  // Battle
