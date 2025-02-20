@@ -16,7 +16,6 @@ public:
 public:
     ActionTimeLine(){};
     void addAction(ActionEntry entry);
-    void eraseActionBegin();
     void eraseAction(int character_id);
     ActionEntry const& actionEntry() const;
 

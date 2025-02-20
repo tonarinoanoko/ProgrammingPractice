@@ -18,11 +18,6 @@ void ActionTimeLine::eraseAction(int character_id)
         _time_line.end());
 }
 
-void ActionTimeLine::eraseActionBegin()
-{
-    _time_line.erase(_time_line.begin());
-}
-
 ActionTimeLine::ActionEntry const& ActionTimeLine::actionEntry() const
 {
     Debug::assertLog(_time_line.size() > 0, "_time_line の要素が0");
