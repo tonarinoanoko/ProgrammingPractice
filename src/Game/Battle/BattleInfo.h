@@ -13,16 +13,15 @@ class BattleInfo {
 public:
     BattleInfo() {Debug::debugLog("BattleInfo");};
 
-    void nextTurn() {}  // ターンを進める
     bool isBattleOver() const { return false; }  // 勝敗判定
-    
+
     PlayableParty& playerParty() { return _player_party; }
     EnemyParty& enemyParty() { return _enemy_party; }
+    BotParty& botParty() { return _bot_party; }
 
 private:
     PlayableParty _player_party;
     EnemyParty _enemy_party;
     BotParty _bot_party;
-    ActionTimeLine _action_time_line;
 };
 }  // Battle

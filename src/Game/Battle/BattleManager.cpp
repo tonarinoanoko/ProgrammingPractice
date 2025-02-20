@@ -27,4 +27,19 @@ void BattleManager::startBattle()
     new_playable->setStatus(status);
     player_party.addMember(new_playable);
 }
+
+void BattleManager::updateOneTrun()
+{
+    if(_action_time_line.update() == false) {
+        return;
+    }
+
+    auto const& entry = _action_time_line.actionEntry();
+
+    // 行動の更新
+
+    _action_time_line.eraseAction(entry._character_id);
+    ActionTimeLine::ActionEntry new_entry;
+    _action_time_line.addAction(new_entry);  // 新規の行動を追加する。
+}
 }  // Battle
