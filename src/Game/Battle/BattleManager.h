@@ -12,6 +12,8 @@ public:
     void startBattle();  // バトル開始
     void update();  // 1ターンの処理
 
+    bool isFinishBattle();  // バトルが終了したか
+
     Common::MessageManager& messsageManager() { return _message_manager; }
 
 private:

@@ -8,6 +8,7 @@ namespace Character {
 class CharacterData
 {
 public:
+    std::string const name() const { return _name; }
     Status const& status() const { return _status; }
     Value const& hp() { return _now_hp; }
 
@@ -27,12 +28,18 @@ public:
         _now_hp.add(-damage);
     }
 
+    void heal(int heal)
+    {
+        _now_hp.add(heal);
+    }
+
     bool isDead()
     {
         return _now_hp.value() == 0;
     }
 
 private:
+    std::string _name;
     Value _now_hp;
     Status _status;
 };
