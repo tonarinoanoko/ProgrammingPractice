@@ -25,7 +25,7 @@ void MessageWindow::setMessage(const std::string& message) {
     _char_index = 0;
     _current_message.clear();
 
-    Debug::debugLog(_messages.front());
+    Debug::debugLog("set message : " + _messages.front());
 }
 
 void MessageWindow::update() {
