@@ -61,10 +61,10 @@ void BattleManager::update()
         return;
     }
 
-    auto const & input = System::InputManager::instance();
     switch(_state) {
         case EState::UpdateTimeLine:
         if(_action_time_line.update()) {
+            pre_command = -1;
             _ui_manager->commandWindw().setDrawingComand(true);
             _state = EState::UpdateCommand;
             Debug::debugLog("next state UpdateCommand");
@@ -72,10 +72,30 @@ void BattleManager::update()
         break;
 
         case EState::UpdateCommand:
+        {
+        auto& command_window = _ui_manager->commandWindw();
+        if(command_window.selectedCommand() != pre_command) {
+            switch(command_window.selectedCommand()) {
+                case 0:
+                _message_manager.set("攻撃を行います");
+                break;
+                case 1:
+                _message_manager.set("スキルを選択します");
+                break;
+                case 2:
+                _message_manager.set("防御を行います");
+                break;
+            }
+            pre_command = command_window.selectedCommand();
+        }
+
+        auto const & input = System::InputManager::instance();
         if(input.isKeyDown(KEY_INPUT_C)) {
-            _ui_manager->commandWindw().setDrawingComand(false);
+            command_window.resetIndex();
+            command_window.setDrawingComand(false);
             _state = EState::UpdateSkill;
             Debug::debugLog("next state UpdateSkill");
+        }
         }
         break;
 

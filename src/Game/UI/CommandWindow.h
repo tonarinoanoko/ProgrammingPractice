@@ -14,6 +14,8 @@ public:
     void setDrawingComand(bool draw);
     void setCommands(const std::vector<std::string>& commands);
     void update();
+    void resetIndex() { _selected_index = 0; }
+
     void draw() const;
     int selectedCommand() const;
 

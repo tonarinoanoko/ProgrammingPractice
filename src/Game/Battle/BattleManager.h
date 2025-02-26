@@ -35,5 +35,6 @@ private:
     EState _state;
 
     UI::Battle::BattleUIManager* _ui_manager = nullptr;
+    int pre_command = -1;
 };
 }  // Battle
