@@ -16,6 +16,7 @@ public:
 
 public:
     int const value() const { return _value; }
+    std::string value_str() const { return std::to_string(_value); }
 
     void set(int value)
     {
