@@ -13,10 +13,10 @@ BattleScene::BattleScene()
 void BattleScene::start()
 {
     Debug::debugLog("Start Battle Scene");
-    _battle_manager.startBattle();
-    _message_window.setMessage("Battle Scene");
+    _battle_manager.startBattle(&_battle_ui_manager);
 
-    _command_window.setCommands({"攻撃", "防御", "逃げる"});
+    _battle_ui_manager.messageWindow().setMessage("Battle Scene");
+    _battle_ui_manager.commandWindw().setCommands({"攻撃", "防御", "逃げる"});
 }
 
 void BattleScene::update()
@@ -25,20 +25,10 @@ void BattleScene::update()
 
     auto & message_manager = _battle_manager.messsageManager();
     if(message_manager.has()) {
-        _message_window.setMessage(message_manager.message());
+        _battle_ui_manager.messageWindow().setMessage(message_manager.message());
         message_manager.clear();
     }
-    _message_window.update();
-    _command_window.update();
-
-    auto const & input = System::InputManager::instance();
-    if(input.isKeyDown(KEY_INPUT_Z)) {
-        _is_end = true;
-    }
-
-    if(_battle_manager.isFinishBattle()) {
-        _is_end = true;
-    }
+    _battle_ui_manager.update();
 }
 
 void BattleScene::end()
@@ -47,12 +37,16 @@ void BattleScene::end()
 
 void BattleScene::draw()
 {
-    _message_window.draw();
-    _command_window.draw();
+    _battle_ui_manager.draw();
 }
 
 bool BattleScene::isEnd()
 {
-    return _is_end;
+    if(_battle_manager.isFinishedBattle()) {
+        Debug::debugLog("FinishedBattle");
+        return true;
+    }
+
+    return false;
 }
 }  // Scene

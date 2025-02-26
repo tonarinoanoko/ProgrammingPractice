@@ -14,32 +14,41 @@ Character::UStatusMap makeStatusMap()
     return status_map;
 }
 
-void BattleManager::startBattle()
+void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
 {
+    Debug::assertLog(ui_manager, "ui_manager is null");
+    _ui_manager = ui_manager;
     auto status = Character::Status();
     status.setStatus(makeStatusMap());
 
     auto enemy_party = _battle_info.enemyParty();
     auto new_enemy = std::make_shared<Character::EnemyData>();
     status.statusValue(EStatus::Enum::Hp).add(10);
+    new_enemy->setName("enemy 1");
     new_enemy->setStatus(status);
     enemy_party.addMember(new_enemy);
 
     auto player_party = _battle_info.playerParty();
     auto new_playable = std::make_shared<Character::PlayableData>();
     status.statusValue(EStatus::Enum::Hp).add(10);
+    new_playable->setName("playable 1");
     new_playable->setStatus(status);
     player_party.addMember(new_playable);
-
-    _state = EState::UpdateTimeLine;
 
     // 初期行動順の対応
     ActionTimeLine::ActionEntry new_entry {0, 5, 1};
     _action_time_line.addAction(new_entry);  // 新規の行動を追加する。
+
+    _state = EState::UpdateTimeLine;
+    Debug::debugLog("start BattleManager");
 }
 
-bool BattleManager::isFinishBattle()
+bool BattleManager::isFinishedBattle()
 {
+    if(_state == EState::None) {
+        return false;
+    }
+
     auto const& p_party = _battle_info.playerParty();
     auto const& e_party = _battle_info.enemyParty();
 

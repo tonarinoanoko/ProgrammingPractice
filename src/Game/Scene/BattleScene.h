@@ -1,8 +1,7 @@
 #pragma once
 #include "DxLib.h"
 #include "SceneBase.h"
-#include "UI/MessageWindow.h"
-#include "UI/CommandWindow.h"
+#include "UI/Battle/BattleUIManager.h"
 #include "Battle/BattleManager.h"
 
 #include "Debug/DebugLog.h"
@@ -21,8 +20,7 @@ public:
 
 private:
     Battle::BattleManager _battle_manager;
-    UI::MessageWindow _message_window;
-    UI::CommandWindow _command_window;
+    UI::Battle::BattleUIManager _battle_ui_manager;
     bool _is_end = false;
 };
 }  // Scene

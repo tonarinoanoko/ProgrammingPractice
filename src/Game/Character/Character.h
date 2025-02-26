@@ -2,6 +2,8 @@
 #include "Status.h"
 #include "Common/Value.h"
 
+#include "Debug/DebugLog.h"
+
 
 namespace Character {
 
@@ -12,6 +14,11 @@ public:
     Status const& status() const { return _status; }
     Value const& hp() { return _now_hp; }
 
+    void setName(std::string name)
+    {
+        _name = name;
+    }
+
     void setStatus(Status const& status)
     {
         _status = status;
@@ -21,6 +28,7 @@ public:
     void recovery()
     {
         _now_hp = _status.statusValue(EStatus::Enum::Hp);
+        Debug::debugLog("recovery hp : " + _now_hp.value_str());
     }
 
     void damage(int damage)
@@ -33,9 +41,12 @@ public:
         _now_hp.add(heal);
     }
 
-    bool isDead()
+    bool isDead() const
     {
-        return _now_hp.value() == 0;
+        if(_now_hp.value() <= 0) {
+            Debug::debugLog(_name + " is hp " + _now_hp.value_str());
+        }
+        return _now_hp.value() <= 0;
     }
 
 private:

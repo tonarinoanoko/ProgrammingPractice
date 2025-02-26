@@ -3,22 +3,24 @@
 #include "BattleInfo.h"
 #include "Common/MessageManager.h"
 #include "Character/Character.h"
+#include "UI/Battle/BattleUIManager.h"
 
 namespace Battle {
 class BattleManager {
 public:
-    BattleManager() {Debug::debugLog("BattleManager");};
+    BattleManager() { Debug::debugLog("BattleManager"); };
 
-    void startBattle();  // バトル開始
+    void startBattle(UI::Battle::BattleUIManager* ui_manager);  // バトル開始
     void update();  // 1ターンの処理
 
-    bool isFinishBattle();  // バトルが終了したか
+    bool isFinishedBattle();  // バトルが終了したか
 
     Common::MessageManager& messsageManager() { return _message_manager; }
 
 private:
     enum EState
     {
+        None,
         UpdateTimeLine,
         UpdateCommand,
         UpdateSkill,
@@ -31,5 +33,7 @@ private:
     Common::MessageManager _message_manager;
 
     EState _state;
+
+    UI::Battle::BattleUIManager* _ui_manager = nullptr;
 };
 }  // Battle
