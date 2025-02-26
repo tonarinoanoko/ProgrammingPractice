@@ -2,7 +2,7 @@
 CXX = g++
 
 # ソースファイルを自動取得（サブディレクトリも含む）
-SRC = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp) $(wildcard src/**/**/*.cpp)
+SRC = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp) $(wildcard src/**/**/*.cpp) $(wildcard src/**/**/**/*.cpp)
 
 # 出力ファイル
 OUT = bin/main.exe
