@@ -21,14 +21,14 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     auto status = Character::Status();
     status.setStatus(makeStatusMap());
 
-    auto enemy_party = _battle_info.enemyParty();
+    auto& enemy_party = _battle_info.enemyParty();
     auto new_enemy = std::make_shared<Character::EnemyData>();
     status.statusValue(EStatus::Enum::Hp).add(10);
     new_enemy->setName("enemy 1");
     new_enemy->setStatus(status);
     enemy_party.addMember(new_enemy);
 
-    auto player_party = _battle_info.playerParty();
+    auto& player_party = _battle_info.playerParty();
     auto new_playable = std::make_shared<Character::PlayableData>();
     status.statusValue(EStatus::Enum::Hp).add(10);
     new_playable->setName("playable 1");
@@ -40,7 +40,6 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     _action_time_line.addAction(new_entry);  // 新規の行動を追加する。
 
     _state = EState::UpdateTimeLine;
-    Debug::debugLog("start BattleManager");
 }
 
 bool BattleManager::isFinishedBattle()
@@ -57,10 +56,16 @@ bool BattleManager::isFinishedBattle()
 
 void BattleManager::update()
 {
+    Debug::assertLog(_ui_manager, "ui manager null");
+    if(_ui_manager == nullptr) {
+        return;
+    }
+
     auto const & input = System::InputManager::instance();
     switch(_state) {
         case EState::UpdateTimeLine:
         if(_action_time_line.update()) {
+            _ui_manager->commandWindw().setDrawingComand(true);
             _state = EState::UpdateCommand;
             Debug::debugLog("next state UpdateCommand");
         }
@@ -68,6 +73,7 @@ void BattleManager::update()
 
         case EState::UpdateCommand:
         if(input.isKeyDown(KEY_INPUT_C)) {
+            _ui_manager->commandWindw().setDrawingComand(false);
             _state = EState::UpdateSkill;
             Debug::debugLog("next state UpdateSkill");
         }

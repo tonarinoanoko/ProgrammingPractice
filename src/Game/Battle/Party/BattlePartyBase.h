@@ -3,10 +3,14 @@
 #include <memory>
 #include "Character/Character.h"
 
+#include "Debug/DebugLog.h"
+
 
 namespace Battle {
 class BattlePartyBase {
 public:
+    BattlePartyBase() { Debug::debugLog("BattlePartyBase()"); }
+
     void addMember(std::shared_ptr<Character::CharacterData> character) {
         _members.push_back(character);
     }

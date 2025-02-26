@@ -8,7 +8,7 @@
 namespace Battle {
 class BattleManager {
 public:
-    BattleManager() { Debug::debugLog("BattleManager"); };
+    BattleManager() { Debug::debugLog("BattleManager()"); };
 
     void startBattle(UI::Battle::BattleUIManager* ui_manager);  // バトル開始
     void update();  // 1ターンの処理

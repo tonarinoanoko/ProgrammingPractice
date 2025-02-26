@@ -2,6 +2,8 @@
 #include "UI/MessageWindow.h"
 #include "UI/CommandWindow.h"
 
+#include "Debug/DebugLog.h"
+
 
 namespace UI {
 namespace Battle {
@@ -9,9 +11,9 @@ namespace Battle {
 class BattleUIManager
 {
 public:
-    BattleUIManager() {}
-    MessageWindow messageWindow() { return _message_window; }
-    CommandWindow commandWindw() { return _command_window; }
+    BattleUIManager() { Debug::debugLog("BattleUIManager()"); }
+    MessageWindow& messageWindow() { return _message_window; }
+    CommandWindow& commandWindw() { return _command_window; }
 
     void update()
     {

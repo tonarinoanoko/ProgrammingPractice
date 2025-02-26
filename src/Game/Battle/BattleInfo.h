@@ -11,7 +11,7 @@
 namespace Battle {
 class BattleInfo {
 public:
-    BattleInfo() {Debug::debugLog("BattleInfo");};
+    BattleInfo() { Debug::debugLog("BattleInfo()"); }
 
     PlayableParty& playerParty() { return _player_party; }
     EnemyParty& enemyParty() { return _enemy_party; }

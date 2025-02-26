@@ -10,6 +10,7 @@ namespace Character {
 class CharacterData
 {
 public:
+    CharacterData() { Debug::debugLog("CharacterData()"); }
     std::string const name() const { return _name; }
     Status const& status() const { return _status; }
     Value const& hp() { return _now_hp; }
@@ -43,9 +44,6 @@ public:
 
     bool isDead() const
     {
-        if(_now_hp.value() <= 0) {
-            Debug::debugLog(_name + " is hp " + _now_hp.value_str());
-        }
         return _now_hp.value() <= 0;
     }
 
