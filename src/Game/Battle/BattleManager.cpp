@@ -38,6 +38,14 @@ void BattleManager::startBattle()
     _action_time_line.addAction(new_entry);  // 新規の行動を追加する。
 }
 
+bool BattleManager::isFinishBattle()
+{
+    auto const& p_party = _battle_info.playerParty();
+    auto const& e_party = _battle_info.enemyParty();
+
+    return p_party.isAnnihilation() || e_party.isAnnihilation();
+}
+
 void BattleManager::update()
 {
     auto const & input = System::InputManager::instance();

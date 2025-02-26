@@ -35,6 +35,10 @@ void BattleScene::update()
     if(input.isKeyDown(KEY_INPUT_Z)) {
         _is_end = true;
     }
+
+    if(_battle_manager.isFinishBattle()) {
+        _is_end = true;
+    }
 }
 
 void BattleScene::end()

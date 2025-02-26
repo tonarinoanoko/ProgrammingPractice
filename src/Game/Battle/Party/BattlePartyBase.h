@@ -19,6 +19,18 @@ public:
         return _members[index];
     }
 
+    // 全滅判定
+    bool isAnnihilation() const {
+        // 全員が死亡状態か
+        for(auto const & member : _members) {
+            if(member->isDead() == false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 protected:
     std::vector<std::shared_ptr<Character::CharacterData>> _members;
 };
