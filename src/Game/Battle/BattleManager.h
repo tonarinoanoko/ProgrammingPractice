@@ -22,7 +22,8 @@ private:
     {
         None,
         UpdateTimeLine,
-        UpdateCommand,
+        SelectCommand,
+        EnemyCommand,
         UpdateSkill,
         EraseTimeLine,
     };

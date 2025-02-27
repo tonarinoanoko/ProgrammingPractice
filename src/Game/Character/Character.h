@@ -50,6 +50,7 @@ public:
 
     void damage(int damage)
     {
+        Debug::debugLog("damage " + _name + " : " + std::to_string(damage));
         _now_hp.add(-damage);
     }
 

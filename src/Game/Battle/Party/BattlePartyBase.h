@@ -19,7 +19,11 @@ public:
         return _members;
     }
 
-    std::shared_ptr<Character::CharacterData> const& getMembers(int index) const {
+    std::vector<std::shared_ptr<Character::CharacterData>> & getMembers() {
+        return _members;
+    }
+
+    std::shared_ptr<Character::CharacterData> const& getMember(int index) const {
         return _members[index];
     }
 

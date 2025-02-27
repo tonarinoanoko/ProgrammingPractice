@@ -2,6 +2,8 @@
 #include "DxLib.h"
 #include "System/InputManager.h"
 
+
+#include "Battle/Calc/Damage.h"
 #include "Debug/DebugLog.h"
 
 
@@ -11,6 +13,7 @@ Character::UStatusMap makeStatusMap()
 {
     auto status_map = Character::UStatusMap();
     status_map[EStatus::Enum::Hp].set(100);
+    status_map[EStatus::Enum::Atk].set(10);
     status_map[EStatus::Enum::Spd].set(10);
     return status_map;
 }
@@ -33,7 +36,7 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     auto& enemy_party = _battle_info.enemyParty();
     auto new_enemy = std::make_shared<Character::EnemyData>();
     status.statusValue(EStatus::Enum::Hp).add(10);
-    new_enemy->setName("enemy 1");
+    new_enemy->setName("すらいむ");
     new_enemy->setCharacterId(makeNewCharacterId());
     new_enemy->setStatus(status);
     enemy_party.addMember(new_enemy);
@@ -41,7 +44,7 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     auto& player_party = _battle_info.playerParty();
     auto new_playable = std::make_shared<Character::PlayableData>();
     status.statusValue(EStatus::Enum::Hp).add(10);
-    new_playable->setName("playable 1");
+    new_playable->setName("ゆうしゃ");
     new_playable->setCharacterId(makeNewCharacterId());
     new_playable->setStatus(status);
     player_party.addMember(new_playable);
@@ -85,15 +88,23 @@ void BattleManager::update()
     switch(_state) {
         case EState::UpdateTimeLine:
         if(_action_time_line.update()) {
-            _pre_command = -1;
-            _ui_manager->commandWin().setCommands({"攻撃", "スキル", "防御"});
-            _ui_manager->commandWin().setDrawingComand(true);
-            _state = EState::UpdateCommand;
-            Debug::debugLog("next state UpdateCommand");
+
+            auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+            if(chara_data->characterType() == ECharacterType::Enum::Playable) {
+                _pre_command = -1;
+                _ui_manager->commandWin().setCommands({"攻撃", "スキル", "防御"});
+                _ui_manager->commandWin().setDrawingComand(true);
+                _state = EState::SelectCommand;
+                Debug::debugLog("next state SelectCommand");
+            }
+            else {
+                _state = EState::EnemyCommand;
+                Debug::debugLog("next state EnemyCommand");
+            }
         }
         break;
 
-        case EState::UpdateCommand:
+        case EState::SelectCommand:
         {
         auto& command_window = _ui_manager->commandWin();
         if(command_window.selectedCommand() != _pre_command) {
@@ -121,15 +132,29 @@ void BattleManager::update()
         }
         break;
 
-        case EState::UpdateSkill:
+        case EState::EnemyCommand:
         _state = EState::EraseTimeLine;
         Debug::debugLog("next state EraseTimeLine");
         break;
 
+        case EState::UpdateSkill:
+        {
+        auto const& actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+        auto & target = _battle_info.enemyParty().getMember(0);
+        auto damage = Calc::damage(*actor.get(), *target.get());
+        target->damage(damage);
+
+        _state = EState::EraseTimeLine;
+        Debug::debugLog("next state EraseTimeLine");
+        }
+        break;
+
         case EState::EraseTimeLine:
         auto const& entry = _action_time_line.actionEntry();
+
+        ActionTimeLine::ActionEntry new_entry {entry._character_id, 100, 10};
         _action_time_line.eraseAction(entry._character_id);
-        ActionTimeLine::ActionEntry new_entry {0, 5, 1};
+
         _action_time_line.addAction(new_entry);  // 新規の行動を追加する。
         _state = EState::UpdateTimeLine;
         Debug::debugLog("next state UpdateTimeLine");
