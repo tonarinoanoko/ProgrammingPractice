@@ -1,6 +1,7 @@
 #pragma once
 #include "Status.h"
 #include "Common/Value.h"
+#include "Enum/ECharacterType.h"
 
 #include "Debug/DebugLog.h"
 
@@ -10,10 +11,16 @@ namespace Character {
 class CharacterData
 {
 public:
-    CharacterData() { Debug::debugLog("CharacterData()"); }
+    CharacterData(ECharacterType::Enum character_type) :
+    _character_type(character_type)
+    {
+        Debug::debugLog("CharacterData()");
+    }
+
     std::string const name() const { return _name; }
     Status const& status() const { return _status; }
     Value const& hp() { return _now_hp; }
+    ECharacterType::Enum characterType() { return _character_type; }
     int startActionTime() { return 100; }
     int caracterId() { return _character_id; }
 
@@ -55,6 +62,7 @@ public:
     }
 
 private:
+    ECharacterType::Enum _character_type;
     int _character_id;
     std::string _name;
     Value _now_hp;
