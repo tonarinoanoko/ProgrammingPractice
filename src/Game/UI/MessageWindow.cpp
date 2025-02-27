@@ -1,4 +1,5 @@
 #include "MessageWindow.h"
+#include "Macro/COLOR_MACRO.h"
 #include "Utility/Utility.h"
 
 #include "Debug/DebugLog.h"
@@ -29,10 +30,10 @@ void MessageWindow::update()
 
 void MessageWindow::draw()
 {
-    DrawBox(_x, _y, _x + _width, _y + _height, GetColor(0, 0, 0), TRUE);
-    DrawBox(_x, _y, _x + _width, _y + _height, GetColor(255, 255, 255), FALSE);
+    DrawBox(_x, _y, _x + _width, _y + _height, COLOR_BLACK, TRUE);
+    DrawBox(_x, _y, _x + _width, _y + _height, COLOR_WHITE, FALSE);
     if(_current_message.empty() == false) {
-        DrawString(_x + 10, _y + 10, _current_message.c_str(), GetColor(255, 255, 0));
+        DrawString(_x + 10, _y + 10, _current_message.c_str(), COLOR_WHITE);
     }
 }
 
