@@ -65,6 +65,7 @@ void BattleManager::update()
         case EState::UpdateTimeLine:
         if(_action_time_line.update()) {
             pre_command = -1;
+            _ui_manager->commandWin().setCommands({"攻撃", "スキル", "防御"});
             _ui_manager->commandWin().setDrawingComand(true);
             _state = EState::UpdateCommand;
             Debug::debugLog("next state UpdateCommand");

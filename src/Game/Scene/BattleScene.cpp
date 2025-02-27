@@ -16,7 +16,6 @@ void BattleScene::start()
     _battle_manager.startBattle(&_battle_ui_manager);
 
     _battle_ui_manager.messageWin().setMessage("Battle Scene");
-    _battle_ui_manager.commandWin().setCommands({"攻撃", "スキル", "防御"});
 }
 
 void BattleScene::update()

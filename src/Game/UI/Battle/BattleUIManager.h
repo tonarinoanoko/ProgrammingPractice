@@ -1,6 +1,8 @@
 #pragma once
 #include "UI/MessageWindow.h"
-#include "UI/CommandWindow.h"
+#include "UI/Battle/BattleCommandWin.h"
+#include "UI/Battle/BattleTargetSelectWin.h"
+#include "UI/Battle/BatleSkillSelectWin.h"
 
 #include "Debug/DebugLog.h"
 
@@ -29,6 +31,6 @@ public:
 
 private:
     MessageWindow _message_win;
-    CommandWindow _command_win;
+    BattleComandWin _command_win;
 };
 }}  // namespace UI::Battle

@@ -6,7 +6,7 @@
 
 namespace UI {
 CommandWindow::CommandWindow()
-    : _x(10), _y(200), _width(80), _height(100) {}
+    : _x(0), _y(0), _width(0), _height(0) {}
 CommandWindow::CommandWindow(int x, int y, int width, int height)
     : _x(x), _y(y), _width(width), _height(height) {}
 
