@@ -15,8 +15,8 @@ void BattleScene::start()
     Debug::debugLog("Start Battle Scene");
     _battle_manager.startBattle(&_battle_ui_manager);
 
-    _battle_ui_manager.messageWindow().setMessage("Battle Scene");
-    _battle_ui_manager.commandWindw().setCommands({"攻撃", "スキル", "防御"});
+    _battle_ui_manager.messageWin().setMessage("Battle Scene");
+    _battle_ui_manager.commandWin().setCommands({"攻撃", "スキル", "防御"});
 }
 
 void BattleScene::update()
@@ -25,7 +25,7 @@ void BattleScene::update()
 
     auto & message_manager = _battle_manager.messsageManager();
     if(message_manager.has()) {
-        _battle_ui_manager.messageWindow().setMessage(message_manager.message());
+        _battle_ui_manager.messageWin().setMessage(message_manager.message());
         message_manager.clear();
     }
     _battle_ui_manager.update();

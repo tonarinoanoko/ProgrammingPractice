@@ -12,23 +12,23 @@ class BattleUIManager
 {
 public:
     BattleUIManager() { Debug::debugLog("BattleUIManager()"); }
-    MessageWindow& messageWindow() { return _message_window; }
-    CommandWindow& commandWindw() { return _command_window; }
+    MessageWindow& messageWin() { return _message_win; }
+    CommandWindow& commandWin() { return _command_win; }
 
     void update()
     {
-        _message_window.update();
-        _command_window.update();
+        _message_win.update();
+        _command_win.update();
     }
 
     void draw()
     {
-        _message_window.draw();
-        _command_window.draw();
+        _message_win.draw();
+        _command_win.draw();
     }
 
 private:
-    MessageWindow _message_window;
-    CommandWindow _command_window;
+    MessageWindow _message_win;
+    CommandWindow _command_win;
 };
 }}  // namespace UI::Battle

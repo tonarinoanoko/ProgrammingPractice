@@ -65,7 +65,7 @@ void BattleManager::update()
         case EState::UpdateTimeLine:
         if(_action_time_line.update()) {
             pre_command = -1;
-            _ui_manager->commandWindw().setDrawingComand(true);
+            _ui_manager->commandWin().setDrawingComand(true);
             _state = EState::UpdateCommand;
             Debug::debugLog("next state UpdateCommand");
         }
@@ -73,7 +73,7 @@ void BattleManager::update()
 
         case EState::UpdateCommand:
         {
-        auto& command_window = _ui_manager->commandWindw();
+        auto& command_window = _ui_manager->commandWin();
         if(command_window.selectedCommand() != pre_command) {
             switch(command_window.selectedCommand()) {
                 case 0:
