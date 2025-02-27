@@ -28,6 +28,9 @@ private:
     };
 
 private:
+    int makeNewCharacterId();
+
+private:
     BattleInfo _battle_info;
     ActionTimeLine _action_time_line;
     Common::MessageManager _message_manager;
@@ -35,6 +38,7 @@ private:
     EState _state;
 
     UI::Battle::BattleUIManager* _ui_manager = nullptr;
-    int pre_command = -1;
+    int _pre_command = -1;
+    int _use_character_id = 0;
 };
 }  // Battle

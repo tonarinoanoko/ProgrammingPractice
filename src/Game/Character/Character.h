@@ -14,10 +14,17 @@ public:
     std::string const name() const { return _name; }
     Status const& status() const { return _status; }
     Value const& hp() { return _now_hp; }
+    int startActionTime() { return 100; }
+    int caracterId() { return _character_id; }
 
     void setName(std::string name)
     {
         _name = name;
+    }
+
+    void setCharacterId(int id)
+    {
+        _character_id = id;
     }
 
     void setStatus(Status const& status)
@@ -48,6 +55,7 @@ public:
     }
 
 private:
+    int _character_id;
     std::string _name;
     Value _now_hp;
     Status _status;

@@ -7,4 +7,4 @@ namespace Skill {
 class NormalAttack : public SkillBase
 {
 };
-}}  // namespace
+}}  // namespace Battle::Skill
