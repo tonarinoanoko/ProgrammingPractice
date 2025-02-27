@@ -3,7 +3,7 @@
 #include "Character/Character.h"
 
 
-namespace Ballte {
+namespace Battle {
 namespace Calc {
 
 int damage(Character::CharacterData const& actor, Character::CharacterData const& target)
