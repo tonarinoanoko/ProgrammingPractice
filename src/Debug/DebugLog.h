@@ -15,4 +15,10 @@ inline void assertLog(bool condition, const std::string& message = "") {
     }
 }
 
+// 強制的にアサートとしてメッセージ表示
+inline void assertLog(const std::string& message) {
+    std::cerr << "Assertion failed: " << message << std::endl;
+    throw std::runtime_error(message);
+}
+
 }  // Debug
