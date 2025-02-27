@@ -7,13 +7,26 @@
             "command": "mingw32-make clean",
             "group": {
                 "kind": "build",
-                "isDefault": true
-            }
+                "isDefault": false
+            },
+            "problemMatcher": []
         },
         {
             "label": "Build",
             "type": "shell",
             "command": "mingw32-make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CleanBuild",
+            "dependsOn": [
+                "Clean",
+                "Build"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
