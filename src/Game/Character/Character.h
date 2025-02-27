@@ -2,6 +2,7 @@
 #include "Status.h"
 #include "Common/Value.h"
 #include "Enum/ECharacterType.h"
+#include "Character/Skill/CharacterSkill.h"
 
 #include "Debug/DebugLog.h"
 
@@ -17,10 +18,11 @@ public:
         Debug::debugLog("CharacterData()");
     }
 
+    ECharacterType::Enum characterType() { return _character_type; }
     std::string const name() const { return _name; }
     Status const& status() const { return _status; }
     Value const& hp() { return _now_hp; }
-    ECharacterType::Enum characterType() { return _character_type; }
+    std::vector<Skill::SkillData> const& skills() { return _skills; }
     int startActionTime() { return 100; }
     int caracterId() { return _character_id; }
 
@@ -67,6 +69,7 @@ private:
     std::string _name;
     Value _now_hp;
     Status _status;
+    std::vector<Skill::SkillData> _skills;
 };
 
 }  // Character
