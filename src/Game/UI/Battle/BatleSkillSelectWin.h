@@ -1,4 +1,5 @@
 #pragma once
+#include "UI/CommandWindow.h"
 
 
 namespace UI {

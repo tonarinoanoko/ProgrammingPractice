@@ -27,6 +27,17 @@ public:
         return _members[index];
     }
 
+    std::shared_ptr<Character::CharacterData> const& getMemberFromCharacterId(int id) const {
+        for(auto const & member : _members) {
+            if(member->caracterId() == id) {
+                return member;
+            }
+        }
+
+        Debug::assertLog("not member");
+        return getMember(0);
+    }
+
     // 全滅判定
     bool isAnnihilation() const {
         // 全員が死亡状態か

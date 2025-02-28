@@ -23,6 +23,7 @@ private:
         None,
         UpdateTimeLine,
         SelectCommand,
+        SelectTarget,
         EnemyCommand,
         UpdateSkill,
         EraseTimeLine,

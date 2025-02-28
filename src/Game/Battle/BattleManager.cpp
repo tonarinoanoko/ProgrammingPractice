@@ -92,8 +92,10 @@ void BattleManager::update()
             auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
             if(chara_data->characterType() == ECharacterType::Enum::Playable) {
                 _pre_command = -1;
-                _ui_manager->commandWin().setCommands({"攻撃", "スキル", "防御"});
-                _ui_manager->commandWin().setDrawingComand(true);
+                auto& command_window = _ui_manager->commandWin();
+                command_window.setCommands({"攻撃", "スキル", "防御"});
+                command_window.resetIndex();
+                command_window.setDrawingComand(true);
                 _state = EState::SelectCommand;
                 Debug::debugLog("next state SelectCommand");
             }
@@ -123,12 +125,36 @@ void BattleManager::update()
         }
 
         auto const & input = System::InputManager::instance();
-        if(input.isKeyDown(KEY_INPUT_C)) {
-            command_window.resetIndex();
+        if(input.isKeyDown(KEY_INPUT_Z)) {
+            _message_manager.set("対象を選択してください");
+            _pre_command = -1;
             command_window.setDrawingComand(false);
+
+            auto & target_select_window = _ui_manager->targetSelectWin();
+            target_select_window.setTargets(_battle_info.enemyParty().getMembers());
+            target_select_window.setDrawingComand(true);
+            _state = EState::SelectTarget;
+            Debug::debugLog("next state SelectTarget");
+        }
+        }
+        break;
+
+        case EState::SelectTarget:
+        {
+        auto & target_select_window = _ui_manager->targetSelectWin();
+        auto const & input = System::InputManager::instance();
+        if(input.isKeyDown(KEY_INPUT_Z)) {
+            target_select_window.setDrawingComand(false);
             _state = EState::UpdateSkill;
             Debug::debugLog("next state UpdateSkill");
         }
+        else if(input.isKeyDown(KEY_INPUT_X)) {
+            _ui_manager->commandWin().setDrawingComand(true);
+            target_select_window.setDrawingComand(false);
+            _state = EState::SelectCommand;
+            Debug::debugLog("next state SelectCommand");
+        }
+
         }
         break;
 
@@ -140,9 +166,11 @@ void BattleManager::update()
         case EState::UpdateSkill:
         {
         auto const& actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-        auto & target = _battle_info.enemyParty().getMember(0);
+        auto & target = _battle_info.enemyParty().getMemberFromCharacterId(_ui_manager->targetSelectWin().selectTargetCharacterId());
         auto damage = Calc::damage(*actor.get(), *target.get());
         target->damage(damage);
+
+        _message_manager.set(target->name() + "に" + std::to_string(damage) + "のダメージ！");
 
         _state = EState::EraseTimeLine;
         Debug::debugLog("next state EraseTimeLine");
