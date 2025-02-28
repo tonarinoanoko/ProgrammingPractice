@@ -1,5 +1,6 @@
 #pragma once
 #include "SkillBase.h"
+#include "SkillFactory.h"
 
 
 namespace Battle {

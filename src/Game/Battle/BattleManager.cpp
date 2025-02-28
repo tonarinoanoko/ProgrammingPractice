@@ -1,7 +1,7 @@
 #include "BattleManager.h"
 #include "DxLib.h"
 #include "System/InputManager.h"
-
+#include "Battle/Skill/SkillFactory.h"
 
 #include "Battle/Calc/Damage.h"
 #include "Debug/DebugLog.h"
@@ -26,6 +26,9 @@ int BattleManager::makeNewCharacterId()
 
 void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
 {
+    // ここでインスタンスを呼び出してコンストラクタを通しておく
+    Skill::SkillFactory::instance();
+
     _use_character_id = 0;
 
     Debug::assertLog(ui_manager, "ui_manager is null");
