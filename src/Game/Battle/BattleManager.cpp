@@ -171,6 +171,7 @@ void BattleManager::update()
         auto const & input = System::InputManager::instance();
         if(input.isKeyDown(KEY_INPUT_Z)) {
             target_select_window.setDrawingComand(false);
+            _target_character_ids.clear();
             _target_character_ids.emplace_back(_ui_manager->targetSelectWin().selectTargetCharacterId());
             _state.change(EState::UpdateSkill);
         }
