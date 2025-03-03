@@ -22,6 +22,7 @@ private:
     {
         None,
         UpdateTimeLine,
+        StartAction,
         SelectCommand,
         SelectTarget,
         EnemyCommand,
