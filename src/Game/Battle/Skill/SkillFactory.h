@@ -5,6 +5,7 @@
 #include "SkillBase.h"
 #include "Enum/ESkillType.h"
 
+// スキルを追加したらヘッダーを以下に追加
 #include "NormalAttack.h"
 
 #include "Debug/DebugLog.h"
@@ -36,6 +37,7 @@ public:
 private:
     SkillFactory()
     {
+        // スキルを追加したら以下でスキルを登録
         registerSkill(ESkillType::Enum::NormalAttack, []() { return std::make_unique<NormalAttack>(); });
     }
 

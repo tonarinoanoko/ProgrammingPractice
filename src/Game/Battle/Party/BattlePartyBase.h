@@ -3,7 +3,7 @@
 #include <memory>
 #include "Character/Character.h"
 
-#include "Debug/DebugLog.h"
+#include "Debug/GameDebug.h"
 
 
 namespace Battle {
