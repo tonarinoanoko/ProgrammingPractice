@@ -13,7 +13,7 @@ namespace Battle {
 class BattleUIManager
 {
 public:
-    BattleUIManager() { Debug::debugLog("BattleUIManager()"); }
+    BattleUIManager() {}
     MessageWindow& messageWin() { return _message_win; }
     BattleComandWin& commandWin() { return _command_win; }
     BattleTargetSelectWin& targetSelectWin() { return _target_select_win; }

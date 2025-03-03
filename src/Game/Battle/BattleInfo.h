@@ -14,7 +14,6 @@ public:
     BattleInfo()
     {
         _none_character = std::make_shared<Character::CharacterData>(ECharacterType::Enum::None);
-        Debug::debugLog("BattleInfo()");
     }
 
     PlayableParty& playerParty() { return _player_party; }
@@ -24,19 +23,19 @@ public:
     std::shared_ptr<Character::CharacterData> & characterData(int character_id)
     {
         for(auto & member : _player_party.getMembers()) {
-            if(member->caracterId() == character_id) {
+            if(member->characterId() == character_id) {
                 return member;
             }
         }
 
         for(auto & member : _enemy_party.getMembers()) {
-            if(member->caracterId() == character_id) {
+            if(member->characterId() == character_id) {
                 return member;
             }
         }
 
         for(auto & member : _bot_party.getMembers()) {
-            if(member->caracterId() == character_id) {
+            if(member->characterId() == character_id) {
                 return member;
             }
         }

@@ -18,13 +18,13 @@ public:
         Debug::debugLog("CharacterData()");
     }
 
-    ECharacterType::Enum characterType() { return _character_type; }
+    ECharacterType::Enum characterType() const { return _character_type; }
     std::string const name() const { return _name; }
     Status const& status() const { return _status; }
-    Value const& hp() { return _now_hp; }
-    std::vector<Skill::SkillData> const& skills() { return _skills; }
-    int startActionTime() { return 100; }
-    int caracterId() { return _character_id; }
+    Value const& hp() const { return _now_hp; }
+    std::vector<Skill::SkillData> const& skills() const { return _skills; }
+    int startActionTime() const { return 100; }
+    int characterId() const { return _character_id; }
 
     void setName(std::string name)
     {

@@ -25,7 +25,7 @@ public:
     int selectTargetCharacterId()
     {
         int target = selectedCommand();
-        return _targets[target]->caracterId();
+        return _targets[target]->characterId();
     }
 
 

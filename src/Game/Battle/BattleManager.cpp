@@ -4,7 +4,7 @@
 #include "Battle/Skill/SkillFactory.h"
 
 #include "Battle/Calc/Damage.h"
-#include "Debug/DebugLog.h"
+#include "Debug/GameDebug.h"
 
 
 namespace Battle {
@@ -57,7 +57,7 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     {
         ActionTimeLine::ActionEntry new_entry {0, 0, 0};
         for(auto const& member : party.getMembers()) {
-            new_entry._character_id = member->caracterId();
+            new_entry._character_id = member->characterId();
             new_entry._action_time = member->startActionTime();
             new_entry._cool_time = member->status().statusInt(EStatus::Enum::Spd);
             _action_time_line.addAction(new_entry);
@@ -66,12 +66,12 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     ActionEntry(enemy_party);
     ActionEntry(player_party);
 
-    _state = EState::UpdateTimeLine;
+    _state.change(EState::UpdateTimeLine);
 }
 
 bool BattleManager::isFinishedBattle()
 {
-    if(_state == EState::None) {
+    if(_state.current() == EState::None) {
         return false;
     }
 
@@ -88,32 +88,35 @@ void BattleManager::update()
         return;
     }
 
-    switch(_state) {
+    _state.update();
+    switch(_state.current()) {
         case EState::UpdateTimeLine:
+        if(_state.changed()) {
+            Debug::debugLog("State UpdateTimeLine");
+        }
+
         if(_action_time_line.update()) {
-            auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-            _message_manager.set(chara_data->name() + "の行動開始");
-            _state = EState::StartAction;
+            _state.change(EState::StartAction);
         }
         break;
 
         case EState::StartAction:
         {
+            if(_state.changed()) {
+                auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+                _message_manager.set(chara_data->name() + "の行動開始");
+
+                Debug::debugLog("State StartAction");
+            }
+
             auto const & input = System::InputManager::instance();
             if(input.isKeyDown(KEY_INPUT_Z)) {
                 auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
                 if(chara_data->characterType() == ECharacterType::Enum::Playable) {
-                    _pre_command = -1;
-                    auto& command_window = _ui_manager->commandWin();
-                    command_window.setCommands({"攻撃", "スキル", "防御"});
-                    command_window.resetIndex();
-                    command_window.setDrawingComand(true);
-                    _state = EState::SelectCommand;
-                    Debug::debugLog("next state SelectCommand");
+                    _state.change(EState::SelectCommand);
                 }
                 else {
-                    _state = EState::EnemyCommand;
-                    Debug::debugLog("next state EnemyCommand");
+                    _state.change(EState::EnemyCommand);
                 }
             }
         }
@@ -122,6 +125,15 @@ void BattleManager::update()
         case EState::SelectCommand:
         {
         auto& command_window = _ui_manager->commandWin();
+        if(_state.changed()) {
+            _pre_command = -1;
+            command_window.setCommands({"攻撃", "スキル", "防御"});
+            command_window.resetIndex();
+            command_window.setDrawingComand(true);
+
+            Debug::debugLog("State SelectCommand");
+        }
+
         if(command_window.selectedCommand() != _pre_command) {
             switch(command_window.selectedCommand()) {
                 case 0:
@@ -139,15 +151,8 @@ void BattleManager::update()
 
         auto const & input = System::InputManager::instance();
         if(input.isKeyDown(KEY_INPUT_Z)) {
-            _message_manager.set("対象を選択してください");
-            _pre_command = -1;
             command_window.setDrawingComand(false);
-
-            auto & target_select_window = _ui_manager->targetSelectWin();
-            target_select_window.setTargets(_battle_info.enemyParty().getMembers());
-            target_select_window.setDrawingComand(true);
-            _state = EState::SelectTarget;
-            Debug::debugLog("next state SelectTarget");
+            _state.change(EState::SelectTarget);
         }
         }
         break;
@@ -155,17 +160,23 @@ void BattleManager::update()
         case EState::SelectTarget:
         {
         auto & target_select_window = _ui_manager->targetSelectWin();
+        if(_state.changed()) {
+            _message_manager.set("対象を選択してください");
+            target_select_window.setTargets(_battle_info.enemyParty().getMembers());
+            target_select_window.setDrawingComand(true);
+
+            Debug::debugLog("State SelectTarget");
+        }
+
         auto const & input = System::InputManager::instance();
         if(input.isKeyDown(KEY_INPUT_Z)) {
             target_select_window.setDrawingComand(false);
-            _state = EState::UpdateSkill;
-            Debug::debugLog("next state UpdateSkill");
+            _state.change(EState::UpdateSkill);
         }
         else if(input.isKeyDown(KEY_INPUT_X)) {
             _ui_manager->commandWin().setDrawingComand(true);
             target_select_window.setDrawingComand(false);
-            _state = EState::SelectCommand;
-            Debug::debugLog("next state SelectCommand");
+            _state.change(EState::SelectCommand);
         }
 
         }
@@ -173,40 +184,52 @@ void BattleManager::update()
 
         case EState::EnemyCommand:
         {
-        auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-        _message_manager.set(chara_data->name() + "の行動");
-        _state = EState::EraseTimeLine;
-        Debug::debugLog("next state EraseTimeLine");
+        if(_state.changed()) {
+            auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+            _message_manager.set(chara_data->name() + "の行動");
+
+            Debug::debugLog("State EnemyCommand");
+        }
+
+        auto const & input = System::InputManager::instance();
+        if(input.isKeyDown(KEY_INPUT_Z)) {
+            _state.change(EState::EraseTimeLine);
+        }
         }
         break;
 
         case EState::UpdateSkill:
         {
-        auto const& actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-        auto & target = _battle_info.enemyParty().getMemberFromCharacterId(_ui_manager->targetSelectWin().selectTargetCharacterId());
-        auto damage = Calc::damage(*actor.get(), *target.get());
-        target->damage(damage);
+        if(_state.changed()) {
+            auto const& actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+            auto & target = _battle_info.enemyParty().getMemberFromCharacterId(_ui_manager->targetSelectWin().selectTargetCharacterId());
+            auto damage = Calc::damage(*actor.get(), *target.get());
+            target->damage(damage);
 
-        _message_manager.set(actor->name() + "の攻撃！\n" + target->name() + "に" + std::to_string(damage) + "のダメージ！");
+            _message_manager.set(actor->name() + "の攻撃！\n" + target->name() + "に" + std::to_string(damage) + "のダメージ！");
 
-        _state = EState::EraseTimeLine;
-        Debug::debugLog("next state EraseTimeLine");
+            Debug::debugLog("State UpdateSkill");
+        }
+
+        auto const & input = System::InputManager::instance();
+        if(input.isKeyDown(KEY_INPUT_Z)) {
+            _state.change(EState::EraseTimeLine);
+        }
         }
         break;
 
         case EState::EraseTimeLine:
         {
-        auto const & input = System::InputManager::instance();
-        if(input.isKeyDown(KEY_INPUT_Z)) {
+            Debug::debugLog("State EraseTimeLine");
+
             auto const& entry = _action_time_line.actionEntry();
 
-            ActionTimeLine::ActionEntry new_entry {entry._character_id, 100, 10};
-            _action_time_line.eraseAction(entry._character_id);
+            auto const& actor = _battle_info.characterData(entry._character_id);
+            ActionTimeLine::ActionEntry new_entry {actor->characterId(), 100, actor->status().statusInt(EStatus::Enum::Spd)};
 
-            _action_time_line.addAction(new_entry);  // 新規の行動を追加する。
-            _state = EState::UpdateTimeLine;
-            Debug::debugLog("next state UpdateTimeLine");
-        }
+            _action_time_line.eraseAction(entry._character_id);
+            _action_time_line.addAction(new_entry);
+            _state.change(EState::UpdateTimeLine);
         }
         break;
     }

@@ -9,7 +9,7 @@
 namespace Battle {
 class BattlePartyBase {
 public:
-    BattlePartyBase() { Debug::debugLog("BattlePartyBase()"); }
+    BattlePartyBase() {}
 
     void addMember(std::shared_ptr<Character::CharacterData> character) {
         _members.push_back(character);
@@ -29,7 +29,7 @@ public:
 
     std::shared_ptr<Character::CharacterData> const& getMemberFromCharacterId(int id) const {
         for(auto const & member : _members) {
-            if(member->caracterId() == id) {
+            if(member->characterId() == id) {
                 return member;
             }
         }

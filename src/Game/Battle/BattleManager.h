@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "BattleInfo.h"
+#include "System/StateManager.h"
 #include "Common/MessageManager.h"
 #include "Character/Character.h"
 #include "UI/Battle/BattleUIManager.h"
@@ -8,7 +9,7 @@
 namespace Battle {
 class BattleManager {
 public:
-    BattleManager() { Debug::debugLog("BattleManager()"); };
+    BattleManager() {};
 
     void startBattle(UI::Battle::BattleUIManager* ui_manager);  // バトル開始
     void update();  // 1ターンの処理
@@ -38,7 +39,7 @@ private:
     ActionTimeLine _action_time_line;
     Common::MessageManager _message_manager;
 
-    EState _state;
+    System::StateManager<EState> _state = System::StateManager(EState::None);
 
     UI::Battle::BattleUIManager* _ui_manager = nullptr;
     int _pre_command = -1;

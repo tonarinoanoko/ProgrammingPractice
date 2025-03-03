@@ -7,7 +7,7 @@ namespace Battle {
 class EnemyParty : public BattlePartyBase
 {
 public:
-    EnemyParty() { Debug::debugLog("EnemyParty()"); }
+    EnemyParty() {}
     void somePlayerSpecificFunction() {
         for (auto& member : _members) {
             auto enemy = std::static_pointer_cast<Character::EnemyData>(member);
