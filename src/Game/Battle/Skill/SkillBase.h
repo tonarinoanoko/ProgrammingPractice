@@ -1,15 +1,24 @@
 #pragma once
+#include "Character/Character.h"
+#include "Common/MessageManager.h"
+
 
 namespace Battle {
 namespace Skill {
 class SkillBase
 {
 public:
-    SkillBase() {}
+    struct Argument
+    {
+    public:
+        Character::CharacterData & actor;
+        Character::CharacterData & target;
+        Common::MessageManager & message_manager;
+    };
 
-    virtual void update() = 0;
-    virtual void execute() = 0;
-    virtual bool isFinished() = 0;
+public:
+    SkillBase() {}
+    virtual void execute(Argument& argument) = 0;
 };
 
 }}  // namespace Battle::Skill

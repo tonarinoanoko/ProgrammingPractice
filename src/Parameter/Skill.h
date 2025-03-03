@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
-#include <Enum/ESkillId.h>
-#include <Enum/ESkillType.h>
+#include "Enum/ESkillId.h"
+#include "Enum/ESkillType.h"
 
 #include "Debug/DebugLog.h"
 
@@ -14,6 +14,21 @@ struct ParameterData
 public:
     ESkillType::Enum _skill_type;
 };
+
+// todo 現在は即値だけれど外にパラメーターを用意して対応したいね
+ParameterData makeParameterData(ESkillId::Enum id)
+{
+    switch(id)
+    {
+        case ESkillId::Enum::NormalAttack:
+            return { ESkillType::Enum::NormalAttack };
+        break;
+
+        default:
+        Debug::assertLog("not use id");
+        break;
+    }
+}
 
 class Parameter
 {
@@ -63,20 +78,5 @@ private:
     static Parameters _instance;
     std::map<ESkillId::Enum, Parameter> _param_map;
 };
-
-// todo 現在は即値だけれど外にパラメーターを用意して対応したいね
-ParameterData makeParameterData(ESkillId::Enum id)
-{
-    switch(id)
-    {
-        case ESkillId::Enum::NormalAttack:
-            return { ESkillType::Enum::NormalAttack };
-        break;
-
-        default:
-        Debug::assertLog("not use id");
-        break;
-    }
-}
 
 }}  // namespace Parameter::Skill

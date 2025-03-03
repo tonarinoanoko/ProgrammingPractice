@@ -6,7 +6,7 @@
 namespace Battle {
 namespace Calc {
 
-int damage(Character::CharacterData const& actor, Character::CharacterData const& target)
+inline int damage(Character::CharacterData const& actor, Character::CharacterData const& target)
 {
     Value damage;
     auto const& a_status = actor.status();

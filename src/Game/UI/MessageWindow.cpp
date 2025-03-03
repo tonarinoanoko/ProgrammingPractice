@@ -28,7 +28,7 @@ void MessageWindow::update()
 {
 }
 
-void MessageWindow::draw()
+void MessageWindow::draw() const
 {
     DrawBox(_x, _y, _x + _width, _y + _height, COLOR_BLACK, TRUE);
     DrawBox(_x, _y, _x + _width, _y + _height, COLOR_WHITE, FALSE);

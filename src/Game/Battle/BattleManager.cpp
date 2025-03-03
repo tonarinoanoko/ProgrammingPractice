@@ -171,6 +171,7 @@ void BattleManager::update()
         auto const & input = System::InputManager::instance();
         if(input.isKeyDown(KEY_INPUT_Z)) {
             target_select_window.setDrawingComand(false);
+            _target_character_id = _ui_manager->targetSelectWin().selectTargetCharacterId();
             _state.change(EState::UpdateSkill);
         }
         else if(input.isKeyDown(KEY_INPUT_X)) {
@@ -186,14 +187,13 @@ void BattleManager::update()
         {
         if(_state.changed()) {
             auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-            _message_manager.set(chara_data->name() + "の行動");
 
+            // todo とりあえず0番目のターゲット
+            auto const & p_party = _battle_info.playerParty();
+            _target_character_id = p_party.getMember(0)->characterId();
+
+            _state.change(EState::UpdateSkill);
             Debug::debugLog("State EnemyCommand");
-        }
-
-        auto const & input = System::InputManager::instance();
-        if(input.isKeyDown(KEY_INPUT_Z)) {
-            _state.change(EState::EraseTimeLine);
         }
         }
         break;
@@ -201,12 +201,13 @@ void BattleManager::update()
         case EState::UpdateSkill:
         {
         if(_state.changed()) {
-            auto const& actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-            auto & target = _battle_info.enemyParty().getMemberFromCharacterId(_ui_manager->targetSelectWin().selectTargetCharacterId());
-            auto damage = Calc::damage(*actor.get(), *target.get());
-            target->damage(damage);
 
-            _message_manager.set(actor->name() + "の攻撃！\n" + target->name() + "に" + std::to_string(damage) + "のダメージ！");
+            auto const& actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+            auto & target = _battle_info.characterData(_target_character_id);
+
+            auto skill = Skill::SkillFactory::instance().create(ESkillType::Enum::NormalAttack);
+            auto augument = Skill::SkillBase::Argument { *actor, *target, _message_manager };
+            skill->execute(augument);
 
             Debug::debugLog("State UpdateSkill");
         }
