@@ -45,6 +45,6 @@ private:
     EBattleCommand::Enum _pre_command = EBattleCommand::Enum::None;
     int _use_character_id = 0;
 
-    int _target_character_id = 0;
+    std::vector<int> _target_character_ids;
 };
 }  // Battle

@@ -1,5 +1,7 @@
 #pragma once
+#include <vector>
 #include "Character/Character.h"
+#include "Battle/BattleInfo.h"
 #include "Common/MessageManager.h"
 
 
@@ -11,8 +13,9 @@ public:
     struct Argument
     {
     public:
-        Character::CharacterData & actor;
-        Character::CharacterData & target;
+        BattleInfo & _battle_info;
+        int actor;
+        std::vector<int> targets;
         Common::MessageManager & message_manager;
     };
 

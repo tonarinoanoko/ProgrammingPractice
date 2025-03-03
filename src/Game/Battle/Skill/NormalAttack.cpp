@@ -7,10 +7,12 @@ namespace Skill {
 
 void NormalAttack::execute(Argument& argument)
 {
-    auto damage = Calc::damage(argument.actor, argument.target);
-    argument.target.damage(damage);
+    auto const & actor = argument._battle_info.characterData(argument.actor);
+    auto & target = argument._battle_info.characterData(argument.targets[0]);
+    auto damage = Calc::damage(*actor, *target);
+    target->damage(damage);
 
-    argument.message_manager.set(argument.actor.name() + "の攻撃！\n" + argument.target.name() + "に" + std::to_string(damage) + "のダメージ！");
+    argument.message_manager.set(actor->name() + "の攻撃！\n" + target->name() + "に" + std::to_string(damage) + "のダメージ！");
 }
 
 }}  // namespace Battle::Skill
