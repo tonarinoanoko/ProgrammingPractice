@@ -14,6 +14,8 @@ public:
     {
     }
 
+    ESkillId::Enum skillId() const { return _skill_id; }
+
 private:
     ESkillId::Enum _skill_id;
     // ESkillType::Enum _skill_type;  // スキルタイプはパラメーターから取得できる

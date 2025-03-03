@@ -25,6 +25,7 @@ private:
         UpdateTimeLine,
         StartAction,
         SelectCommand,
+        SelectSkill,
         SelectTarget,
         EnemyCommand,
         UpdateSkill,
@@ -45,7 +46,7 @@ private:
     EBattleCommand::Enum _pre_command = EBattleCommand::Enum::None;
     int _use_character_id = 0;
 
-    ESkillType::Enum _use_skill;
+    ESkillId::Enum _use_skill;
     std::vector<int> _target_character_ids;
     int _next_action_time = 0;
 };

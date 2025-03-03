@@ -2,6 +2,7 @@
 #include <map>
 #include "Enum/ESkillId.h"
 #include "Enum/ESkillType.h"
+#include "Enum/ESkillTarget.h"
 
 #include "Debug/DebugLog.h"
 
@@ -12,37 +13,24 @@ namespace Skill {
 struct ParameterData
 {
 public:
+    std::string _name;
     ESkillType::Enum _skill_type;
+    ESkillTarget::Enum _skill_target;
 };
-
-// todo 現在は即値だけれど外にパラメーターを用意して対応したいね
-ParameterData makeParameterData(ESkillId::Enum id)
-{
-    switch(id)
-    {
-        case ESkillId::Enum::NormalAttack:
-            return { ESkillType::Enum::NormalAttack };
-        break;
-
-        case ESkillId::Enum::SkillAttack1:
-            return { ESkillType::Enum::SkillAttack1 };
-        break;
-
-        default:
-        Debug::assertLog("not use id");
-        break;
-    }
-}
 
 class Parameter
 {
 public:
+    Parameter() {}
     Parameter(ParameterData data) :
     _data(data)
     {
     }
 
+    std::string name() const { return _data._name; }
     ESkillType::Enum skillType() const { return _data._skill_type; }
+    ESkillTarget::Enum skillTarget() const { return _data._skill_target; }
+
 
 private:
     ParameterData _data;
@@ -72,11 +60,15 @@ public:
         auto it = _param_map.find(id);
         if (it == _param_map.end()) {
             Debug::assertLog("Skill ID not found!");
-            static Parameter default_parameter({ ESkillType::Enum::NormalAttack });
+            static Parameter default_parameter;
             return default_parameter;
         }
         return it->second;
     }
+
+private:
+    // todo 現在は即値だけれど外にパラメーターを用意して対応したいね
+    ParameterData makeParameterData(ESkillId::Enum id);
 
 private:
     static Parameters _instance;

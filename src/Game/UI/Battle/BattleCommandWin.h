@@ -13,9 +13,18 @@ public:
     {
     }
 
+    void setCommands(std::vector<EBattleCommand::Enum> const& commands)
+    {
+        _targets = commands;
+        CommandWindow::setCommands({"攻撃", "スキル", "防御"});
+    }
+
     EBattleCommand::Enum selectedCommand()
     {
-        return static_cast<EBattleCommand::Enum>(selectedIndex());
+        return _targets[selectedIndex()];
     }
+
+private:
+    std::vector<EBattleCommand::Enum> _targets;
 };
 }}  // namespace UI::Battle

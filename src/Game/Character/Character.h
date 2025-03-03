@@ -42,6 +42,11 @@ public:
         recovery();
     }
 
+    void addSkill(Skill::SkillData const& skill_data)
+    {
+        _skills.emplace_back(skill_data);
+    }
+
     void recovery()
     {
         _now_hp = _status.statusValue(EStatus::Enum::Hp);

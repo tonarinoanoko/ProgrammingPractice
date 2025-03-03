@@ -36,6 +36,8 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     auto status = Character::Status();
     status.setStatus(makeStatusMap());
 
+    auto skill_data = Character::Skill::SkillData(ESkillId::Enum::SkillAttack1);
+
     auto& enemy_party = _battle_info.enemyParty();
     auto new_enemy = std::make_shared<Character::EnemyData>();
     status.statusValue(EStatus::Enum::Hp).add(10);
@@ -49,7 +51,9 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     status.statusValue(EStatus::Enum::Hp).add(10);
     new_playable->setName("ゆうしゃ");
     new_playable->setCharacterId(makeNewCharacterId());
+    new_playable->addSkill(skill_data);
     new_playable->setStatus(status);
+
     player_party.addMember(new_playable);
 
     // 初期行動順の対応
@@ -127,7 +131,7 @@ void BattleManager::update()
         auto& command_window = _ui_manager->commandWin();
         if(_state.changed()) {
             _pre_command = EBattleCommand::Enum::None;
-            command_window.setCommands({"攻撃", "スキル", "防御"});
+            command_window.setCommands({EBattleCommand::Enum::NormalAttack, EBattleCommand::Enum::Skill, EBattleCommand::Enum::Defense});
             command_window.resetIndex();
             command_window.setDrawingComand(true);
 
@@ -137,15 +141,12 @@ void BattleManager::update()
         if(command_window.selectedCommand() != _pre_command) {
             switch(command_window.selectedCommand()) {
                 case EBattleCommand::Enum::NormalAttack:
-                _use_skill = ESkillType::Enum::NormalAttack;
                 _message_manager.set("攻撃を行います");
                 break;
                 case EBattleCommand::Enum::Skill:
-                _use_skill = ESkillType::Enum::SkillAttack1;
                 _message_manager.set("スキルを選択します");
                 break;
                 case EBattleCommand::Enum::Defense:
-                _use_skill = ESkillType::Enum::NormalAttack;
                 _message_manager.set("防御を行います");
                 break;
             }
@@ -155,8 +156,44 @@ void BattleManager::update()
         auto const & input = System::InputManager::instance();
         if(input.isKeyDown(KEY_INPUT_Z)) {
             command_window.setDrawingComand(false);
-            _state.change(EState::SelectTarget);
+            switch(command_window.selectedCommand()) {
+                case EBattleCommand::Enum::NormalAttack:
+                _use_skill = ESkillId::Enum::NormalAttack;
+                _state.change(EState::SelectTarget);
+                break;
+                case EBattleCommand::Enum::Skill:
+                _state.change(EState::SelectSkill);
+                break;
+                case EBattleCommand::Enum::Defense:
+                _use_skill = ESkillId::Enum::NormalAttack;
+                _state.change(EState::SelectTarget);
+                break;
+            }
         }
+        }
+        break;
+
+        case EState::SelectSkill:
+        {
+            auto & skill_select_window = _ui_manager->skillSelectWin();
+            if(_state.changed()) {
+                Debug::debugLog("State SelectSkill");
+                auto const & actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+                skill_select_window.setActorSkill(*actor);
+                skill_select_window.resetIndex();
+                skill_select_window.setDrawingComand(true);
+            }
+
+            auto const & input = System::InputManager::instance();
+            if(input.isKeyDown(KEY_INPUT_Z)) {
+                _use_skill = skill_select_window.selectSkillId();
+                skill_select_window.setDrawingComand(false);
+                _state.change(EState::SelectTarget);
+            }
+            else if(input.isKeyDown(KEY_INPUT_X)) {
+                skill_select_window.setDrawingComand(false);
+                _state.change(EState::SelectCommand);
+            }
         }
         break;
 
@@ -179,9 +216,8 @@ void BattleManager::update()
             _state.change(EState::UpdateSkill);
         }
         else if(input.isKeyDown(KEY_INPUT_X)) {
-            _ui_manager->commandWin().setDrawingComand(true);
             target_select_window.setDrawingComand(false);
-            _state.change(EState::SelectCommand);
+            _state.change(EState::SelectCommand);  // todo前の画面に戻る
         }
 
         }
@@ -192,7 +228,7 @@ void BattleManager::update()
         if(_state.changed()) {
             auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
 
-            _use_skill = ESkillType::Enum::NormalAttack;
+            _use_skill = ESkillId::Enum::NormalAttack;
             // todo とりあえず0番目のターゲット
             auto const & p_party = _battle_info.playerParty();
             _target_character_ids.clear();
@@ -207,7 +243,8 @@ void BattleManager::update()
         case EState::UpdateSkill:
         {
         if(_state.changed()) {
-            auto skill = Skill::SkillFactory::instance().create(_use_skill);
+            auto skill_type = Parameter::Skill::Parameters::instance().parameter(_use_skill).skillType();
+            auto skill = Skill::SkillFactory::instance().create(skill_type);
             auto augument = Skill::SkillBase::Argument { _battle_info, _action_time_line.actionEntry()._character_id, _target_character_ids, _message_manager };
             skill->execute(augument);
             _next_action_time = skill->actionTime();

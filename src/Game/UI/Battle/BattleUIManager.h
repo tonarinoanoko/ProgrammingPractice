@@ -32,7 +32,7 @@ public:
         _message_win.draw();
         _command_win.draw();
         _target_select_win.draw();
-        _target_select_win.draw();
+        _skill_select_win.draw();
     }
 
 private:
