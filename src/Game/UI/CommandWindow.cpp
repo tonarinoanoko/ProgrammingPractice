@@ -48,7 +48,7 @@ void CommandWindow::draw() const {
     }
 }
 
-int CommandWindow::selectedCommand() const {
+int CommandWindow::selectedIndex() const {
     return _selected_index;
 }
 

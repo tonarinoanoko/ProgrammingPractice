@@ -12,7 +12,7 @@ public:
     BattleManager() {};
 
     void startBattle(UI::Battle::BattleUIManager* ui_manager);  // バトル開始
-    void update();  // 1ターンの処理
+    void update();
 
     bool isFinishedBattle();  // バトルが終了したか
 
@@ -42,7 +42,7 @@ private:
     System::StateManager<EState> _state = System::StateManager(EState::None);
 
     UI::Battle::BattleUIManager* _ui_manager = nullptr;
-    int _pre_command = -1;
+    EBattleCommand::Enum _pre_command = EBattleCommand::Enum::None;
     int _use_character_id = 0;
 };
 }  // Battle

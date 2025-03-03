@@ -17,7 +17,7 @@ public:
     void resetIndex() { _selected_index = 0; }
 
     void draw() const;
-    int selectedCommand() const;
+    int selectedIndex() const;
 
 private:
     bool _draw_command = false;

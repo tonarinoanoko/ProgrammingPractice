@@ -24,7 +24,7 @@ public:
 
     int selectTargetCharacterId()
     {
-        int target = selectedCommand();
+        int target = selectedIndex();
         return _targets[target]->characterId();
     }
 

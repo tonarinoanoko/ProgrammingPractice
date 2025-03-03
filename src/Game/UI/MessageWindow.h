@@ -14,7 +14,7 @@ public:
     MessageWindow(int x, int y, int width, int height);
     void setMessage(const std::string& message);
     void update();
-    void draw();
+    void draw() const;
 
 private:
     int _x, _y, _width, _height;

@@ -12,8 +12,8 @@ public:
     virtual void draw() = 0;
     virtual bool isEnd() = 0;
 
-    EScene::Enum sceneId() { return _scene_id; }
-    EScene::Enum nextSceneId() { return _next_scene_id; }
+    EScene::Enum sceneId() const { return _scene_id; }
+    EScene::Enum nextSceneId() const { return _next_scene_id; }
 
 protected:
     void setSceneId(EScene::Enum scene_id)

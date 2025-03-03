@@ -126,7 +126,7 @@ void BattleManager::update()
         {
         auto& command_window = _ui_manager->commandWin();
         if(_state.changed()) {
-            _pre_command = -1;
+            _pre_command = EBattleCommand::Enum::None;
             command_window.setCommands({"攻撃", "スキル", "防御"});
             command_window.resetIndex();
             command_window.setDrawingComand(true);
@@ -136,13 +136,13 @@ void BattleManager::update()
 
         if(command_window.selectedCommand() != _pre_command) {
             switch(command_window.selectedCommand()) {
-                case 0:
+                case EBattleCommand::Enum::NormalAttack:
                 _message_manager.set("攻撃を行います");
                 break;
-                case 1:
+                case EBattleCommand::Enum::Skill:
                 _message_manager.set("スキルを選択します");
                 break;
-                case 2:
+                case EBattleCommand::Enum::Defense:
                 _message_manager.set("防御を行います");
                 break;
             }
