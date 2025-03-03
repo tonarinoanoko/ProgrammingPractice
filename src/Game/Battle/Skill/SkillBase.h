@@ -22,6 +22,7 @@ public:
 public:
     SkillBase() {}
     virtual void execute(Argument& argument) = 0;
+    virtual int actionTime() = 0;
 };
 
 }}  // namespace Battle::Skill

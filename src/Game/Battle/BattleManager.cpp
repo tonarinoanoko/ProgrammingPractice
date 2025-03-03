@@ -137,12 +137,15 @@ void BattleManager::update()
         if(command_window.selectedCommand() != _pre_command) {
             switch(command_window.selectedCommand()) {
                 case EBattleCommand::Enum::NormalAttack:
+                _use_skill = ESkillType::Enum::NormalAttack;
                 _message_manager.set("攻撃を行います");
                 break;
                 case EBattleCommand::Enum::Skill:
+                _use_skill = ESkillType::Enum::SkillAttack1;
                 _message_manager.set("スキルを選択します");
                 break;
                 case EBattleCommand::Enum::Defense:
+                _use_skill = ESkillType::Enum::NormalAttack;
                 _message_manager.set("防御を行います");
                 break;
             }
@@ -189,6 +192,7 @@ void BattleManager::update()
         if(_state.changed()) {
             auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
 
+            _use_skill = ESkillType::Enum::NormalAttack;
             // todo とりあえず0番目のターゲット
             auto const & p_party = _battle_info.playerParty();
             _target_character_ids.clear();
@@ -203,9 +207,10 @@ void BattleManager::update()
         case EState::UpdateSkill:
         {
         if(_state.changed()) {
-            auto skill = Skill::SkillFactory::instance().create(ESkillType::Enum::NormalAttack);
+            auto skill = Skill::SkillFactory::instance().create(_use_skill);
             auto augument = Skill::SkillBase::Argument { _battle_info, _action_time_line.actionEntry()._character_id, _target_character_ids, _message_manager };
             skill->execute(augument);
+            _next_action_time = skill->actionTime();
 
             Debug::debugLog("State UpdateSkill");
         }
@@ -224,7 +229,7 @@ void BattleManager::update()
             auto const& entry = _action_time_line.actionEntry();
 
             auto const& actor = _battle_info.characterData(entry._character_id);
-            ActionTimeLine::ActionEntry new_entry {actor->characterId(), 100, actor->status().statusInt(EStatus::Enum::Spd)};
+            ActionTimeLine::ActionEntry new_entry {actor->characterId(), _next_action_time, actor->status().statusInt(EStatus::Enum::Spd)};
 
             _action_time_line.eraseAction(entry._character_id);
             _action_time_line.addAction(new_entry);
