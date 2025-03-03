@@ -1,6 +1,7 @@
 #pragma once
 #include "Enum/ESkillId.h"
 #include "Enum/ESkillType.h"
+#include "Parameter/Skill.h"
 
 
 namespace Character {
@@ -13,6 +14,8 @@ public:
     _skill_id(id)
     {
         // todo パラメータからskilltypeを取得
+        auto const& param = Parameter::Skill::Parameters::instance();
+        _skill_type = param.parameter(_skill_id).skillType();
     }
 
 private:
