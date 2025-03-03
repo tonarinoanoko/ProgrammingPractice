@@ -7,6 +7,7 @@
 
 // スキルを追加したらヘッダーを以下に追加
 #include "NormalAttack.h"
+#include "SkillAttack1.h"
 
 #include "Debug/DebugLog.h"
 
@@ -39,6 +40,7 @@ private:
     {
         // スキルを追加したら以下でスキルを登録
         registerSkill(ESkillType::Enum::NormalAttack, []() { return std::make_unique<NormalAttack>(); });
+        registerSkill(ESkillType::Enum::SkillAttack1, []() { return std::make_unique<SkillAttack1>(); });
     }
 
 private:

@@ -7,6 +7,7 @@ enum class Enum
 {
     None,
     NormalAttack,
+    SkillAttack1,
 
     Max
 };

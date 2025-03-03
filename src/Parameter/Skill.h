@@ -24,6 +24,10 @@ ParameterData makeParameterData(ESkillId::Enum id)
             return { ESkillType::Enum::NormalAttack };
         break;
 
+        case ESkillId::Enum::SkillAttack1:
+            return { ESkillType::Enum::SkillAttack1 };
+        break;
+
         default:
         Debug::assertLog("not use id");
         break;
