@@ -8,6 +8,7 @@ enum class Enum
     None,
     NormalAttack,
     SkillAttack1,
+    SkillHeal1,
 
     Max
 };

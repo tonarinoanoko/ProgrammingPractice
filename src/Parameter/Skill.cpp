@@ -17,6 +17,10 @@ ParameterData Parameters::makeParameterData(ESkillId::Enum id)
             return { "攻撃スキル1", ESkillType::Enum::SkillAttack1, ESkillTarget::Enum::EnemyOne };
         break;
 
+        case ESkillId::Enum::SkillHeal1:
+            return { "回復スキル1", ESkillType::Enum::SkillHeal1, ESkillTarget::Enum::PlayableOne };
+        break;
+
         default:
             Debug::assertLog("not use id");
             return { "None", ESkillType::Enum::None, ESkillTarget::Enum::None };

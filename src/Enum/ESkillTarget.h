@@ -9,8 +9,8 @@ enum class Enum
     EnemyOne,
     EnemyAll,
 
-    PlayOne,
-    PlayAll,
+    PlayableOne,
+    PlayableAll,
 
     Me,
 
