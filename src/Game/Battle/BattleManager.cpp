@@ -36,7 +36,8 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     auto status = Character::Status();
     status.setStatus(makeStatusMap());
 
-    auto skill_data = Character::Skill::SkillData(ESkillId::Enum::SkillAttack1);
+    auto skill_data_a = Character::Skill::SkillData(ESkillId::Enum::SkillAttack1);
+    auto skill_data_h = Character::Skill::SkillData(ESkillId::Enum::SkillHeal1);
 
     auto& enemy_party = _battle_info.enemyParty();
     auto new_enemy = std::make_shared<Character::EnemyData>();
@@ -51,10 +52,19 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     status.statusValue(EStatus::Enum::Hp).add(10);
     new_playable->setName("ゆうしゃ");
     new_playable->setCharacterId(makeNewCharacterId());
-    new_playable->addSkill(skill_data);
+    new_playable->addSkill(skill_data_a);
     new_playable->setStatus(status);
 
     player_party.addMember(new_playable);
+
+    auto new_playable2 = std::make_shared<Character::PlayableData>();
+    status.statusValue(EStatus::Enum::Hp).add(10);
+    new_playable2->setName("そうりょ");
+    new_playable2->setCharacterId(makeNewCharacterId());
+    new_playable2->addSkill(skill_data_h);
+    new_playable2->setStatus(status);
+
+    player_party.addMember(new_playable2);
 
     // 初期行動順の対応
     auto ActionEntry = [&](Battle::BattlePartyBase const& party)
@@ -142,10 +152,10 @@ void BattleManager::UpdateTimeLine()
 void BattleManager::StartAction()
 {
     if(_state.changed()) {
+        Debug::debugLog("State StartAction");
+
         auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
         _message_manager.set(chara_data->name() + "の行動開始");
-
-        Debug::debugLog("State StartAction");
     }
 
     auto const & input = System::InputManager::instance();
@@ -164,12 +174,12 @@ void BattleManager::SelectCommand()
 {
     auto& command_window = _ui_manager->commandWin();
     if(_state.changed()) {
+        Debug::debugLog("State SelectCommand");
+
         _pre_command = EBattleCommand::Enum::None;
         command_window.setCommands({EBattleCommand::Enum::NormalAttack, EBattleCommand::Enum::Skill, EBattleCommand::Enum::Defense});
         command_window.resetIndex();
         command_window.setDrawingComand(true);
-
-        Debug::debugLog("State SelectCommand");
     }
 
     if(command_window.selectedCommand() != _pre_command) {
@@ -211,6 +221,7 @@ void BattleManager::SelectSkill()
     auto & skill_select_window = _ui_manager->skillSelectWin();
     if(_state.changed()) {
         Debug::debugLog("State SelectSkill");
+
         auto const & actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
         skill_select_window.setActorSkill(*actor);
         skill_select_window.resetIndex();
@@ -233,11 +244,11 @@ void BattleManager::SelectTarget()
 {
     auto & target_select_window = _ui_manager->targetSelectWin();
     if(_state.changed()) {
+        Debug::debugLog("State SelectTarget");
+
         _message_manager.set("対象を選択してください");
         target_select_window.setTargets(_battle_info.enemyParty().getMembers());
         target_select_window.setDrawingComand(true);
-
-        Debug::debugLog("State SelectTarget");
     }
 
     auto const & input = System::InputManager::instance();
@@ -256,6 +267,8 @@ void BattleManager::SelectTarget()
 void BattleManager::EnemyCommand()
 {
     if(_state.changed()) {
+        Debug::debugLog("State EnemyCommand");
+
         auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
 
         _use_skill = ESkillId::Enum::NormalAttack;
@@ -265,20 +278,19 @@ void BattleManager::EnemyCommand()
         _target_character_ids.emplace_back(p_party.getMember(0)->characterId());
 
         _state.change(EState::UpdateSkill);
-        Debug::debugLog("State EnemyCommand");
     }
 }
 
 void BattleManager::UpdateSkill()
 {
     if(_state.changed()) {
+        Debug::debugLog("State UpdateSkill");
+
         auto skill_type = Parameter::Skill::Parameters::instance().parameter(_use_skill).skillType();
         auto skill = Skill::SkillFactory::instance().create(skill_type);
         auto augument = Skill::SkillBase::Argument { _battle_info, _action_time_line.actionEntry()._character_id, _target_character_ids, _message_manager };
         skill->execute(augument);
         _next_action_time = skill->actionTime();
-
-        Debug::debugLog("State UpdateSkill");
     }
 
     auto const & input = System::InputManager::instance();
