@@ -247,7 +247,14 @@ void BattleManager::SelectTarget()
         Debug::debugLog("State SelectTarget");
 
         _message_manager.set("対象を選択してください");
-        target_select_window.setTargets(_battle_info.enemyParty().getMembers());
+
+        auto skill_param = Parameter::Skill::Parameters::instance().parameter(_use_skill);
+        if(skill_param.skillTarget() == ESkillTarget::Enum::EnemyOne) {
+            target_select_window.setTargets(_battle_info.enemyParty().getMembers());
+        }
+        else {
+            target_select_window.setTargets(_battle_info.playerParty().getMembers());
+        }
         target_select_window.setDrawingComand(true);
     }
 

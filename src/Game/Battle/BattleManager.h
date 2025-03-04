@@ -19,7 +19,7 @@ public:
     Common::MessageManager& messsageManager() { return _message_manager; }
 
 private:
-    enum EState
+    enum class EState
     {
         None,
         UpdateTimeLine,
