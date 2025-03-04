@@ -36,6 +36,16 @@ private:
     int makeNewCharacterId();
 
 private:
+    void UpdateTimeLine();
+    void StartAction();
+    void SelectCommand();
+    void SelectSkill();
+    void SelectTarget();
+    void EnemyCommand();
+    void UpdateSkill();
+    void EraseTimeLine();
+
+private:
     BattleInfo _battle_info;
     ActionTimeLine _action_time_line;
     Common::MessageManager _message_manager;

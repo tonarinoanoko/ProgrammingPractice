@@ -95,184 +95,210 @@ void BattleManager::update()
     _state.update();
     switch(_state.current()) {
         case EState::UpdateTimeLine:
-        if(_state.changed()) {
-            Debug::debugLog("State UpdateTimeLine");
-        }
-
-        if(_action_time_line.update()) {
-            _state.change(EState::StartAction);
-        }
+            UpdateTimeLine();
         break;
 
         case EState::StartAction:
-        {
-            if(_state.changed()) {
-                auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-                _message_manager.set(chara_data->name() + "の行動開始");
-
-                Debug::debugLog("State StartAction");
-            }
-
-            auto const & input = System::InputManager::instance();
-            if(input.isKeyDown(KEY_INPUT_Z)) {
-                auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-                if(chara_data->characterType() == ECharacterType::Enum::Playable) {
-                    _state.change(EState::SelectCommand);
-                }
-                else {
-                    _state.change(EState::EnemyCommand);
-                }
-            }
-        }
+            StartAction();
         break;
 
         case EState::SelectCommand:
-        {
-        auto& command_window = _ui_manager->commandWin();
-        if(_state.changed()) {
-            _pre_command = EBattleCommand::Enum::None;
-            command_window.setCommands({EBattleCommand::Enum::NormalAttack, EBattleCommand::Enum::Skill, EBattleCommand::Enum::Defense});
-            command_window.resetIndex();
-            command_window.setDrawingComand(true);
-
-            Debug::debugLog("State SelectCommand");
-        }
-
-        if(command_window.selectedCommand() != _pre_command) {
-            switch(command_window.selectedCommand()) {
-                case EBattleCommand::Enum::NormalAttack:
-                _message_manager.set("攻撃を行います");
-                break;
-                case EBattleCommand::Enum::Skill:
-                _message_manager.set("スキルを選択します");
-                break;
-                case EBattleCommand::Enum::Defense:
-                _message_manager.set("防御を行います");
-                break;
-            }
-            _pre_command = command_window.selectedCommand();
-        }
-
-        auto const & input = System::InputManager::instance();
-        if(input.isKeyDown(KEY_INPUT_Z)) {
-            command_window.setDrawingComand(false);
-            switch(command_window.selectedCommand()) {
-                case EBattleCommand::Enum::NormalAttack:
-                _use_skill = ESkillId::Enum::NormalAttack;
-                _state.change(EState::SelectTarget);
-                break;
-                case EBattleCommand::Enum::Skill:
-                _state.change(EState::SelectSkill);
-                break;
-                case EBattleCommand::Enum::Defense:
-                _use_skill = ESkillId::Enum::NormalAttack;
-                _state.change(EState::SelectTarget);
-                break;
-            }
-        }
-        }
+            SelectCommand();
         break;
 
         case EState::SelectSkill:
-        {
-            auto & skill_select_window = _ui_manager->skillSelectWin();
-            if(_state.changed()) {
-                Debug::debugLog("State SelectSkill");
-                auto const & actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-                skill_select_window.setActorSkill(*actor);
-                skill_select_window.resetIndex();
-                skill_select_window.setDrawingComand(true);
-            }
-
-            auto const & input = System::InputManager::instance();
-            if(input.isKeyDown(KEY_INPUT_Z)) {
-                _use_skill = skill_select_window.selectSkillId();
-                skill_select_window.setDrawingComand(false);
-                _state.change(EState::SelectTarget);
-            }
-            else if(input.isKeyDown(KEY_INPUT_X)) {
-                skill_select_window.setDrawingComand(false);
-                _state.change(EState::SelectCommand);
-            }
-        }
+            SelectSkill();
         break;
 
         case EState::SelectTarget:
-        {
-        auto & target_select_window = _ui_manager->targetSelectWin();
-        if(_state.changed()) {
-            _message_manager.set("対象を選択してください");
-            target_select_window.setTargets(_battle_info.enemyParty().getMembers());
-            target_select_window.setDrawingComand(true);
-
-            Debug::debugLog("State SelectTarget");
-        }
-
-        auto const & input = System::InputManager::instance();
-        if(input.isKeyDown(KEY_INPUT_Z)) {
-            target_select_window.setDrawingComand(false);
-            _target_character_ids.clear();
-            _target_character_ids.emplace_back(_ui_manager->targetSelectWin().selectTargetCharacterId());
-            _state.change(EState::UpdateSkill);
-        }
-        else if(input.isKeyDown(KEY_INPUT_X)) {
-            target_select_window.setDrawingComand(false);
-            _state.change(EState::SelectCommand);  // todo前の画面に戻る
-        }
-
-        }
+            SelectTarget();
         break;
 
         case EState::EnemyCommand:
-        {
-        if(_state.changed()) {
-            auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
-
-            _use_skill = ESkillId::Enum::NormalAttack;
-            // todo とりあえず0番目のターゲット
-            auto const & p_party = _battle_info.playerParty();
-            _target_character_ids.clear();
-            _target_character_ids.emplace_back(p_party.getMember(0)->characterId());
-
-            _state.change(EState::UpdateSkill);
-            Debug::debugLog("State EnemyCommand");
-        }
-        }
+            EnemyCommand();
         break;
 
         case EState::UpdateSkill:
-        {
-        if(_state.changed()) {
-            auto skill_type = Parameter::Skill::Parameters::instance().parameter(_use_skill).skillType();
-            auto skill = Skill::SkillFactory::instance().create(skill_type);
-            auto augument = Skill::SkillBase::Argument { _battle_info, _action_time_line.actionEntry()._character_id, _target_character_ids, _message_manager };
-            skill->execute(augument);
-            _next_action_time = skill->actionTime();
-
-            Debug::debugLog("State UpdateSkill");
-        }
-
-        auto const & input = System::InputManager::instance();
-        if(input.isKeyDown(KEY_INPUT_Z)) {
-            _state.change(EState::EraseTimeLine);
-        }
-        }
+            UpdateSkill();
         break;
 
         case EState::EraseTimeLine:
-        {
-            Debug::debugLog("State EraseTimeLine");
-
-            auto const& entry = _action_time_line.actionEntry();
-
-            auto const& actor = _battle_info.characterData(entry._character_id);
-            ActionTimeLine::ActionEntry new_entry {actor->characterId(), _next_action_time, actor->status().statusInt(EStatus::Enum::Spd)};
-
-            _action_time_line.eraseAction(entry._character_id);
-            _action_time_line.addAction(new_entry);
-            _state.change(EState::UpdateTimeLine);
-        }
+            EraseTimeLine();
         break;
     }
 }
+
+void BattleManager::UpdateTimeLine()
+{
+    if(_state.changed()) {
+        Debug::debugLog("State UpdateTimeLine");
+    }
+
+    if(_action_time_line.update()) {
+        _state.change(EState::StartAction);
+    }
+}
+
+void BattleManager::StartAction()
+{
+    if(_state.changed()) {
+        auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+        _message_manager.set(chara_data->name() + "の行動開始");
+
+        Debug::debugLog("State StartAction");
+    }
+
+    auto const & input = System::InputManager::instance();
+    if(input.isKeyDown(KEY_INPUT_Z)) {
+        auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+        if(chara_data->characterType() == ECharacterType::Enum::Playable) {
+            _state.change(EState::SelectCommand);
+        }
+        else {
+            _state.change(EState::EnemyCommand);
+        }
+    }
+}
+
+void BattleManager::SelectCommand()
+{
+    auto& command_window = _ui_manager->commandWin();
+    if(_state.changed()) {
+        _pre_command = EBattleCommand::Enum::None;
+        command_window.setCommands({EBattleCommand::Enum::NormalAttack, EBattleCommand::Enum::Skill, EBattleCommand::Enum::Defense});
+        command_window.resetIndex();
+        command_window.setDrawingComand(true);
+
+        Debug::debugLog("State SelectCommand");
+    }
+
+    if(command_window.selectedCommand() != _pre_command) {
+        switch(command_window.selectedCommand()) {
+            case EBattleCommand::Enum::NormalAttack:
+            _message_manager.set("攻撃を行います");
+            break;
+            case EBattleCommand::Enum::Skill:
+            _message_manager.set("スキルを選択します");
+            break;
+            case EBattleCommand::Enum::Defense:
+            _message_manager.set("防御を行います");
+            break;
+        }
+        _pre_command = command_window.selectedCommand();
+    }
+
+    auto const & input = System::InputManager::instance();
+    if(input.isKeyDown(KEY_INPUT_Z)) {
+        command_window.setDrawingComand(false);
+        switch(command_window.selectedCommand()) {
+            case EBattleCommand::Enum::NormalAttack:
+            _use_skill = ESkillId::Enum::NormalAttack;
+            _state.change(EState::SelectTarget);
+            break;
+            case EBattleCommand::Enum::Skill:
+            _state.change(EState::SelectSkill);
+            break;
+            case EBattleCommand::Enum::Defense:
+            _use_skill = ESkillId::Enum::NormalAttack;
+            _state.change(EState::SelectTarget);
+            break;
+        }
+    }
+}
+
+void BattleManager::SelectSkill()
+{
+    auto & skill_select_window = _ui_manager->skillSelectWin();
+    if(_state.changed()) {
+        Debug::debugLog("State SelectSkill");
+        auto const & actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+        skill_select_window.setActorSkill(*actor);
+        skill_select_window.resetIndex();
+        skill_select_window.setDrawingComand(true);
+    }
+
+    auto const & input = System::InputManager::instance();
+    if(input.isKeyDown(KEY_INPUT_Z)) {
+        _use_skill = skill_select_window.selectSkillId();
+        skill_select_window.setDrawingComand(false);
+        _state.change(EState::SelectTarget);
+    }
+    else if(input.isKeyDown(KEY_INPUT_X)) {
+        skill_select_window.setDrawingComand(false);
+        _state.change(EState::SelectCommand);
+    }
+}
+
+void BattleManager::SelectTarget()
+{
+    auto & target_select_window = _ui_manager->targetSelectWin();
+    if(_state.changed()) {
+        _message_manager.set("対象を選択してください");
+        target_select_window.setTargets(_battle_info.enemyParty().getMembers());
+        target_select_window.setDrawingComand(true);
+
+        Debug::debugLog("State SelectTarget");
+    }
+
+    auto const & input = System::InputManager::instance();
+    if(input.isKeyDown(KEY_INPUT_Z)) {
+        target_select_window.setDrawingComand(false);
+        _target_character_ids.clear();
+        _target_character_ids.emplace_back(_ui_manager->targetSelectWin().selectTargetCharacterId());
+        _state.change(EState::UpdateSkill);
+    }
+    else if(input.isKeyDown(KEY_INPUT_X)) {
+        target_select_window.setDrawingComand(false);
+        _state.change(EState::SelectCommand);  // todo前の画面に戻る
+    }
+}
+
+void BattleManager::EnemyCommand()
+{
+    if(_state.changed()) {
+        auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+
+        _use_skill = ESkillId::Enum::NormalAttack;
+        // todo とりあえず0番目のターゲット
+        auto const & p_party = _battle_info.playerParty();
+        _target_character_ids.clear();
+        _target_character_ids.emplace_back(p_party.getMember(0)->characterId());
+
+        _state.change(EState::UpdateSkill);
+        Debug::debugLog("State EnemyCommand");
+    }
+}
+
+void BattleManager::UpdateSkill()
+{
+    if(_state.changed()) {
+        auto skill_type = Parameter::Skill::Parameters::instance().parameter(_use_skill).skillType();
+        auto skill = Skill::SkillFactory::instance().create(skill_type);
+        auto augument = Skill::SkillBase::Argument { _battle_info, _action_time_line.actionEntry()._character_id, _target_character_ids, _message_manager };
+        skill->execute(augument);
+        _next_action_time = skill->actionTime();
+
+        Debug::debugLog("State UpdateSkill");
+    }
+
+    auto const & input = System::InputManager::instance();
+    if(input.isKeyDown(KEY_INPUT_Z)) {
+        _state.change(EState::EraseTimeLine);
+    }
+}
+
+void BattleManager::EraseTimeLine()
+{
+    Debug::debugLog("State EraseTimeLine");
+
+    auto const& entry = _action_time_line.actionEntry();
+
+    auto const& actor = _battle_info.characterData(entry._character_id);
+    ActionTimeLine::ActionEntry new_entry {actor->characterId(), _next_action_time, actor->status().statusInt(EStatus::Enum::Spd)};
+
+    _action_time_line.eraseAction(entry._character_id);
+    _action_time_line.addAction(new_entry);
+    _state.change(EState::UpdateTimeLine);
+}
+
 }  // Battle
