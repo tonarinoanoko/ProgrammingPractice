@@ -1,20 +1,8 @@
 #pragma once
+#include "EnumBase.h"
 
-
-namespace ESkillId {
-
-enum class Enum
-{
-    None,
-    NormalAttack,
-    SkillAttack1,
-    SkillHeal1,
-
-    Max
-};
-
-inline int max() {
-    return static_cast<int>(Enum::Max);
-}
-
-}
+DEFINE_ENUM(ESkillId, 
+NormalAttack, 
+SkillAttack1, 
+SkillHeal1
+)

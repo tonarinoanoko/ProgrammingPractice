@@ -1,20 +1,8 @@
 #pragma once
+#include "EnumBase.h"
 
-
-namespace EBattleCommand {
-
-enum class Enum
-{
-    None,
-    NormalAttack,
-    Skill,
-    Defense,
-
-    Max
-};
-
-inline int max() {
-    return static_cast<int>(Enum::Max);
-}
-
-}
+DEFINE_ENUM(EBattleCommand, 
+NormalAttack, 
+Skill, 
+Defense
+)

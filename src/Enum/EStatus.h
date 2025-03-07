@@ -1,20 +1,9 @@
 #pragma once
+#include "EnumBase.h"
 
-
-namespace EStatus {
-
-enum class Enum
-{
-    Hp,
-    Atk,
-    Def,
-    Spd,
-
-    Max
-};
-
-inline int max() {
-    return static_cast<int>(Enum::Max);
-}
-
-}
+DEFINE_ENUM(EStatus, 
+Hp, 
+Atk, 
+Def, 
+Spd
+)

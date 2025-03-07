@@ -1,20 +1,8 @@
 #pragma once
+#include "EnumBase.h"
 
-
-namespace ECharacterType {
-
-enum class Enum
-{
-    None,
-    Playable,
-    Enemy,
-    Bot,
-
-    Max
-};
-
-inline int max() {
-    return static_cast<int>(Enum::Max);
-}
-
-}
+DEFINE_ENUM(ECharacterType, 
+Playable, 
+Enemy, 
+Bot
+)

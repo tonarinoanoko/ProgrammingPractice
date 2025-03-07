@@ -1,19 +1,7 @@
 #pragma once
+#include "EnumBase.h"
 
-
-namespace EScene {
-
-enum class Enum
-{
-    None,
-    Main,
-    Battle,
-
-    Max
-};
-
-inline int max() {
-    return static_cast<int>(Enum::Max);
-}
-
-}
+DEFINE_ENUM(EScene, 
+Main, 
+Battle
+)
