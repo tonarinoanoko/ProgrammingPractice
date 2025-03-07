@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <string>
 #include <array>
+#include "Enum/EnumBase.h"
 #include "Debug/DebugLog.h"
 
 // ParameterBaseクラスは抽象クラスとして宣言

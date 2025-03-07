@@ -5,7 +5,7 @@ namespace Parameter {
 namespace Skill {
 
 // todo 外部から情報を得られるようにする。
-void SkillParameter::makeParameter(ESkillId::Enum id)
+void ParameterData::makeParameter(ESkillId::Enum id)
 {
     switch(id)
     {
