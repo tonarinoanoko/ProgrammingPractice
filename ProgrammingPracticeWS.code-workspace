@@ -64,7 +64,14 @@
 			"semaphore": "cpp",
 			"sstream": "cpp",
 			"stop_token": "cpp",
-			"thread": "cpp"
+			"thread": "cpp",
+			"any": "cpp",
+			"codecvt": "cpp",
+			"cstring": "cpp",
+			"forward_list": "cpp",
+			"fstream": "cpp",
+			"ranges": "cpp",
+			"valarray": "cpp"
 		}
 	}
 }
