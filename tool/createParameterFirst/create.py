@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 from io import StringIO
 import sys
+import os
 
 # コマンドライン引数からURLを受け取る
 if len(sys.argv) < 2:
@@ -30,6 +31,10 @@ enum_name = df.iloc[1, 0]
 
 # Enum用の.hファイルを生成する関数
 def generate_enum_h_file(name, enum_name, file_name):
+    if os.path.exists(file_name):
+        print(f"Skipping: {file_name} already exists.")
+        return  # すでにファイルが存在する場合はスキップ
+
     with open(file_name, 'w') as file:
         file.write("#pragma once\n\n")
         file.write(f"#include \"ParameterBase.h\"\n")
