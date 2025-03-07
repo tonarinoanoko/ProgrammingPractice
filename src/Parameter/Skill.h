@@ -1,4 +1,3 @@
-// Skill.h
 #pragma once
 #include "ParameterBase.h"
 #include "Enum/ESkillId.h"
@@ -9,7 +8,7 @@
 namespace Parameter {
 namespace Skill {
 // Skillに対応するパラメータを定義
-class SkillParameter : public ParameterBase<ESkillId::Enum>
+class ParameterData : public ParameterBase<ESkillId::Enum>
 {
 public:
     std::string _name;
@@ -20,7 +19,7 @@ public:
 };
 
 inline auto& instance() {
-    return Parameters<ESkillId::Enum, Parameter::Skill::SkillParameter>::instance();
+    return Parameters<ESkillId::Enum, Parameter::Skill::ParameterData>::instance();
 }
 
 }  // namespace Skill
