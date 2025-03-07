@@ -259,8 +259,8 @@ void BattleManager::SelectTarget()
 
         _message_manager.set("対象を選択してください");
 
-        auto skill_param = Parameter::Skill::Parameters::instance().parameter(_use_skill);
-        if(skill_param.skillTarget() == ESkillTarget::Enum::EnemyOne) {
+        auto skill_param = Parameter::Skill::instance().parameter(_use_skill);
+        if(skill_param._skill_target == ESkillTarget::Enum::EnemyOne) {
             target_select_window.setTargets(_battle_info.enemyParty().getAliveMembers());
         }
         else {
@@ -304,7 +304,7 @@ void BattleManager::UpdateSkill()
     if(_state.changed()) {
         Debug::debugLog("State UpdateSkill");
 
-        auto skill_type = Parameter::Skill::Parameters::instance().parameter(_use_skill).skillType();
+        auto skill_type = Parameter::Skill::instance().parameter(_use_skill)._skill_type;
         auto skill = Skill::SkillFactory::instance().create(skill_type);
         auto augument = Skill::SkillBase::Argument { _battle_info, _battle_info.actionTimeLine().actionEntry()._character_id, _target_character_ids, _message_manager };
         skill->execute(augument);

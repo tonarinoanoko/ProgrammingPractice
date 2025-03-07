@@ -6,6 +6,7 @@
 #include "Debug/DebugLog.h"
 #include "System/InputManager.h"
 #include "Game/Scene/SceneManager.h"
+#include "Parameter/InitParameter.h"
 
 #include "Enum/EStatus.h"
 
@@ -16,10 +17,10 @@ bool sGameRunning = true;  // ゲームが実行中かどうか
 void initGame() {
     // ここにゲームの初期化処理を追加
     // 例: 画像やサウンドのロード、初期設定など
-
     SetUseCharCodeFormat( DX_CHARCODEFORMAT_UTF8 );
     ChangeFont( _T("MS 明朝" ));
 
+    Parameter::initParameter();
     Scene::SceneManager::instance().changeScene(EScene::Enum::Main);
 
     std::srand(std::time(0));

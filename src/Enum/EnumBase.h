@@ -6,17 +6,18 @@
 
 #include "Debug/GameDebug.h"
 
+// Enumの最大値を返す関数
 template <typename T>
 constexpr int EnumMax() {
     return static_cast<int>(T::Max);
 }
 
-// 渡されたnameでnamespaceを定義し、Enumを作成する。Enumには末尾にNoneとMaxが追加される。
+// Enumを作成するマクロ
 #define DEFINE_ENUM(name, ...) \
 namespace name { \
 enum class Enum { __VA_ARGS__, None, Max }; \
 inline int max() { return EnumMax<Enum>(); } \
-inline constexpr std::array<std::string_view, EnumMax<Enum>()> EnumNames = {#__VA_ARGS__}; \
+inline constexpr std::array<std::string_view, EnumMax<Enum>() - 2> EnumNames = {#__VA_ARGS__}; \
 \
 inline const std::unordered_map<std::string_view, Enum> EnumMap = []{ \
     std::unordered_map<std::string_view, Enum> map; \
@@ -29,7 +30,7 @@ inline const std::unordered_map<std::string_view, Enum> EnumMap = []{ \
 }(); \
 }
 
-// 汎用的なToString関数
+// ToStringとStringToEnum関数
 template <typename T>
 inline std::string_view EnumToString(T value) {
     return T::EnumNames[static_cast<int>(value)];
@@ -44,4 +45,9 @@ inline T StringToEnum(std::string_view name) {
 
     Debug::assertLog("Invalid enum name: " + std::string(name));
     return T::None;
+}
+
+template <typename T>
+inline int EnumToInt(T value) {
+    return static_cast<int>(value);
 }

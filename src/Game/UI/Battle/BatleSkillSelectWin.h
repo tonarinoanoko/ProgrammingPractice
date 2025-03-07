@@ -23,8 +23,8 @@ public:
         std::vector<std::string> commands;
         auto const & skills = actor.skills();
         for(int i = 0; i < skills.size(); ++i) {
-            auto param = Parameter::Skill::Parameters::instance().parameter(skills[i].skillId());
-            commands.emplace_back(param.name());
+            auto param = Parameter::Skill::instance().parameter(skills[i].skillId());
+            commands.emplace_back(param._name);
             _targets.emplace_back(skills[i].skillId());
         }
 
