@@ -1,7 +1,7 @@
 #pragma once
-
 #include "ParameterBase.h"
-#include "EMonsterId.h"
+#include "Enum/EMonsterId.h"
+
 
 namespace Parameter {
 namespace Monster {
