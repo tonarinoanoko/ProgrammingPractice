@@ -2,17 +2,19 @@
 #include <iostream>
 #include <algorithm>
 
-#include "Debug/DebugLog.h"
+#include "Debug/GameDebug.h"
 
 
 namespace Battle {
 void ActionTimeLine::addAction(ActionEntry entry)
 {
+    Debug::debugLog("ActionTimeLine::addAction : " + std::to_string(entry._character_id) + ", " + std::to_string(entry._action_time) + ", " + std::to_string(entry._cool_time));
     _time_line.emplace_back(entry);
 }
 
 void ActionTimeLine::eraseAction(int character_id)
 {
+    Debug::debugLog("ActionTimeLine::eraseAction : " + std::to_string(character_id));
     _time_line.erase(std::remove_if(_time_line.begin(), _time_line.end(),
         [character_id](ActionEntry const& entry) { return entry._character_id == character_id; }),
         _time_line.end());
