@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <deque>
-#include <memory>
 #include "DxLib.h"
 
 

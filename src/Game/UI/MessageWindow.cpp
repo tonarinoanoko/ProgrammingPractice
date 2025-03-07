@@ -2,7 +2,7 @@
 #include "Macro/COLOR_MACRO.h"
 #include "Utility/Utility.h"
 
-#include "Debug/DebugLog.h"
+#include "Debug/GameDebug.h"
 
 
 namespace UI {

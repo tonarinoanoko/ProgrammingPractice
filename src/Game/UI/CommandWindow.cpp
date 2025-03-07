@@ -1,5 +1,6 @@
 #include "CommandWindow.h"
 #include "DxLib.h"
+#include "Macro/COLOR_MACRO.h"
 #include "System/InputManager.h"
 #include "Utility/Utility.h"
 
@@ -43,7 +44,7 @@ void CommandWindow::draw() const {
     }
 
     for (size_t i = 0; i < _commands.size(); ++i) {
-        int color = (i == _selected_index) ? GetColor(255, 255, 0) : GetColor(255, 255, 255);
+        int color = (i == _selected_index) ? COLOR_YELLOW : COLOR_WHITE;
         DrawString(_x, _y + 20 * i, _commands[i].c_str(), color);
     }
 }

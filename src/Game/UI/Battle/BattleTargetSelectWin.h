@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "Character/Character.h"
 #include "UI/CommandWindow.h"
 
