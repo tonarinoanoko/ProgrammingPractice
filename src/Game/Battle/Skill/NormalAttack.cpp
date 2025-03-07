@@ -12,7 +12,12 @@ void NormalAttack::execute(Argument& argument)
     auto damage = Calc::damage(*actor, *target);
     target->damage(damage);
 
-    argument.message_manager.set(actor->name() + "の攻撃！\n" + target->name() + "に" + std::to_string(damage) + "のダメージ！");
+    std::string message = actor->name() + "の攻撃！\n" + target->name() + "に" + std::to_string(damage) + "のダメージ！";
+    if(target->isDead()) {
+        message += "\n" + target->name() + "を倒した！";
+    }
+
+    argument.message_manager.set(message);
 }
 
 }}  // namespace Battle::Skill

@@ -29,11 +29,13 @@ private:
         SelectTarget,
         EnemyCommand,
         UpdateSkill,
-        EraseTimeLine,
+        EndTimeLine,
+        FinishedBattle,
     };
 
 private:
     int makeNewCharacterId();
+    bool isNextFinishedBattle();
 
 private:
     void UpdateTimeLine();
@@ -43,7 +45,7 @@ private:
     void SelectTarget();
     void EnemyCommand();
     void UpdateSkill();
-    void EraseTimeLine();
+    void EndTimeLine();
 
 private:
     BattleInfo _battle_info;

@@ -85,10 +85,11 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
 
 bool BattleManager::isFinishedBattle()
 {
-    if(_state.current() == EState::None) {
-        return false;
-    }
+    return _state.current() == EState::FinishedBattle;
+}
 
+bool BattleManager::isNextFinishedBattle()
+{
     auto const& p_party = _battle_info.playerParty();
     auto const& e_party = _battle_info.enemyParty();
 
@@ -132,8 +133,11 @@ void BattleManager::update()
             UpdateSkill();
         break;
 
-        case EState::EraseTimeLine:
-            EraseTimeLine();
+        case EState::EndTimeLine:
+            EndTimeLine();
+        break;
+
+        case EState::FinishedBattle:
         break;
     }
 }
@@ -302,23 +306,42 @@ void BattleManager::UpdateSkill()
 
     auto const & input = System::InputManager::instance();
     if(input.isKeyDown(KEY_INPUT_Z)) {
-        _state.change(EState::EraseTimeLine);
+        _state.change(EState::EndTimeLine);
     }
 }
 
-void BattleManager::EraseTimeLine()
+void BattleManager::EndTimeLine()
 {
-    Debug::debugLog("State EraseTimeLine");
+    Debug::debugLog("State EndTimeLine");
 
     auto & action_time_line = _battle_info.actionTimeLine();
     auto const& entry = action_time_line.actionEntry();
 
     auto const& actor = _battle_info.characterData(entry._character_id);
-    ActionTimeLine::ActionEntry new_entry {actor->characterId(), _next_action_time, actor->status().statusInt(EStatus::Enum::Spd)};
-
     action_time_line.eraseAction(entry._character_id);
-    action_time_line.addAction(new_entry);
-    _state.change(EState::UpdateTimeLine);
+
+    // スキルの結果として対象が倒れていたらアクションから削除
+    for(auto const& target_id : _target_character_ids) {
+        auto const& character = _battle_info.characterData(target_id);
+        if(character->isDead()) {
+            _battle_info.actionTimeLine().eraseAction(target_id);
+        }
+    }
+
+    // 自爆技などで自身が倒れていることもあるのでその際には追加しない
+    actor->debugViewNowHp();
+    if(actor->isDead() == false) {
+        ActionTimeLine::ActionEntry new_entry {actor->characterId(), _next_action_time, actor->status().statusInt(EStatus::Enum::Spd)};
+        Debug::debugLog("add timeline chara" + std::to_string(new_entry._character_id));
+        action_time_line.addAction(new_entry);
+    }
+
+    if(isNextFinishedBattle()) {
+        _state.change(EState::FinishedBattle);
+    }
+    else {
+        _state.change(EState::UpdateTimeLine);
+    }
 }
 
 }  // Battle

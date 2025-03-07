@@ -69,6 +69,10 @@ public:
         return _now_hp.value() <= 0;
     }
 
+    void debugViewNowHp() {
+        Debug::debugLog(_name + " hp : " + _now_hp.value_str());
+    }
+
 private:
     ECharacterType::Enum _character_type;
     int _character_id;

@@ -27,6 +27,19 @@ public:
         return _members[index];
     }
 
+    std::vector<std::shared_ptr<Character::CharacterData>> const& getAliveMembers() const {
+        std::vector<std::shared_ptr<Character::CharacterData>> vec;
+        for(auto const & member : _members) {
+            if(member->isDead()) {
+                continue;
+            }
+
+            vec.emplace_back(member);
+        }
+
+        return vec;
+    }
+
     std::shared_ptr<Character::CharacterData> const& getMemberFromCharacterId(int id) const {
         for(auto const & member : _members) {
             if(member->characterId() == id) {
