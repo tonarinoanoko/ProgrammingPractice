@@ -27,17 +27,17 @@ public:
         return _members[index];
     }
 
-    std::vector<std::shared_ptr<Character::CharacterData>> const& getAliveMembers() const {
-        std::vector<std::shared_ptr<Character::CharacterData>> vec;
+    std::vector<std::shared_ptr<Character::CharacterData>> & getAliveMembers() {
+        _alive_members.clear();
         for(auto const & member : _members) {
             if(member->isDead()) {
                 continue;
             }
 
-            vec.emplace_back(member);
+            _alive_members.emplace_back(member);
         }
 
-        return vec;
+        return _alive_members;
     }
 
     std::shared_ptr<Character::CharacterData> const& getMemberFromCharacterId(int id) const {
@@ -65,5 +65,6 @@ public:
 
 protected:
     std::vector<std::shared_ptr<Character::CharacterData>> _members;
+    std::vector<std::shared_ptr<Character::CharacterData>> _alive_members;
 };
 }  // Battle

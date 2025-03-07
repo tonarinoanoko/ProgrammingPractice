@@ -47,6 +47,13 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     new_enemy->setStatus(status);
     enemy_party.addMember(new_enemy);
 
+    auto new_enemy2 = std::make_shared<Character::EnemyData>();
+    status.statusValue(EStatus::Enum::Hp).add(10);
+    new_enemy2->setName("ゴブリン");
+    new_enemy2->setCharacterId(makeNewCharacterId());
+    new_enemy2->setStatus(status);
+    enemy_party.addMember(new_enemy2);
+
     auto& player_party = _battle_info.playerParty();
     auto new_playable = std::make_shared<Character::PlayableData>();
     status.statusValue(EStatus::Enum::Hp).add(10);
@@ -254,10 +261,10 @@ void BattleManager::SelectTarget()
 
         auto skill_param = Parameter::Skill::Parameters::instance().parameter(_use_skill);
         if(skill_param.skillTarget() == ESkillTarget::Enum::EnemyOne) {
-            target_select_window.setTargets(_battle_info.enemyParty().getMembers());
+            target_select_window.setTargets(_battle_info.enemyParty().getAliveMembers());
         }
         else {
-            target_select_window.setTargets(_battle_info.playerParty().getMembers());
+            target_select_window.setTargets(_battle_info.playerParty().getAliveMembers());
         }
         target_select_window.setDrawingComand(true);
     }
