@@ -1,6 +1,7 @@
 #pragma once
 #include "ParameterBase.h"
 #include "Enum/EMonsterId.h"
+#include "Game/Character/Status.h"
 
 
 namespace Parameter {
@@ -9,6 +10,8 @@ class ParameterData : public ParameterBase<EMonsterId::Enum>
 {
 public:
     std::string _name;
+    Character::Status _status;
+
     void makeParameter(EMonsterId::Enum id) override;
 };
 

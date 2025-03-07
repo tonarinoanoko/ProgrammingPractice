@@ -23,12 +23,15 @@ def fetch_and_convert(url, file_name, output_dir="../../src/Parameter/json"):
         df.columns = df.iloc[1]  
         df = df.iloc[2:].reset_index(drop=True)  # 3行目以降をデータとして扱う
 
+        # "EMonsterId" をインデックスとして設定
+        df.set_index('EMonsterId', inplace=True)
+
         # JSONファイル名を決定（URLの一部を使用）
         json_name = f"{file_name}Parameter.json"
         file_path = os.path.join(output_dir, json_name)
 
-        # JSONファイルとして出力
-        df.to_json(file_path, orient="records", indent=4, force_ascii=False)
+        # JSONファイルとして出力（辞書型で出力）
+        df.to_json(file_path, orient="index", indent=4, force_ascii=False)
 
         print(f"成功: {file_path} にJSONを出力しました！")
     except Exception as e:
