@@ -27,7 +27,7 @@ def execute_script():
     try:
         # スクリプトのディレクトリを取得
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        script_path = os.path.join(script_dir, "create_parameter.py")
+        script_path = os.path.join(script_dir, "create.py")
 
         # create_enum.py をスクリプトディレクトリで実行
         subprocess.run(["python", script_path, selected_url], check=True, cwd=script_dir)
