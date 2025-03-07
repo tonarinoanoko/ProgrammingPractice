@@ -19,6 +19,7 @@ public:
     PlayableParty& playerParty() { return _player_party; }
     EnemyParty& enemyParty() { return _enemy_party; }
     BotParty& botParty() { return _bot_party; }
+    ActionTimeLine& actionTimeLine() { return _action_time_line; }
 
     std::shared_ptr<Character::CharacterData> & characterData(int character_id)
     {
@@ -49,5 +50,6 @@ private:
     PlayableParty _player_party;
     EnemyParty _enemy_party;
     BotParty _bot_party;
+    ActionTimeLine _action_time_line;
 };
 }  // Battle

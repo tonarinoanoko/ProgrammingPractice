@@ -74,7 +74,7 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
             new_entry._character_id = member->characterId();
             new_entry._action_time = member->startActionTime();
             new_entry._cool_time = member->status().statusInt(EStatus::Enum::Spd);
-            _action_time_line.addAction(new_entry);
+            _battle_info.actionTimeLine().addAction(new_entry);
         }
     };
     ActionEntry(enemy_party);
@@ -144,7 +144,7 @@ void BattleManager::UpdateTimeLine()
         Debug::debugLog("State UpdateTimeLine");
     }
 
-    if(_action_time_line.update()) {
+    if(_battle_info.actionTimeLine().update()) {
         _state.change(EState::StartAction);
     }
 }
@@ -154,13 +154,13 @@ void BattleManager::StartAction()
     if(_state.changed()) {
         Debug::debugLog("State StartAction");
 
-        auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+        auto const & chara_data = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
         _message_manager.set(chara_data->name() + "の行動開始");
     }
 
     auto const & input = System::InputManager::instance();
     if(input.isKeyDown(KEY_INPUT_Z)) {
-        auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+        auto const & chara_data = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
         if(chara_data->characterType() == ECharacterType::Enum::Playable) {
             _state.change(EState::SelectCommand);
         }
@@ -222,7 +222,7 @@ void BattleManager::SelectSkill()
     if(_state.changed()) {
         Debug::debugLog("State SelectSkill");
 
-        auto const & actor = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+        auto const & actor = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
         skill_select_window.setActorSkill(*actor);
         skill_select_window.resetIndex();
         skill_select_window.setDrawingComand(true);
@@ -276,7 +276,7 @@ void BattleManager::EnemyCommand()
     if(_state.changed()) {
         Debug::debugLog("State EnemyCommand");
 
-        auto const & chara_data = _battle_info.characterData(_action_time_line.actionEntry()._character_id);
+        auto const & chara_data = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
 
         _use_skill = ESkillId::Enum::NormalAttack;
         // todo とりあえず0番目のターゲット
@@ -295,7 +295,7 @@ void BattleManager::UpdateSkill()
 
         auto skill_type = Parameter::Skill::Parameters::instance().parameter(_use_skill).skillType();
         auto skill = Skill::SkillFactory::instance().create(skill_type);
-        auto augument = Skill::SkillBase::Argument { _battle_info, _action_time_line.actionEntry()._character_id, _target_character_ids, _message_manager };
+        auto augument = Skill::SkillBase::Argument { _battle_info, _battle_info.actionTimeLine().actionEntry()._character_id, _target_character_ids, _message_manager };
         skill->execute(augument);
         _next_action_time = skill->actionTime();
     }
@@ -310,13 +310,14 @@ void BattleManager::EraseTimeLine()
 {
     Debug::debugLog("State EraseTimeLine");
 
-    auto const& entry = _action_time_line.actionEntry();
+    auto & action_time_line = _battle_info.actionTimeLine();
+    auto const& entry = action_time_line.actionEntry();
 
     auto const& actor = _battle_info.characterData(entry._character_id);
     ActionTimeLine::ActionEntry new_entry {actor->characterId(), _next_action_time, actor->status().statusInt(EStatus::Enum::Spd)};
 
-    _action_time_line.eraseAction(entry._character_id);
-    _action_time_line.addAction(new_entry);
+    action_time_line.eraseAction(entry._character_id);
+    action_time_line.addAction(new_entry);
     _state.change(EState::UpdateTimeLine);
 }
 

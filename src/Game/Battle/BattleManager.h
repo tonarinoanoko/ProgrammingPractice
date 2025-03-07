@@ -47,7 +47,6 @@ private:
 
 private:
     BattleInfo _battle_info;
-    ActionTimeLine _action_time_line;
     Common::MessageManager _message_manager;
 
     System::StateManager<EState> _state = System::StateManager(EState::None);
