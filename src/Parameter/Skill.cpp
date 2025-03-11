@@ -7,6 +7,7 @@ namespace Skill {
 // todo 外部から情報を得られるようにする。
 void ParameterData::makeParameter(ESkillId::Enum id)
 {
+    Debug::debugLog("makeParameter Skill");
     switch(id)
     {
         case ESkillId::Enum::NormalAttack:

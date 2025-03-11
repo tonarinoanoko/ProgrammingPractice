@@ -15,7 +15,6 @@ public:
     CharacterData(ECharacterType::Enum character_type) :
     _character_type(character_type)
     {
-        Debug::debugLog("CharacterData()");
     }
 
     ECharacterType::Enum characterType() const { return _character_type; }
@@ -50,12 +49,10 @@ public:
     void recovery()
     {
         _now_hp = _status.statusValue(EStatus::Enum::Hp);
-        Debug::debugLog("recovery hp : " + _now_hp.value_str());
     }
 
     void damage(int damage)
     {
-        Debug::debugLog("damage " + _name + " : " + std::to_string(damage));
         _now_hp.add(-damage);
     }
 

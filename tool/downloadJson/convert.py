@@ -4,6 +4,22 @@ from io import StringIO
 import sys
 import os
 
+# データ型変換を行う関数
+def apply_conversion_rules(df, types):
+    for i, column in enumerate(df.columns):
+        column_type = types[i]
+
+        if column_type == 'int':
+            df[column] = pd.to_numeric(df[column], errors='coerce')  # 数値に変換
+        elif column_type == 'string':
+            df[column] = df[column].astype(str)  # 文字列に変換
+        elif column_type == 'float':
+            df[column] = pd.to_numeric(df[column], errors='coerce')  # 数値に変換
+        elif column_type == 'bool':
+            df[column] = df[column].astype(bool)  # 真偽値に変換
+
+    return df
+
 def fetch_and_convert(url, file_name, output_dir="../../src/Parameter/json"):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -19,12 +35,24 @@ def fetch_and_convert(url, file_name, output_dir="../../src/Parameter/json"):
         csv_data = StringIO(response.text)
         df = pd.read_csv(csv_data, header=None)
 
-        # 2行目をカラム名に設定（1行目をスキップ）
-        df.columns = df.iloc[1]  
-        df = df.iloc[2:].reset_index(drop=True)  # 3行目以降をデータとして扱う
+        # 1行目はスキップ
+        # 2行目をデータ型として取得
+        types = df.iloc[1].values  # 2行目にデータ型が格納されている
 
-        # "EMonsterId" をインデックスとして設定
-        df.set_index('EMonsterId', inplace=True)
+        # 3行目をカラム名に設定
+        df.columns = df.iloc[2]  
+
+        # 4行目以降をデータとして扱う
+        df = df.iloc[3:].reset_index(drop=True)  
+
+        # インデックス列を保存しておく
+        index_column = df.columns[0]
+
+        # ルールに基づいたデータ型変換を行う
+        df = apply_conversion_rules(df, types)
+
+        # 1列目をインデックスとして設定
+        df.set_index(index_column, inplace=True)  # 1列目をインデックスに設定
 
         # JSONファイル名を決定（URLの一部を使用）
         json_name = f"{file_name}Parameter.json"

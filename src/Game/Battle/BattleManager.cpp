@@ -1,9 +1,9 @@
 #include "BattleManager.h"
 #include "DxLib.h"
 #include "System/InputManager.h"
+#include "Parameter/ParameterInc.h"
 #include "Battle/Skill/SkillFactory.h"
 
-#include "Battle/Calc/Damage.h"
 #include "Debug/GameDebug.h"
 
 
@@ -41,17 +41,20 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
 
     auto& enemy_party = _battle_info.enemyParty();
     auto new_enemy = std::make_shared<Character::EnemyData>();
-    status.statusValue(EStatus::Enum::Hp).add(10);
-    new_enemy->setName("すらいむ");
+    auto enemy_param = Parameter::Monster::instance();
+    auto slime = enemy_param.parameter(EMonsterId::Enum::Slime);
+    new_enemy->setName(slime._name);
     new_enemy->setCharacterId(makeNewCharacterId());
-    new_enemy->setStatus(status);
+    new_enemy->setStatus(slime._status);
+    new_enemy->debugViewNowHp();
     enemy_party.addMember(new_enemy);
 
     auto new_enemy2 = std::make_shared<Character::EnemyData>();
-    status.statusValue(EStatus::Enum::Hp).add(10);
-    new_enemy2->setName("ゴブリン");
+    auto gob = enemy_param.parameter(EMonsterId::Enum::Gob);
+    new_enemy2->setName(gob._name);
     new_enemy2->setCharacterId(makeNewCharacterId());
-    new_enemy2->setStatus(status);
+    new_enemy2->setStatus(gob._status);
+    new_enemy2->debugViewNowHp();
     enemy_party.addMember(new_enemy2);
 
     auto& player_party = _battle_info.playerParty();

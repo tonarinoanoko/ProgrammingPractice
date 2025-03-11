@@ -1,0 +1,23 @@
+{
+    "Slime":{
+        "name":"aaa",
+        "hp":"100",
+        "attack":"10",
+        "def":"10",
+        "speed":"10"
+    },
+    "Gob":{
+        "name":"aaa",
+        "hp":"120",
+        "attack":"20",
+        "def":"5",
+        "speed":"5"
+    },
+    "Tomato":{
+        "name":"aaa",
+        "hp":"50",
+        "attack":"5",
+        "def":"20",
+        "speed":"15"
+    }
+}

@@ -1,6 +1,5 @@
 #pragma once
-#include "Skill.h"
-#include "Monster.h"
+#include "ParameterInc.h"
 
 namespace Parameter {
 // 各パラメーターのinstanceを呼んでおく
