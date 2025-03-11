@@ -14,6 +14,7 @@ Character::UStatusMap makeStatusMap()
     auto status_map = Character::UStatusMap();
     status_map[EStatus::Enum::Hp].set(100);
     status_map[EStatus::Enum::Atk].set(10);
+    status_map[EStatus::Enum::Def].set(10);
     status_map[EStatus::Enum::Spd].set(10);
     return status_map;
 }
@@ -40,22 +41,14 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     auto skill_data_h = Character::Skill::SkillData(ESkillId::Enum::SkillHeal1);
 
     auto& enemy_party = _battle_info.enemyParty();
-    auto new_enemy = std::make_shared<Character::EnemyData>();
-    auto enemy_param = Parameter::Monster::instance();
-    auto slime = enemy_param.parameter(EMonsterId::Enum::Slime);
-    new_enemy->setName(slime._name);
-    new_enemy->setCharacterId(makeNewCharacterId());
-    new_enemy->setStatus(slime._status);
-    new_enemy->debugViewNowHp();
-    enemy_party.addMember(new_enemy);
-
-    auto new_enemy2 = std::make_shared<Character::EnemyData>();
-    auto gob = enemy_param.parameter(EMonsterId::Enum::Gob);
-    new_enemy2->setName(gob._name);
-    new_enemy2->setCharacterId(makeNewCharacterId());
-    new_enemy2->setStatus(gob._status);
-    new_enemy2->debugViewNowHp();
-    enemy_party.addMember(new_enemy2);
+    auto makeEnemy = [&](EMonsterId::Enum id){
+        auto new_enemy = Character::makeEnemy(id);
+        new_enemy->setCharacterId(makeNewCharacterId());
+        enemy_party.addMember(new_enemy);
+    };
+    makeEnemy(EMonsterId::Enum::Slime);
+    makeEnemy(EMonsterId::Enum::Gob);
+    makeEnemy(EMonsterId::Enum::Tomato);
 
     auto& player_party = _battle_info.playerParty();
     auto new_playable = std::make_shared<Character::PlayableData>();
