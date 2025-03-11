@@ -3,6 +3,7 @@
 #include "UI/Battle/BattleCommandWin.h"
 #include "UI/Battle/BattleTargetSelectWin.h"
 #include "UI/Battle/BatleSkillSelectWin.h"
+#include "UI/Battle/ActionTimeLineUI.h"
 
 #include "Debug/DebugLog.h"
 
@@ -18,6 +19,7 @@ public:
     BattleComandWin& commandWin() { return _command_win; }
     BattleTargetSelectWin& targetSelectWin() { return _target_select_win; }
     BattleSkillSelectWin& skillSelectWin() { return _skill_select_win; }
+    ActionTimeLineUI& actionTimeLine() { return _time_line; }
 
     void update()
     {
@@ -33,6 +35,7 @@ public:
         _command_win.draw();
         _target_select_win.draw();
         _skill_select_win.draw();
+        _time_line.draw();
     }
 
 private:
@@ -40,5 +43,6 @@ private:
     BattleComandWin _command_win;
     BattleTargetSelectWin _target_select_win;
     BattleSkillSelectWin _skill_select_win;
+    ActionTimeLineUI _time_line;
 };
 }}  // namespace UI::Battle

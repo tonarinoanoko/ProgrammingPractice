@@ -50,10 +50,11 @@ private:
 private:
     BattleInfo _battle_info;
     Common::MessageManager _message_manager;
-
     System::StateManager<EState> _state = System::StateManager(EState::None);
-
     UI::Battle::BattleUIManager* _ui_manager = nullptr;
+
+    int _update_frame = 0;
+
     EBattleCommand::Enum _pre_command = EBattleCommand::Enum::None;
     int _use_character_id = 0;
 

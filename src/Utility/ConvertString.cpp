@@ -29,4 +29,16 @@ std::basic_string<TCHAR> convertToStrTCHAR(const std::string& str) {
 #endif
 }
 
+std::string padWithSpaces(int num, int width) {
+    std::string str = std::to_string(num);
+    int padding = width - str.length();
+    
+    // 必要な空白を先頭に追加
+    if (padding > 0) {
+        str = std::string(padding, ' ') + str;
+    }
+
+    return str;
+}
+
 }}  // Utility::Conv

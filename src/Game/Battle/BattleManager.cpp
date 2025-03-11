@@ -80,6 +80,7 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     ActionEntry(enemy_party);
     ActionEntry(player_party);
 
+    _ui_manager->actionTimeLine().setUp(_battle_info);
     _state.change(EState::UpdateTimeLine);
 }
 
@@ -102,6 +103,8 @@ void BattleManager::update()
     if(_ui_manager == nullptr) {
         return;
     }
+
+    ++_update_frame;
 
     _state.update();
     switch(_state.current()) {
@@ -145,10 +148,12 @@ void BattleManager::update()
 void BattleManager::UpdateTimeLine()
 {
     if(_state.changed()) {
+        _update_frame = 0;
+        _message_manager.set("行動順更新中");
         Debug::debugLog("State UpdateTimeLine");
     }
 
-    if(_battle_info.actionTimeLine().update()) {
+    if(_update_frame % 20 == 0 && _battle_info.actionTimeLine().update()) {
         _state.change(EState::StartAction);
     }
 }
