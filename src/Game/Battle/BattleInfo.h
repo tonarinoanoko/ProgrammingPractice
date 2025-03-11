@@ -21,29 +21,38 @@ public:
     BotParty& botParty() { return _bot_party; }
     ActionTimeLine& actionTimeLine() { return _action_time_line; }
 
-    std::shared_ptr<Character::CharacterData> & characterData(int character_id)
+    Character::CharacterData& characterData(int character_id)
     {
-        for(auto & member : _player_party.getMembers()) {
-            if(member->characterId() == character_id) {
-                return member;
+        // 各パーティに対してキャラクターを検索
+        auto findCharacterInParty = [character_id](auto& party) -> Character::CharacterData* {
+            for (auto& member : party.getMembers()) {
+                if (member->characterId() == character_id) {
+                    return &(*member);  // ポインタを返す
+                }
             }
+            return nullptr;  // キャラクターが見つからなかった場合は nullptr を返す
+        };
+
+        // プレイヤーパーティ内でキャラクターを検索
+        if (auto character = findCharacterInParty(_player_party)) {
+            return *character;  // 見つかったキャラクターを参照として返す
         }
 
-        for(auto & member : _enemy_party.getMembers()) {
-            if(member->characterId() == character_id) {
-                return member;
-            }
+        // 敵パーティ内でキャラクターを検索
+        if (auto character = findCharacterInParty(_enemy_party)) {
+            return *character;  // 見つかったキャラクターを参照として返す
         }
 
-        for(auto & member : _bot_party.getMembers()) {
-            if(member->characterId() == character_id) {
-                return member;
-            }
+        // ボットパーティ内でキャラクターを検索
+        if (auto character = findCharacterInParty(_bot_party)) {
+            return *character;  // 見つかったキャラクターを参照として返す
         }
 
-        Debug::assertLog("not character id");
-        return _none_character;
+        // キャラクターが見つからない場合
+        Debug::assertLog("Character not found for ID: " + std::to_string(character_id));
+        return *_none_character;  // 見つからなかった場合は none_character を返す
     }
+
 
 private:
     std::shared_ptr<Character::CharacterData> _none_character;

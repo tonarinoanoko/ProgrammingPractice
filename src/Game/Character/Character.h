@@ -66,7 +66,7 @@ public:
         return _now_hp.value() <= 0;
     }
 
-    void debugViewNowHp() {
+    void debugViewNowHp() const {
         Debug::debugLog(_name + " hp : " + _now_hp.value_str());
     }
 

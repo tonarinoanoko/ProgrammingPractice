@@ -6,10 +6,10 @@
 
 
 namespace Battle {
-void ActionTimeLine::addAction(ActionEntry entry)
+void ActionTimeLine::addAction(Character::CharacterData const& character, int action_time, int cool_time)
 {
-    Debug::debugLog("ActionTimeLine::addAction : " + std::to_string(entry._character_id) + ", " + std::to_string(entry._action_time) + ", " + std::to_string(entry._cool_time));
-    _time_line.emplace_back(entry);
+    ActionTimeLine::ActionEntry new_entry {character.characterId(), action_time, cool_time};
+    _time_line.emplace_back(new_entry);
 }
 
 void ActionTimeLine::eraseAction(int character_id)

@@ -15,7 +15,7 @@ public:
 
 public:
     ActionTimeLine(){};
-    void addAction(ActionEntry entry);
+    void addAction(Character::CharacterData const& character, int action_time, int cool_time);
     void eraseAction(int character_id);
     ActionEntry const& actionEntry() const;
 

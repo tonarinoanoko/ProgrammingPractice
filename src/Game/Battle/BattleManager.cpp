@@ -74,10 +74,7 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     {
         ActionTimeLine::ActionEntry new_entry {0, 0, 0};
         for(auto const& member : party.getMembers()) {
-            new_entry._character_id = member->characterId();
-            new_entry._action_time = member->startActionTime();
-            new_entry._cool_time = member->status().statusInt(EStatus::Enum::Spd);
-            _battle_info.actionTimeLine().addAction(new_entry);
+            _battle_info.actionTimeLine().addAction(*member, member->startActionTime(), member->status().statusInt(EStatus::Enum::Spd));
         }
     };
     ActionEntry(enemy_party);
@@ -162,13 +159,13 @@ void BattleManager::StartAction()
         Debug::debugLog("State StartAction");
 
         auto const & chara_data = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
-        _message_manager.set(chara_data->name() + "の行動開始");
+        _message_manager.set(chara_data.name() + "の行動開始");
     }
 
     auto const & input = System::InputManager::instance();
     if(input.isKeyDown(KEY_INPUT_Z)) {
         auto const & chara_data = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
-        if(chara_data->characterType() == ECharacterType::Enum::Playable) {
+        if(chara_data.characterType() == ECharacterType::Enum::Playable) {
             _state.change(EState::SelectCommand);
         }
         else {
@@ -230,7 +227,7 @@ void BattleManager::SelectSkill()
         Debug::debugLog("State SelectSkill");
 
         auto const & actor = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
-        skill_select_window.setActorSkill(*actor);
+        skill_select_window.setActorSkill(actor);
         skill_select_window.resetIndex();
         skill_select_window.setDrawingComand(true);
     }
@@ -326,17 +323,15 @@ void BattleManager::EndTimeLine()
     // スキルの結果として対象が倒れていたらアクションから削除
     for(auto const& target_id : _target_character_ids) {
         auto const& character = _battle_info.characterData(target_id);
-        if(character->isDead()) {
+        if(character.isDead()) {
             _battle_info.actionTimeLine().eraseAction(target_id);
         }
     }
 
     // 自爆技などで自身が倒れていることもあるのでその際には追加しない
-    actor->debugViewNowHp();
-    if(actor->isDead() == false) {
-        ActionTimeLine::ActionEntry new_entry {actor->characterId(), _next_action_time, actor->status().statusInt(EStatus::Enum::Spd)};
-        Debug::debugLog("add timeline chara" + std::to_string(new_entry._character_id));
-        action_time_line.addAction(new_entry);
+    actor.debugViewNowHp();
+    if(actor.isDead() == false) {
+        action_time_line.addAction(actor, _next_action_time, actor.status().statusInt(EStatus::Enum::Spd));
     }
 
     if(isNextFinishedBattle()) {
