@@ -10,13 +10,13 @@ def apply_conversion_rules(df, types):
         column_type = types[i]
 
         if column_type == 'int':
-            df[column] = pd.to_numeric(df[column], errors='coerce')  # 数値に変換
+            df[column] = df[column].apply(lambda x: [pd.to_numeric(i, errors='coerce') for i in x] if isinstance(x, list) else pd.to_numeric(x, errors='coerce'))
         elif column_type == 'string':
-            df[column] = df[column].astype(str)  # 文字列に変換
+            df[column] = df[column].apply(lambda x: [str(i) for i in x] if isinstance(x, list) else str(x))
         elif column_type == 'float':
-            df[column] = pd.to_numeric(df[column], errors='coerce')  # 数値に変換
+            df[column] = df[column].apply(lambda x: [pd.to_numeric(i, errors='coerce') for i in x] if isinstance(x, list) else pd.to_numeric(x, errors='coerce'))
         elif column_type == 'bool':
-            df[column] = df[column].astype(bool)  # 真偽値に変換
+            df[column] = df[column].apply(lambda x: [bool(i) for i in x] if isinstance(x, list) else bool(x))
 
     return df
 
