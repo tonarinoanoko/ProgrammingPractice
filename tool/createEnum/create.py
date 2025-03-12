@@ -3,32 +3,34 @@ import pandas as pd
 from io import StringIO
 import sys
 
-# コマンドライン引数からURLを受け取る
+# コマンドライン引数の処理
 if len(sys.argv) < 2:
-    print("Usage: python create_enum.py <CSV_URL>")
+    print("Usage: python create.py <CSV_URL> [SHEET_GID]")
     sys.exit(1)
 
 url = sys.argv[1]
 
-# CSVをURLから取得する
-if "docs.google.com" in url:
+# シートGIDの指定がある場合
+if len(sys.argv) > 2:
+    gid = sys.argv[2]
+    url = url.replace("/edit", f"/export?format=csv&gid={gid}")
+else:
     url = url.replace("/edit", "/export?format=csv")
 
+print(f"create : {url}")
+
+# CSVを取得
 response = requests.get(url)
-
-# HTTPリクエストが成功したか確認
 response.raise_for_status()
-
-# CSVデータをStringIOを使ってpandasで読み込み
 response.encoding = 'utf-8'
+
+# CSVデータをDataFrameとして読み込み
 csv_data = StringIO(response.text)
-df = pd.read_csv(csv_data, header=None)  # ヘッダ行なしで読み込み
+df = pd.read_csv(csv_data, header=None)  # ヘッダなしで読み込む
 
-# 1行目をEnum名として取得
-enum_name = df.iloc[1, 0]
-
-# 残りの行をEnum値として取得
-enum_values = df.iloc[2:, 0].dropna().tolist()
+# 3行目をEnum名、4行目以降をEnum値とする
+enum_name = df.iloc[2, 0]
+enum_values = df.iloc[3:, 0].dropna().tolist()
 
 # Enum用の.hファイルを生成する関数
 def generate_enum_h_file(enum_name, enum_values, file_name):
@@ -36,18 +38,14 @@ def generate_enum_h_file(enum_name, enum_values, file_name):
         file.write("#pragma once\n\n")
         file.write(f"#include \"EnumBase.h\"\n\n")
         file.write(f"DEFINE_ENUM({enum_name}, \n")
-        
-        # 最後の要素にはカンマをつけない
+
         for i, value in enumerate(enum_values):
-            if i == len(enum_values) - 1:
-                file.write(f"{value}\n")  # 最後の要素
-            else:
-                file.write(f"{value}, \n")  # その他の要素
+            file.write(f"{value}{',' if i < len(enum_values) - 1 else ''}\n")
         
         file.write(")\n")
 
 # Enumを生成
-file_name = f"../../src/Enum/{enum_name}.h"  # f-stringでファイル名を作成
+file_name = f"../../src/Enum/{enum_name}.h"
 generate_enum_h_file(enum_name, enum_values, file_name)
 
 print(f"Enum header file generated: {file_name}")

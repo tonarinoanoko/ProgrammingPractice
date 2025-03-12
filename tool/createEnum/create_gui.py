@@ -10,7 +10,7 @@ def load_url_list(filename):
     try:
         with open(filename, "r", encoding="utf-8") as file:
             reader = csv.reader(file)
-            url_list = [(row[0], row[1]) for row in reader if len(row) == 2]
+            url_list = [(row[0], row[1], row[2]) for row in reader if len(row) == 3]
     except FileNotFoundError:
         messagebox.showerror("エラー", f"{filename} が見つかりません")
     return url_list
@@ -22,7 +22,7 @@ def execute_script():
         messagebox.showwarning("警告", "リストからURLを選択してください")
         return
     
-    selected_name, selected_url = url_list[selected_index[0]]
+    selected_name, selected_url, selected_sheet = url_list[selected_index[0]]
     
     try:
         # スクリプトのディレクトリを取得
@@ -30,7 +30,7 @@ def execute_script():
         script_path = os.path.join(script_dir, "create.py")
 
         # create_enum.py をスクリプトディレクトリで実行
-        subprocess.run(["python", script_path, selected_url], check=True, cwd=script_dir)
+        subprocess.run(["python", script_path, selected_url, selected_sheet], check=True, cwd=script_dir)
         messagebox.showinfo("成功", f"{selected_name} のEnumヘッダファイルを作成しました")
     except subprocess.CalledProcessError:
         messagebox.showerror("エラー", "スクリプトの実行に失敗しました")
@@ -54,7 +54,7 @@ label = ttk.Label(frame, text="作成したいリストを選択してくださ�
 label.pack()
 
 listbox = tk.Listbox(frame, height=10)
-for name, _ in url_list:
+for name, _, _ in url_list:
     listbox.insert(tk.END, name)
 listbox.pack(fill=tk.BOTH, expand=True)
 

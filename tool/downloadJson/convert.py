@@ -24,10 +24,6 @@ def fetch_and_convert(url, file_name, output_dir="../../src/Parameter/json"):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    # Googleスプレッドシートの場合、CSVとしてエクスポート
-    if "docs.google.com" in url:
-        url = url.replace("/edit", "/export?format=csv")
-
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -66,10 +62,20 @@ def fetch_and_convert(url, file_name, output_dir="../../src/Parameter/json"):
         print(f"エラー: データの取得に失敗しました - {e}")
 
 if __name__ == "__main__":
+
+    # コマンドライン引数の処理
     if len(sys.argv) < 2:
-        print("エラー: URLが指定されていません")
+        print("Usage: python create_enum.py <CSV_URL> <FILE_NAME> [SHEET_GID]")
         sys.exit(1)
 
     url = sys.argv[1]
     file_name = sys.argv[2]
+
+    # シートGIDの指定がある場合
+    if len(sys.argv) > 3:
+        gid = sys.argv[3]
+        url = url.replace("/edit", f"/export?format=csv&gid={gid}")
+    else:
+        url = url.replace("/edit", "/export?format=csv")
+
     fetch_and_convert(url, file_name)

@@ -4,15 +4,18 @@ from io import StringIO
 import sys
 import os
 
-# コマンドライン引数からURLを受け取る
+# コマンドライン引数の処理
 if len(sys.argv) < 2:
-    print("Usage: python create_enum.py <CSV_URL>")
+    print("Usage: python create.py <CSV_URL> [SHEET_GID]")
     sys.exit(1)
 
 url = sys.argv[1]
 
-# CSVをURLから取得する
-if "docs.google.com" in url:
+# シートGIDの指定がある場合
+if len(sys.argv) > 2:
+    gid = sys.argv[2]
+    url = url.replace("/edit", f"/export?format=csv&gid={gid}")
+else:
     url = url.replace("/edit", "/export?format=csv")
 
 response = requests.get(url)
@@ -27,7 +30,7 @@ df = pd.read_csv(csv_data, header=None)  # ヘッダ行なしで読み込み
 
 # 1行目をファイル名として取得
 _name = df.iloc[0, 0]
-enum_name = df.iloc[1, 0]
+enum_name = df.iloc[2, 0]
 
 # Enum用の.hファイルを生成する関数
 def generate_enum_h_file(name, enum_name, file_name):
