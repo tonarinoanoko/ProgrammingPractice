@@ -1,11 +1,8 @@
 #include "Parameter/Monster.h"
-
-#include <iostream>
 #include <fstream>
 #include <nlohmann/json.hpp>
 
 #include "Debug/GameDebug.h"
-#include <filesystem>
 
 namespace Parameter {
 namespace Monster {
@@ -20,7 +17,6 @@ void ParameterData::makeParameter(EMonsterId::Enum id)
     file >> json_data;  // JSONデータを読み込む
 
     auto id_str = EnumToString(id);
-    std::cout << id_str << std::endl;
     if (json_data.contains(id_str)) {
         auto data = json_data[id_str];
         _name = data["name"];
