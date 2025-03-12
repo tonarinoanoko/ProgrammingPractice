@@ -28,7 +28,7 @@ public:
         for(int i = 0; i < entrys.size(); ++i) {
             auto const& entry = entrys[i];
             std::string disp = Utility::Conv::padWithSpaces(entry._action_time, 3) + "("+ Utility::Conv::padWithSpaces(entry._cool_time, 3) + ") : " + entry._name;
-            DrawString(450, 30 + 20 * i, disp.c_str(), COLOR_WHITE);
+            DrawString(450, 30 + 20 * i, Utility::Conv::convertToStrTCHAR(disp).c_str(), COLOR_WHITE);
         }
     };
 
