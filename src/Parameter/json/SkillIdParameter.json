@@ -1,0 +1,17 @@
+{
+    "NormalAttack":{
+        "name":"通常攻撃",
+        "type":"NormalAttack",
+        "target":"EnemyOne"
+    },
+    "SkillAttack1":{
+        "name":"攻撃スキル1",
+        "type":"SkillAttack1",
+        "target":"EnemyOne"
+    },
+    "SkillHeal1":{
+        "name":"回復スキル1",
+        "type":"SkillHeal1",
+        "target":"PlayableOne"
+    }
+}
