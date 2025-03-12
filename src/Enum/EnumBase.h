@@ -20,7 +20,7 @@ std::string_view EnumToString(T id)
 }
 
 template <typename T>
-T StringToEnum(std::string str)
+T StringToEnum(std::string str, T default_value = T{})
 {
-    return magic_enum::enum_cast<T>(str);
+    return magic_enum::enum_cast<T>(str).value_or(default_value);
 }
