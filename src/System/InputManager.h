@@ -29,4 +29,4 @@ private:
     std::array<char, 256> _prev_key_state{};
 };
 
-}  // System
+}  // namespace System

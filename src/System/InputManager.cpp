@@ -24,4 +24,4 @@ bool InputManager::isKeyPressed(int key_code) const
     return (_current_key_state[key_code]);
 }
 
-}  // System
+}  // namespace System
