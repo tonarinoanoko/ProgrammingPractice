@@ -21,7 +21,7 @@ MessageWindow::MessageWindow(int x, int y, int width, int height)
 void MessageWindow::setMessage(const std::string& message) {
     _current_message = std::basic_string<TCHAR>(message.begin(), message.end());
 
-    Debug::debugLog("set message : " + message);
+    //Debug::debugLog("set message : " + message);
 }
 
 void MessageWindow::update()

@@ -336,7 +336,6 @@ void BattleManager::EndTimeLine()
     }
 
     // 自爆技などで自身が倒れていることもあるのでその際には追加しない
-    actor.debugViewNowHp();
     if(actor.isDead() == false) {
         action_time_line.addAction(actor, _next_action_time, actor.status().statusInt(EStatus::Enum::Spd));
     }
