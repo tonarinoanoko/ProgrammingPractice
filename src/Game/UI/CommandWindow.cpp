@@ -3,13 +3,15 @@
 #include "Macro/COLOR_MACRO.h"
 #include "System/InputManager.h"
 #include "Utility/Utility.h"
+#include "UI/DrawBox.h"
 
 
 namespace UI {
-CommandWindow::CommandWindow()
-    : _x(0), _y(0), _width(0), _height(0) {}
+CommandWindow::CommandWindow() {}
 CommandWindow::CommandWindow(int x, int y, int width, int height)
-    : _x(x), _y(y), _width(width), _height(height) {}
+{
+    _rect = System::Rect(x, y, width, height);
+}
 
 void CommandWindow::setDrawingComand(bool draw)
 {
@@ -43,9 +45,10 @@ void CommandWindow::draw() const {
         return;
     }
 
+    drawFrameBox(_rect);
     for (size_t i = 0; i < _commands.size(); ++i) {
         int color = (i == _selected_index) ? COLOR_YELLOW : COLOR_WHITE;
-        DrawString(_x, _y + 20 * i, _commands[i].c_str(), color);
+        DrawString(_rect._x + 10, _rect._y + 10 + 20 * i, _commands[i].c_str(), color);
     }
 }
 

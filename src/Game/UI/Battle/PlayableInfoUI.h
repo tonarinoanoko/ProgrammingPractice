@@ -1,6 +1,9 @@
 #pragma once
 #include "Macro/COLOR_MACRO.h"
 #include "Utility/ConvertString.h"
+#include "System/Rect.h"
+#include "UI/DrawBox.h"
+
 #include "Battle/BattleInfo.h"
 using namespace Battle;  // UI::Battle内でBattleを使用しようとしたらエラーになるので仕方なくusingする
 
@@ -30,8 +33,11 @@ public:
 
             auto name = member->name();
             auto hp = member->hp();
-            DrawString(20 + (i * 120), 20, Utility::Conv::convertToStrTCHAR(name).c_str(), COLOR_WHITE);
-            DrawString(20 + (i * 120), 50, Utility::Conv::convertToStrTCHAR("HP : " + hp.value_str()).c_str(), COLOR_WHITE);
+
+            System::Rect rect(10 + (i * 150), 10, 140, 70);
+            drawFrameBox(rect);
+            DrawString(rect._x + 10, rect._y + 10, Utility::Conv::convertToStrTCHAR(name).c_str(), COLOR_WHITE);
+            DrawString(rect._x + 10, rect._y + 40, Utility::Conv::convertToStrTCHAR("HP : " + hp.value_str()).c_str(), COLOR_WHITE);
         }
     }
 

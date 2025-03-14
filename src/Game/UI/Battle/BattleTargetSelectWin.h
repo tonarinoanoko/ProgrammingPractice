@@ -9,7 +9,7 @@ class BattleTargetSelectWin : public CommandWindow
 {
 public:
     BattleTargetSelectWin() :
-        CommandWindow(10, 200, 80, 100)
+        CommandWindow(10, 200, 120, 90)
     {
     }
 

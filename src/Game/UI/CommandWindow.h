@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "DxLib.h"
+#include "System/Rect.h"
 
 
 namespace UI {
@@ -21,7 +22,7 @@ public:
 
 private:
     bool _draw_command = false;
-    int _x, _y, _width, _height;
+    System::Rect _rect;
     std::vector<std::basic_string<TCHAR>> _commands;
     int _selected_index = 0;
 };
