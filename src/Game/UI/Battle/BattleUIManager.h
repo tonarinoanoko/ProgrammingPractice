@@ -1,4 +1,5 @@
 #pragma once
+#include "System/Image.h"
 #include "UI/MessageWindow.h"
 #include "UI/Battle/BattleCommandWin.h"
 #include "UI/Battle/BattleTargetSelectWin.h"
@@ -14,7 +15,10 @@ namespace Battle {
 class BattleUIManager
 {
 public:
-    BattleUIManager() {}
+    BattleUIManager() {
+        _image_bg.load("resource/BG/bg_1.png");
+    }
+
     MessageWindow& messageWin() { return _message_win; }
     BattleComandWin& commandWin() { return _command_win; }
     BattleTargetSelectWin& targetSelectWin() { return _target_select_win; }
@@ -31,6 +35,7 @@ public:
 
     void draw()
     {
+        _image_bg.draw(0, 0);
         _message_win.draw();
         _command_win.draw();
         _target_select_win.draw();
@@ -44,5 +49,6 @@ private:
     BattleTargetSelectWin _target_select_win;
     BattleSkillSelectWin _skill_select_win;
     ActionTimeLineUI _time_line;
+    System::Image _image_bg;
 };
 }}  // namespace UI::Battle

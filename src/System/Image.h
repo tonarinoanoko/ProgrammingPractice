@@ -7,11 +7,11 @@
 namespace System{
 class Image {
 public:
-    explicit Image();
+    explicit Image() {}
     // コンストラクタ（画像の読み込み）
     explicit Image(std::string const& file_path)
     {
-        Load(file_path);
+        load(file_path);
     }
 
     // デストラクタ（自動的に破棄）
@@ -23,9 +23,9 @@ public:
     }
 
     // 画像の読み込み
-    void Load(std::string const& file_path)
+    void load(std::string const& file_path)
     {
-        if(_handle == -1) {
+        if(_handle != -1) {
             return;
         }
 
@@ -62,7 +62,7 @@ public:
     }
 
     // 画像の描画
-    void Draw(int x, int y, bool transparent = true) const
+    void draw(int x, int y, bool transparent = true) const
     {
         if(_handle != -1) {
             DrawGraph(x, y, _handle, transparent);
@@ -70,7 +70,7 @@ public:
     }
 
     // ハンドル取得
-    int GetHandle() const { return _handle; }
+    int handle() const { return _handle; }
 
 private:
     int _handle = -1;
