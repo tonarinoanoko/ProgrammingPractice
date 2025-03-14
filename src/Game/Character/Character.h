@@ -49,6 +49,7 @@ public:
     void recovery()
     {
         _now_hp = _status.statusValue(EStatus::Enum::Hp);
+        _now_hp.setMinMax(0, _now_hp.value());
     }
 
     void damage(int damage)
