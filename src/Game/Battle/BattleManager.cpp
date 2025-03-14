@@ -106,8 +106,6 @@ void BattleManager::update()
         return;
     }
 
-    ++_update_frame;
-
     _state.update();
     switch(_state.current()) {
         case EState::UpdateTimeLine:
@@ -150,11 +148,15 @@ void BattleManager::update()
 void BattleManager::UpdateTimeLine()
 {
     if(_state.changed()) {
-        _update_frame = 0;
+        _common_timer.start();
         _message_manager.set("行動順更新中");
     }
+    if(_common_timer.isTimeUpSecond(0.1) == false) {
+        return;
+    }
 
-    if(_update_frame % 20 == 0 && _battle_info.actionTimeLine().update()) {
+    _common_timer.start();
+    if(_battle_info.actionTimeLine().update()) {
         _state.change(EState::StartAction);
     }
 }

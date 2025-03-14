@@ -28,7 +28,6 @@ public:
     BattleComandWin& commandWin() { return _command_win; }
     BattleTargetSelectWin& targetSelectWin() { return _target_select_win; }
     BattleSkillSelectWin& skillSelectWin() { return _skill_select_win; }
-    ActionTimeLineUI& actionTimeLine() { return _time_line; }
 
     void setup(BattleInfo const& info) {
         if(_p_battle_info == nullptr) {

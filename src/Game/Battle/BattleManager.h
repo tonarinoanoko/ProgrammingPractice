@@ -2,6 +2,7 @@
 #include <string>
 #include "BattleInfo.h"
 #include "System/StateManager.h"
+#include "System/Timer.h"
 #include "Common/MessageManager.h"
 #include "Character/Character.h"
 #include "UI/Battle/BattleUIManager.h"
@@ -52,8 +53,7 @@ private:
     Common::MessageManager _message_manager;
     System::StateManager<EState> _state = System::StateManager(EState::None);
     UI::Battle::BattleUIManager* _ui_manager = nullptr;
-
-    int _update_frame = 0;
+    System::Timer _common_timer;
 
     EBattleCommand::Enum _pre_command = EBattleCommand::Enum::None;
     int _use_character_id = 0;
