@@ -2,7 +2,7 @@
 
 
 namespace System{
-explicit Image::Image(std::string const& file_path)
+Image::Image(std::string const& file_path)
 {
     load(file_path);
 }
@@ -28,7 +28,7 @@ void Image::load(std::string const& file_path)
     }
 }
 
-void Image::draw(int x, int y, bool transparent = true) const
+void Image::draw(int x, int y, bool transparent) const
 {
     if(_handle != -1) {
         DrawGraph(x, y, _handle, transparent);
