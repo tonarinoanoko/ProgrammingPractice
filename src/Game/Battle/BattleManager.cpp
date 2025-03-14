@@ -152,7 +152,6 @@ void BattleManager::UpdateTimeLine()
     if(_state.changed()) {
         _update_frame = 0;
         _message_manager.set("行動順更新中");
-        Debug::debugLog("State UpdateTimeLine");
     }
 
     if(_update_frame % 20 == 0 && _battle_info.actionTimeLine().update()) {
@@ -163,8 +162,6 @@ void BattleManager::UpdateTimeLine()
 void BattleManager::StartAction()
 {
     if(_state.changed()) {
-        Debug::debugLog("State StartAction");
-
         auto const & chara_data = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
         _message_manager.set(chara_data.name() + "の行動開始");
     }
@@ -185,8 +182,6 @@ void BattleManager::SelectCommand()
 {
     auto& command_window = _ui_manager->commandWin();
     if(_state.changed()) {
-        Debug::debugLog("State SelectCommand");
-
         _pre_command = EBattleCommand::Enum::None;
         command_window.setCommands({EBattleCommand::Enum::NormalAttack, EBattleCommand::Enum::Skill, EBattleCommand::Enum::Defense});
         command_window.resetIndex();
@@ -231,8 +226,6 @@ void BattleManager::SelectSkill()
 {
     auto & skill_select_window = _ui_manager->skillSelectWin();
     if(_state.changed()) {
-        Debug::debugLog("State SelectSkill");
-
         auto const & actor = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
         skill_select_window.setActorSkill(actor);
         skill_select_window.resetIndex();
@@ -255,8 +248,6 @@ void BattleManager::SelectTarget()
 {
     auto & target_select_window = _ui_manager->targetSelectWin();
     if(_state.changed()) {
-        Debug::debugLog("State SelectTarget");
-
         _message_manager.set("対象を選択してください");
 
         auto skill_param = Parameter::Skill::instance().parameter(_use_skill);
@@ -285,15 +276,15 @@ void BattleManager::SelectTarget()
 void BattleManager::EnemyCommand()
 {
     if(_state.changed()) {
-        Debug::debugLog("State EnemyCommand");
-
         auto const & chara_data = _battle_info.characterData(_battle_info.actionTimeLine().actionEntry()._character_id);
 
         _use_skill = ESkillId::Enum::NormalAttack;
-        // todo とりあえず0番目のターゲット
-        auto const & p_party = _battle_info.playerParty();
+        // todo 生きているメンバーから適当に
+        auto & p_party = _battle_info.playerParty();
+        auto const& p_alive = p_party.getAliveMembers();
+        int rand = Utility::Math::random(p_alive.size());
         _target_character_ids.clear();
-        _target_character_ids.emplace_back(p_party.getMember(0)->characterId());
+        _target_character_ids.emplace_back(p_alive[rand]->characterId());
 
         _state.change(EState::UpdateSkill);
     }
@@ -302,8 +293,6 @@ void BattleManager::EnemyCommand()
 void BattleManager::UpdateSkill()
 {
     if(_state.changed()) {
-        Debug::debugLog("State UpdateSkill");
-
         auto skill_type = Parameter::Skill::instance().parameter(_use_skill)._skill_type;
         auto skill = Skill::SkillFactory::instance().create(skill_type);
         auto augument = Skill::SkillBase::Argument { _battle_info, _battle_info.actionTimeLine().actionEntry()._character_id, _target_character_ids, _message_manager };
@@ -319,8 +308,6 @@ void BattleManager::UpdateSkill()
 
 void BattleManager::EndTimeLine()
 {
-    Debug::debugLog("State EndTimeLine");
-
     auto & action_time_line = _battle_info.actionTimeLine();
     auto const& entry = action_time_line.actionEntry();
 

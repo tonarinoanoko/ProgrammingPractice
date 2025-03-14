@@ -14,7 +14,6 @@ void ActionTimeLine::addAction(Character::CharacterData const& character, int ac
 
 void ActionTimeLine::eraseAction(int character_id)
 {
-    Debug::debugLog("ActionTimeLine::eraseAction : " + std::to_string(character_id));
     _entrys.erase(std::remove_if(_entrys.begin(), _entrys.end(),
         [character_id](ActionEntry const& entry) {
             return entry._character_id == character_id;
