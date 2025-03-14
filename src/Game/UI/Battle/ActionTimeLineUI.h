@@ -10,10 +10,10 @@ namespace Battle {
 class ActionTimeLineUI
 {
 public:
-    ActionTimeLineUI() {};
-    void setUp(BattleInfo & info)
+    ActionTimeLineUI() {}
+    void setUp(BattleInfo const& info)
     {
-        auto & time_line = info.actionTimeLine();
+        auto const& time_line = info.actionTimeLine();
         if(_p_battle_time_line == nullptr) {
             _p_battle_time_line = &time_line;
         }

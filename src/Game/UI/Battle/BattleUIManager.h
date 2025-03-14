@@ -5,6 +5,7 @@
 #include "UI/Battle/BattleTargetSelectWin.h"
 #include "UI/Battle/BatleSkillSelectWin.h"
 #include "UI/Battle/ActionTimeLineUI.h"
+#include "UI/Battle/PlayableInfoUI.h"
 
 
 #include "Battle/BattleInfo.h"  // toto テスト
@@ -29,10 +30,13 @@ public:
     BattleSkillSelectWin& skillSelectWin() { return _skill_select_win; }
     ActionTimeLineUI& actionTimeLine() { return _time_line; }
 
-    void testSetInfo(BattleInfo const& info) {
+    void setup(BattleInfo const& info) {
         if(_p_battle_info == nullptr) {
             _p_battle_info = &info;
         }
+
+        _time_line.setUp(info);
+        _playable_info_ui.setUp(info);
     }
     void loadMonsterImage(std::string path)
     {
@@ -64,6 +68,8 @@ public:
             }
         }
 
+        _playable_info_ui.draw();
+
         _message_win.draw();
         _command_win.draw();
         _target_select_win.draw();
@@ -77,6 +83,7 @@ private:
     BattleTargetSelectWin _target_select_win;
     BattleSkillSelectWin _skill_select_win;
     ActionTimeLineUI _time_line;
+    PlayableInfoUI _playable_info_ui;
     System::Image _image_bg;
     std::vector<System::Image> _images_monster;
     BattleInfo const * _p_battle_info = nullptr;

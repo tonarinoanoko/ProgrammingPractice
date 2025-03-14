@@ -82,8 +82,7 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
     ActionEntry(enemy_party);
     ActionEntry(player_party);
 
-    _ui_manager->testSetInfo(_battle_info);
-    _ui_manager->actionTimeLine().setUp(_battle_info);
+    _ui_manager->setup(_battle_info);
     _state.change(EState::UpdateTimeLine);
 }
 
