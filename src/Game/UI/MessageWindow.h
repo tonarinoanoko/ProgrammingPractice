@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "DxLib.h"
+#include "System/Rect.h"
 
 
 namespace UI {
@@ -15,7 +16,7 @@ public:
     void draw() const;
 
 private:
-    int _x, _y, _width, _height;
+    System::Rect _rect;
     std::basic_string<TCHAR> _current_message;
 };
 
