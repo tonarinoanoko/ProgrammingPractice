@@ -21,6 +21,10 @@ public:
     BotParty& botParty() { return _bot_party; }
     ActionTimeLine& actionTimeLine() { return _action_time_line; }
 
+    PlayableParty const& playerParty() const { return _player_party; }
+    EnemyParty const& enemyParty() const { return _enemy_party; }
+    BotParty const& botParty() const { return _bot_party; }
+
     Character::CharacterData& characterData(int character_id)
     {
         // 各パーティに対してキャラクターを検索

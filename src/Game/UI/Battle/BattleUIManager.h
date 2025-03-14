@@ -6,7 +6,11 @@
 #include "UI/Battle/BatleSkillSelectWin.h"
 #include "UI/Battle/ActionTimeLineUI.h"
 
-#include "Debug/DebugLog.h"
+
+#include "Battle/BattleInfo.h"  // toto テスト
+using namespace Battle;  // UI::Battle内でBattleを使用しようとしたらエラーになるので仕方なくusingする
+
+#include "Debug/GameDebug.h"
 
 
 namespace UI {
@@ -25,6 +29,11 @@ public:
     BattleSkillSelectWin& skillSelectWin() { return _skill_select_win; }
     ActionTimeLineUI& actionTimeLine() { return _time_line; }
 
+    void testSetInfo(BattleInfo const& info) {
+        if(_p_battle_info == nullptr) {
+            _p_battle_info = &info;
+        }
+    }
     void loadMonsterImage(std::string path)
     {
         _images_monster.emplace_back(System::Image(path));
@@ -42,8 +51,17 @@ public:
     {
         _image_bg.draw(0, 0);
 
-        for(int i = 0; i < _images_monster.size(); ++i) {
-            _images_monster[i].draw(120 + (i * 130), 150);
+        // todo まとめた処理を作る
+        if(_p_battle_info != nullptr && _images_monster.size() > 0) {
+            auto const & enemy = _p_battle_info->enemyParty();
+            auto const & members = enemy.getMembers();
+            if(members.size() > 0) {
+                for(int i = 0; i < _images_monster.size(); ++i) {
+                    if(members[i]->isDead() == false) {
+                        _images_monster[i].draw(120 + (i * 130), 150);
+                    }
+                }
+            }
         }
 
         _message_win.draw();
@@ -61,5 +79,6 @@ private:
     ActionTimeLineUI _time_line;
     System::Image _image_bg;
     std::vector<System::Image> _images_monster;
+    BattleInfo const * _p_battle_info = nullptr;
 };
 }}  // namespace UI::Battle
