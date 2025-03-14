@@ -45,6 +45,7 @@ void BattleManager::startBattle(UI::Battle::BattleUIManager* ui_manager)
         auto new_enemy = Character::makeEnemy(id);
         new_enemy->setCharacterId(makeNewCharacterId());
         enemy_party.addMember(new_enemy);
+        _ui_manager->loadMonsterImage("resource/Monster/" + std::string(EnumToString(id)) + ".png");
     };
     makeEnemy(EMonsterId::Enum::Slime);
     makeEnemy(EMonsterId::Enum::Gob);

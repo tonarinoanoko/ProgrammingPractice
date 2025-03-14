@@ -25,6 +25,11 @@ public:
     BattleSkillSelectWin& skillSelectWin() { return _skill_select_win; }
     ActionTimeLineUI& actionTimeLine() { return _time_line; }
 
+    void loadMonsterImage(std::string path)
+    {
+        _images_monster.emplace_back(System::Image(path));
+    }
+
     void update()
     {
         _message_win.update();
@@ -36,6 +41,11 @@ public:
     void draw()
     {
         _image_bg.draw(0, 0);
+
+        for(int i = 0; i < _images_monster.size(); ++i) {
+            _images_monster[i].draw(120 + (i * 130), 150);
+        }
+
         _message_win.draw();
         _command_win.draw();
         _target_select_win.draw();
@@ -50,5 +60,6 @@ private:
     BattleSkillSelectWin _skill_select_win;
     ActionTimeLineUI _time_line;
     System::Image _image_bg;
+    std::vector<System::Image> _images_monster;
 };
 }}  // namespace UI::Battle
